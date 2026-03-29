@@ -1,0 +1,15 @@
+.DS_Store
+.next
+node_modules
+npm-debug.log*
+.env
+.env.local
+.env.production
+.vercel
+coverage
+tmp
+.superpowers
+
+# Large assets (served locally / by CDN, not git)
+public/assets/pdf/
+public/brochure/
