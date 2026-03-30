@@ -36,10 +36,10 @@ export function FoundersSection({ eyebrow, founders }: FoundersSectionProps) {
               direction={i === 0 ? "left" : "right"}
             >
               <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-                {founder.photo && (
+                {founder.photo && getSanityImageUrl(founder.photo, 320) && (
                   <div className="relative h-[200px] w-[160px] flex-shrink-0 overflow-hidden rounded-xl">
                     <Image
-                      src={getSanityImageUrl(founder.photo, 320)}
+                      src={getSanityImageUrl(founder.photo, 320)!}
                       alt={`${founder.name} — ${founder.role}`}
                       fill
                       className="object-cover"
