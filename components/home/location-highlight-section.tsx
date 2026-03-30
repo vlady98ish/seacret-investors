@@ -19,45 +19,26 @@ type LocationHighlightSectionProps = {
   ctaLabel?: string;
 };
 
-const FALLBACK_ICONS = [Sun, Clock, MapPin, Shield];
-
-const fallbackHighlights: HighlightItem[] = [
-  {
-    title: "Blue Flag Beach",
-    description: "Chiliadou — pristine, uncrowded, award-winning coastline.",
-  },
-  {
-    title: "30 min from Patras",
-    description: "Quick access to Greece's third-largest city and its port.",
-  },
-  {
-    title: "2.5 h from Athens",
-    description: "An easy drive from the capital, via the scenic Rio-Antirrio bridge.",
-  },
-  {
-    title: "No crowds",
-    description: "A hidden cove away from mass tourism — serenity guaranteed.",
-  },
-];
+const ICONS = [Sun, Clock, MapPin, Shield];
 
 export function LocationHighlightSection({ locale, title, description, highlights, eyebrowLabel, ctaLabel }: LocationHighlightSectionProps) {
-  const resolvedHighlights = highlights && highlights.length > 0 ? highlights : fallbackHighlights;
+  if (!highlights?.length) return null;
 
   return (
     <section className="bg-[var(--color-cream)] py-24 sm:py-32">
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
-            eyebrow={eyebrowLabel || "Location"}
-            title={title || "Greece's best-kept secret"}
-            description={description || "Nestled on the northern shore of the Gulf of Corinth, Chiliadou offers untouched beauty just hours from Athens."}
+            eyebrow={eyebrowLabel}
+            title={title}
+            description={description}
             align="center"
           />
         </ScrollReveal>
 
         <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {resolvedHighlights.map((item, i) => {
-            const Icon = FALLBACK_ICONS[i % FALLBACK_ICONS.length];
+          {highlights.map((item, i) => {
+            const Icon = ICONS[i % ICONS.length];
             return (
             <ScrollReveal key={item.title} delay={i * 0.1}>
               <div className="text-center">
@@ -72,11 +53,13 @@ export function LocationHighlightSection({ locale, title, description, highlight
           })}
         </div>
 
-        <ScrollReveal className="mt-12 text-center">
-          <Link href={`/${locale}/location`} className="btn btn-outline">
-            {ctaLabel || "Explore the Location"}
-          </Link>
-        </ScrollReveal>
+        {ctaLabel && (
+          <ScrollReveal className="mt-12 text-center">
+            <Link href={`/${locale}/location`} className="btn btn-outline">
+              {ctaLabel}
+            </Link>
+          </ScrollReveal>
+        )}
       </div>
     </section>
   );

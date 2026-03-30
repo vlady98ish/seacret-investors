@@ -17,15 +17,6 @@ interface DistanceMapSectionProps {
   locationLabel?: string;
 }
 
-const defaultDistances: MarkerProp[] = [
-  { place: "Nafpaktos", time: "10 min", detail: "Historic castle town" },
-  { place: "Rio Bridge", time: "20 min", detail: "Landmark suspension bridge" },
-  { place: "Trizonia Island", time: "20 min", detail: "Scenic island ferry" },
-  { place: "Patras", time: "30 min", detail: "Major port city" },
-  { place: "Galaxidi", time: "1 hour", detail: "Charming seafront village" },
-  { place: "Athens", time: "2.5 hours", detail: "International hub" },
-];
-
 export function DistanceMapSection({
   eyebrow,
   title,
@@ -33,23 +24,16 @@ export function DistanceMapSection({
   markers,
   locationLabel,
 }: DistanceMapSectionProps = {}) {
-  const resolvedEyebrow = eyebrow || "CONNECTIVITY";
-  const resolvedTitle = title || "Easy to reach. Hard to leave.";
-  const resolvedDescription =
-    description ||
-    "Chiliadou sits at the heart of the Corinthian Gulf, connecting you effortlessly to the best of Greece.";
-
-  const resolvedDistances =
-    markers && markers.length > 0 ? markers : defaultDistances;
+  if (!markers?.length) return null;
 
   return (
     <section className="py-20" style={{ background: "var(--color-cream)" }}>
       <div className="section-shell flex flex-col gap-12">
         <ScrollReveal>
           <SectionHeading
-            eyebrow={resolvedEyebrow}
-            title={resolvedTitle}
-            description={resolvedDescription}
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
           />
         </ScrollReveal>
 
@@ -115,31 +99,14 @@ export function DistanceMapSection({
                 >
                   CHILIADOU
                 </span>
-                <p
-                  className="text-body-muted text-sm"
-                  style={{ maxWidth: "200px" }}
-                >
-                  {locationLabel || "Corinthian Gulf, Central Greece"}
-                </p>
-                <div
-                  style={{
-                    marginTop: "0.5rem",
-                    padding: "0.5rem 1rem",
-                    background: "var(--color-gold-sun)",
-                    borderRadius: "var(--radius-full)",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "0.75rem",
-                      fontWeight: 700,
-                      color: "var(--color-night)",
-                      letterSpacing: "0.1em",
-                    }}
+                {locationLabel && (
+                  <p
+                    className="text-body-muted text-sm"
+                    style={{ maxWidth: "200px" }}
                   >
-                    38.385°N, 22.017°E
-                  </span>
-                </div>
+                    {locationLabel}
+                  </p>
+                )}
               </div>
             </div>
           </ScrollReveal>
@@ -147,7 +114,7 @@ export function DistanceMapSection({
           {/* Distance markers */}
           <ScrollReveal direction="right">
             <div className="flex flex-col gap-3">
-              {resolvedDistances.map((d, i) => (
+              {markers.map((d, i) => (
                 <ScrollReveal key={d.place || i} delay={i * 0.06}>
                   <div
                     className="tile flex items-center gap-4"

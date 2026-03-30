@@ -1,7 +1,7 @@
 import { StatsCounter } from "@/components/about/stats-counter";
 
 type StatsBarProps = {
-  stats: Array<{ label: string; value: string | number }>;
+  stats: Array<{ label?: string; value: string | number }>;
 };
 
 export function StatsBar({ stats }: StatsBarProps) {

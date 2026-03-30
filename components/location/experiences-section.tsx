@@ -16,40 +16,10 @@ interface ExperiencesSectionProps {
 
 type CategoryKey = "culture" | "nature" | "gastronomy";
 
-const categoryMeta: Record<
-  CategoryKey,
-  { label: string; icon: typeof Landmark; items: string[] }
-> = {
-  culture: {
-    label: "Culture",
-    icon: Landmark,
-    items: [
-      "Ancient Delphi — Oracle of the ancient world",
-      "Galaxidi — A preserved 19th-century seafaring town",
-      "Byzantine monasteries in the hills",
-      "Local tavernas with generational recipes",
-    ],
-  },
-  nature: {
-    label: "Nature",
-    icon: Leaf,
-    items: [
-      "Blue Flag beaches minutes from home",
-      "Private pools with Corinthian Gulf views",
-      "Olive grove hiking trails through ancient trees",
-      "Kayaking in secluded coastal bays",
-    ],
-  },
-  gastronomy: {
-    label: "Gastronomy",
-    icon: UtensilsCrossed,
-    items: [
-      "Amfissa olives — PDO protected, world-renowned",
-      "Fresh gulf seafood caught daily",
-      "Local cheeses and artisan honey",
-      "Wine tastings at regional estates",
-    ],
-  },
+const categoryIcons: Record<CategoryKey, typeof Landmark> = {
+  culture: Landmark,
+  nature: Leaf,
+  gastronomy: UtensilsCrossed,
 };
 
 function groupExperiences(experiences: Experience[]): Record<CategoryKey, Experience[]> {
@@ -74,23 +44,18 @@ export function ExperiencesSection({
   description,
   categoryLabels: catLabels,
 }: ExperiencesSectionProps) {
-  const hasCmsData = experiences && experiences.length > 0;
-  const grouped = hasCmsData ? groupExperiences(experiences) : null;
+  if (!experiences?.length) return null;
 
-  const resolvedEyebrow = eyebrow || "LOCAL EXPERIENCES";
-  const resolvedTitle = title || "A life well-lived, every day.";
-  const resolvedDescription =
-    description ||
-    "From ancient ruins to fresh-caught seafood — the richness of this region becomes your everyday backdrop.";
+  const grouped = groupExperiences(experiences);
 
   return (
     <section className="py-20" style={{ background: "var(--color-cream)" }}>
       <div className="section-shell flex flex-col gap-12">
         <ScrollReveal>
           <SectionHeading
-            eyebrow={resolvedEyebrow}
-            title={resolvedTitle}
-            description={resolvedDescription}
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
           />
         </ScrollReveal>
 
@@ -102,77 +67,74 @@ export function ExperiencesSection({
           }}
           className="sm:grid-cols-3"
         >
-          {(Object.entries(categoryMeta) as [CategoryKey, typeof categoryMeta[CategoryKey]][]).map(
-            ([key, meta], i) => {
-              const Icon = meta.icon;
-              const cmsItems =
-                grouped?.[key].map((exp) => exp.title[locale] ?? exp.title.en) ?? null;
-              const displayItems = cmsItems ?? meta.items;
+          {(Object.keys(categoryIcons) as CategoryKey[]).map((key, i) => {
+            const items = grouped[key];
+            if (!items.length) return null;
+            const Icon = categoryIcons[key];
 
-              return (
-                <ScrollReveal key={key} delay={i * 0.1}>
-                  <div className="tile flex flex-col gap-5 h-full">
-                    {/* Category header */}
-                    <div className="flex items-center gap-3">
-                      <div
+            return (
+              <ScrollReveal key={key} delay={i * 0.1}>
+                <div className="tile flex flex-col gap-5 h-full">
+                  {/* Category header */}
+                  <div className="flex items-center gap-3">
+                    <div
+                      style={{
+                        width: "2.75rem",
+                        height: "2.75rem",
+                        borderRadius: "var(--radius-full)",
+                        background: "rgba(13,103,119,0.10)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <Icon
+                        size={18}
+                        style={{ color: "var(--color-deep-teal)" }}
+                        strokeWidth={1.5}
+                      />
+                    </div>
+                    <h3 className="text-h3">{catLabels?.[key] ?? key}</h3>
+                  </div>
+
+                  {/* Items list */}
+                  <ul
+                    className="flex flex-col gap-2 mt-auto"
+                    style={{ listStyle: "none", padding: 0, margin: 0 }}
+                  >
+                    {items.map((exp) => (
+                      <li
+                        key={exp._id}
                         style={{
-                          width: "2.75rem",
-                          height: "2.75rem",
-                          borderRadius: "var(--radius-full)",
-                          background: "rgba(13,103,119,0.10)",
                           display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
+                          alignItems: "flex-start",
+                          gap: "0.6rem",
+                          fontSize: "0.875rem",
+                          color: "var(--color-ink)",
+                          lineHeight: 1.5,
                         }}
                       >
-                        <Icon
-                          size={18}
-                          style={{ color: "var(--color-deep-teal)" }}
-                          strokeWidth={1.5}
-                        />
-                      </div>
-                      <h3 className="text-h3">{catLabels?.[key] || meta.label}</h3>
-                    </div>
-
-                    {/* Items list */}
-                    <ul
-                      className="flex flex-col gap-2 mt-auto"
-                      style={{ listStyle: "none", padding: 0, margin: 0 }}
-                    >
-                      {displayItems.map((item, idx) => (
-                        <li
-                          key={idx}
+                        <span
                           style={{
-                            display: "flex",
-                            alignItems: "flex-start",
-                            gap: "0.6rem",
-                            fontSize: "0.875rem",
-                            color: "var(--color-ink)",
-                            lineHeight: 1.5,
+                            flexShrink: 0,
+                            marginTop: "0.45rem",
+                            width: "5px",
+                            height: "5px",
+                            borderRadius: "50%",
+                            background: "var(--color-deep-teal)",
+                            display: "inline-block",
                           }}
-                        >
-                          <span
-                            style={{
-                              flexShrink: 0,
-                              marginTop: "0.45rem",
-                              width: "5px",
-                              height: "5px",
-                              borderRadius: "50%",
-                              background: "var(--color-deep-teal)",
-                              display: "inline-block",
-                            }}
-                            aria-hidden="true"
-                          />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </ScrollReveal>
-              );
-            }
-          )}
+                          aria-hidden="true"
+                        />
+                        {exp.title[locale] ?? exp.title.en}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </ScrollReveal>
+            );
+          })}
         </div>
       </div>
     </section>

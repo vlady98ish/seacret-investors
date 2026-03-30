@@ -26,39 +26,6 @@ interface AirportConnectivitySectionProps {
   labelNearest?: string;
 }
 
-const defaultAirports: AirportProp[] = [
-  {
-    code: "PVK",
-    name: "Aktion National Airport",
-    city: "Preveza",
-    travelTime: "1h 45m",
-    destinations: 38,
-    countries: 14,
-    note: "Closest summer gateway — direct from major EU cities",
-    isNearest: false,
-  },
-  {
-    code: "GPA",
-    name: "Araxos Airport",
-    city: "Patras",
-    travelTime: "1h 10m",
-    destinations: 17,
-    countries: 9,
-    note: "Nearest airport, expanding international routes every season",
-    isNearest: true,
-  },
-  {
-    code: "ATH",
-    name: "Athens Int'l Airport",
-    city: "Eleftherios Venizelos",
-    travelTime: "2h 44m",
-    destinations: 160,
-    countries: null,
-    note: "Year-round hub connecting 160+ airports worldwide",
-    isNearest: false,
-  },
-];
-
 export function AirportConnectivitySection({
   eyebrow,
   title,
@@ -70,23 +37,16 @@ export function AirportConnectivitySection({
   labelWorldwide,
   labelNearest,
 }: AirportConnectivitySectionProps = {}) {
-  const resolvedEyebrow = eyebrow || "AIR CONNECTIVITY";
-  const resolvedTitle = title || "Three gateways to paradise.";
-  const resolvedDescription =
-    description ||
-    "Whether you fly direct from Europe or connect through Athens, the Corinthian Gulf is closer than you think.";
-
-  const resolvedAirports =
-    airports && airports.length > 0 ? airports : defaultAirports;
+  if (!airports?.length) return null;
 
   return (
     <section className="py-20" style={{ background: "var(--color-sand)" }}>
       <div className="section-shell flex flex-col gap-12">
         <ScrollReveal>
           <SectionHeading
-            eyebrow={resolvedEyebrow}
-            title={resolvedTitle}
-            description={resolvedDescription}
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
           />
         </ScrollReveal>
 
@@ -98,7 +58,7 @@ export function AirportConnectivitySection({
           }}
           className="sm:grid-cols-3"
         >
-          {resolvedAirports.map((airport, i) => (
+          {airports.map((airport, i) => (
             <ScrollReveal key={airport.code || i} delay={i * 0.1}>
               <div
                 className="tile flex flex-col gap-5 h-full"
@@ -112,7 +72,7 @@ export function AirportConnectivitySection({
                     : undefined
                 }
               >
-                {airport.isNearest && (
+                {airport.isNearest && labelNearest && (
                   <div
                     style={{
                       alignSelf: "flex-start",
@@ -126,7 +86,7 @@ export function AirportConnectivitySection({
                       textTransform: "uppercase",
                     }}
                   >
-                    {labelNearest || "Nearest"}
+                    {labelNearest}
                   </div>
                 )}
 
@@ -192,30 +152,32 @@ export function AirportConnectivitySection({
 
                 {/* Stats */}
                 <div className="flex flex-col gap-2 mt-auto">
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                      paddingTop: "0.75rem",
-                      borderTop: "1px solid rgba(13,103,119,0.08)",
-                    }}
-                  >
-                    <Clock
-                      size={14}
-                      style={{ color: "var(--color-deep-teal)", flexShrink: 0 }}
-                      strokeWidth={1.5}
-                    />
-                    <span
+                  {labelFromChiliadou && (
+                    <div
                       style={{
-                        fontSize: "0.85rem",
-                        fontWeight: 600,
-                        color: "var(--color-ink)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        paddingTop: "0.75rem",
+                        borderTop: "1px solid rgba(13,103,119,0.08)",
                       }}
                     >
-                      {airport.travelTime} {labelFromChiliadou || "from Chiliadou"}
-                    </span>
-                  </div>
+                      <Clock
+                        size={14}
+                        style={{ color: "var(--color-deep-teal)", flexShrink: 0 }}
+                        strokeWidth={1.5}
+                      />
+                      <span
+                        style={{
+                          fontSize: "0.85rem",
+                          fontWeight: 600,
+                          color: "var(--color-ink)",
+                        }}
+                      >
+                        {airport.travelTime} {labelFromChiliadou}
+                      </span>
+                    </div>
+                  )}
 
                   <div
                     style={{
@@ -236,8 +198,10 @@ export function AirportConnectivitySection({
                       }}
                     >
                       {airport.destinations}
-                      {airport.destinations === 160 ? "+" : ""} {labelDestinations || "destinations"}
-                      {airport.countries ? ` · ${airport.countries} ${labelCountries || "countries"}` : ` ${labelWorldwide || "worldwide"}`}
+                      {airport.destinations === 160 ? "+" : ""}{labelDestinations ? ` ${labelDestinations}` : ""}
+                      {airport.countries
+                        ? labelCountries ? ` · ${airport.countries} ${labelCountries}` : ` · ${airport.countries}`
+                        : labelWorldwide ? ` ${labelWorldwide}` : ""}
                     </span>
                   </div>
                 </div>

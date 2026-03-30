@@ -8,9 +8,6 @@ import type { Locale } from "@/lib/i18n";
 import { useT } from "@/lib/ui-strings-context";
 import { captureUTM } from "@/lib/utm";
 
-/* ── Fallback villa names ────────────────────────────────── */
-const FALLBACK_VILLA_NAMES = ["Lola", "Mikka", "Tai", "Michal", "Yair", "Yehonatan"];
-
 /* ── Zod schemas ─────────────────────────────────────────── */
 const step1Schema = z.object({
   interest: z.string().min(1, "Please select an interest"),
@@ -113,10 +110,6 @@ const inputClass =
 const selectClass =
   "w-full rounded-[1.1rem] border border-[var(--color-deep-teal)]/10 bg-white px-4 py-4 outline-none transition focus:border-[var(--color-deep-teal)] focus:ring-1 focus:ring-[var(--color-deep-teal)]/20 appearance-none";
 
-/* ── Default budget / timeline options ───────────────────── */
-const DEFAULT_BUDGET_OPTIONS = ["Under €200K", "€200K – €400K", "€400K – €600K", "Over €600K"];
-const DEFAULT_TIMELINE_OPTIONS = ["Immediately", "Within 6 months", "Within 1 year", "Just exploring"];
-
 /* ── Main component ──────────────────────────────────────── */
 export function MultiStepForm({
   locale,
@@ -142,31 +135,33 @@ export function MultiStepForm({
   timelineOptions,
 }: MultiStepFormProps) {
   const dict = {
-    generalInquiry: labelGeneralInquiry || useT("formGeneralInquiry", "General Inquiry"),
-    successTitle: useT("formThankYou", "Thank you!"),
-    successMessage: labelSuccess || useT("formThankYouMessage", "We have received your enquiry and will be in touch shortly."),
-    stepInterest: labelStep1 || useT("formWhatInterested", "What are you interested in?"),
-    selectInterest: useT("formChooseVilla", "Choose a villa type or general inquiry"),
-    stepDetails: labelStep2 || useT("formYourDetails", "Your details"),
-    fullName: labelFullName || useT("formFullName", "Full Name"),
-    email: labelEmail || useT("formEmail", "Email"),
-    phone: labelPhone || useT("formPhone", "Phone"),
-    phonePlaceholder: useT("formPhonePlaceholder", "+30 XXX XXX XXXX"),
-    stepAdditional: labelStep3 || useT("formAdditionalInfo", "Additional information"),
-    budgetRange: labelBudgetRange || useT("formBudgetRange", "Budget Range"),
-    timeline: labelTimeline || useT("formTimeline", "Timeline"),
-    message: labelMessage || useT("formMessage", "Message"),
-    messagePlaceholder: useT("formMessagePlaceholder", "Tell us about your plans..."),
-    gdprConsent: labelGdpr || useT("formGdpr", "I agree to the processing of my personal data in accordance with the Privacy Policy."),
-    errorMessage: labelError || useT("formError", "Something went wrong. Please try again or contact us directly."),
-    back: labelBack || useT("formBack", "Back"),
-    next: labelNext || useT("formNext", "Next"),
-    submit: labelSubmit || useT("formSubmit", "Send Enquiry"),
-    sending: labelSending || useT("formSending", "Sending..."),
+    generalInquiry: labelGeneralInquiry ?? useT("formGeneralInquiry"),
+    successTitle: useT("formThankYou"),
+    successMessage: labelSuccess ?? useT("formThankYouMessage"),
+    stepInterest: labelStep1 ?? useT("formWhatInterested"),
+    selectInterest: useT("formChooseVilla"),
+    stepDetails: labelStep2 ?? useT("formYourDetails"),
+    fullName: labelFullName ?? useT("formFullName"),
+    email: labelEmail ?? useT("formEmail"),
+    phone: labelPhone ?? useT("formPhone"),
+    phonePlaceholder: useT("formPhonePlaceholder"),
+    stepAdditional: labelStep3 ?? useT("formAdditionalInfo"),
+    budgetRange: labelBudgetRange ?? useT("formBudgetRange"),
+    timeline: labelTimeline ?? useT("formTimeline"),
+    message: labelMessage ?? useT("formMessage"),
+    messagePlaceholder: useT("formMessagePlaceholder"),
+    gdprConsent: labelGdpr ?? useT("formGdpr"),
+    errorMessage: labelError ?? useT("formError"),
+    back: labelBack ?? useT("formBack"),
+    next: labelNext ?? useT("formNext"),
+    submit: labelSubmit ?? useT("formSubmit"),
+    sending: labelSending ?? useT("formSending"),
+    step: useT("formStep"),
   };
-  const resolvedBudgetOptions = budgetOptions?.length ? budgetOptions : DEFAULT_BUDGET_OPTIONS;
-  const resolvedTimelineOptions = timelineOptions?.length ? timelineOptions : DEFAULT_TIMELINE_OPTIONS;
-  const names = villaNames?.length ? villaNames : FALLBACK_VILLA_NAMES;
+
+  const resolvedBudgetOptions = budgetOptions ?? [];
+  const resolvedTimelineOptions = timelineOptions ?? [];
+  const names = villaNames ?? [];
 
   const [step, setStep] = useState(1);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -319,7 +314,7 @@ export function MultiStepForm({
         {/* ── Step 1: Interest ────────────────────────── */}
         {step === 1 && (
           <div className="animate-fade-in">
-            <p className="eyebrow text-[var(--color-deep-teal)] mb-2">{useT("formStep", "Step")} 1 / 3</p>
+            <p className="eyebrow text-[var(--color-deep-teal)] mb-2">{dict.step} 1 / 3</p>
             <h2 className="text-h2 text-[var(--color-night)] mb-6">{dict.stepInterest}</h2>
             <p className="text-body-muted text-sm mb-6">{dict.selectInterest}</p>
 
@@ -351,7 +346,7 @@ export function MultiStepForm({
         {step === 2 && (
           <div className="animate-fade-in grid gap-5">
             <div>
-              <p className="eyebrow text-[var(--color-deep-teal)] mb-2">{useT("formStep", "Step")} 2 / 3</p>
+              <p className="eyebrow text-[var(--color-deep-teal)] mb-2">{dict.step} 2 / 3</p>
               <h2 className="text-h2 text-[var(--color-night)] mb-6">{dict.stepDetails}</h2>
             </div>
 
@@ -397,59 +392,63 @@ export function MultiStepForm({
         {step === 3 && (
           <div className="animate-fade-in grid gap-5">
             <div>
-              <p className="eyebrow text-[var(--color-deep-teal)] mb-2">{useT("formStep", "Step")} 3 / 3</p>
+              <p className="eyebrow text-[var(--color-deep-teal)] mb-2">{dict.step} 3 / 3</p>
               <h2 className="text-h2 text-[var(--color-night)] mb-6">{dict.stepAdditional}</h2>
             </div>
 
-            <label className="grid gap-2">
-              <FieldLabel>{dict.budgetRange}</FieldLabel>
-              <div className="relative">
-                <select
-                  value={formData.budget}
-                  onChange={(e) => update("budget", e.target.value)}
-                  className={selectClass}
-                >
-                  <option value="">— Select —</option>
-                  {resolvedBudgetOptions.map((opt) => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
-                <svg
-                  className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-muted)]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </label>
+            {resolvedBudgetOptions.length > 0 && (
+              <label className="grid gap-2">
+                <FieldLabel>{dict.budgetRange}</FieldLabel>
+                <div className="relative">
+                  <select
+                    value={formData.budget}
+                    onChange={(e) => update("budget", e.target.value)}
+                    className={selectClass}
+                  >
+                    <option value="">— Select —</option>
+                    {resolvedBudgetOptions.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                  <svg
+                    className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-muted)]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </label>
+            )}
 
-            <label className="grid gap-2">
-              <FieldLabel>{dict.timeline}</FieldLabel>
-              <div className="relative">
-                <select
-                  value={formData.timeline}
-                  onChange={(e) => update("timeline", e.target.value)}
-                  className={selectClass}
-                >
-                  <option value="">— Select —</option>
-                  {resolvedTimelineOptions.map((opt) => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
-                <svg
-                  className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-muted)]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </label>
+            {resolvedTimelineOptions.length > 0 && (
+              <label className="grid gap-2">
+                <FieldLabel>{dict.timeline}</FieldLabel>
+                <div className="relative">
+                  <select
+                    value={formData.timeline}
+                    onChange={(e) => update("timeline", e.target.value)}
+                    className={selectClass}
+                  >
+                    <option value="">— Select —</option>
+                    {resolvedTimelineOptions.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                  <svg
+                    className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-muted)]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </label>
+            )}
 
             <label className="grid gap-2">
               <FieldLabel>{dict.message}</FieldLabel>

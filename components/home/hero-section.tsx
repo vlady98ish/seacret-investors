@@ -11,18 +11,22 @@ type HeroSectionProps = {
 };
 
 export function HeroSection({ data, locale, ctaExplore, ctaBrochure }: HeroSectionProps) {
-  const title = getLocalizedValue(data?.heroTagline, locale) ?? "Where the sea meets serenity";
-  const subtitle = getLocalizedValue(data?.heroSubtitle, locale) ?? "Exclusive coastal residences on the Gulf of Corinth, Greece.";
-  const imageUrl = getSanityImageUrl(data?.heroImage, 1920) ?? "/assets/pdf/page-02-hero.jpg";
+  const title = getLocalizedValue(data?.heroTagline, locale);
+  const subtitle = getLocalizedValue(data?.heroSubtitle, locale);
+  const imageUrl = getSanityImageUrl(data?.heroImage, 1920);
 
   return (
     <PageHero backgroundImage={imageUrl} title={title} subtitle={subtitle}>
-      <a href={`/${locale}/residences`} className="btn btn-primary">
-        {ctaExplore || "Explore Residences"}
-      </a>
-      <a href={`/${locale}/contact`} className="btn btn-secondary">
-        {ctaBrochure || "Request a Brochure"}
-      </a>
+      {ctaExplore && (
+        <a href={`/${locale}/residences`} className="btn btn-primary">
+          {ctaExplore}
+        </a>
+      )}
+      {ctaBrochure && (
+        <a href={`/${locale}/contact`} className="btn btn-secondary">
+          {ctaBrochure}
+        </a>
+      )}
     </PageHero>
   );
 }
