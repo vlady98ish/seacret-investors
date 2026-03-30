@@ -1,18 +1,21 @@
 import { defineField, defineType } from "sanity";
+import { CaseIcon } from "@sanity/icons";
 
 export const developerType = defineType({
   name: "developer",
   title: "Developer",
   type: "document",
+  icon: CaseIcon,
   fields: [
     defineField({ name: "companyName", title: "Company Name", type: "string" }),
-    defineField({ name: "description", title: "Description", type: "localeText" }),
+    defineField({ name: "description", title: "Description", type: "localeText", description: "About the development company." }),
     defineField({ name: "logo", title: "Logo", type: "image" }),
-    defineField({ name: "credentials", title: "Credentials", type: "localeText" }),
+    defineField({ name: "credentials", title: "Credentials", type: "localeText", description: "Licenses, certifications, or notable achievements." }),
     defineField({
       name: "team",
       title: "Team Members",
       type: "array",
+      description: "Key team members shown on the website.",
       of: [{
         type: "object",
         fields: [
