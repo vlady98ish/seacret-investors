@@ -1,4 +1,3 @@
-import { getDictionary } from "@/lib/dictionaries";
 import { getLocalizedValue, type Locale } from "@/lib/i18n";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import type { HomePage } from "@/lib/sanity/types";
@@ -10,18 +9,17 @@ type HeroSectionProps = {
 };
 
 export function HeroSection({ data, locale }: HeroSectionProps) {
-  const dict = getDictionary(locale);
-  const title = getLocalizedValue(data?.heroTagline, locale) ?? dict.hero.tagline;
-  const subtitle = getLocalizedValue(data?.heroSubtitle, locale) ?? dict.hero.subtitle;
+  const title = getLocalizedValue(data?.heroTagline, locale) ?? "Where the sea meets serenity";
+  const subtitle = getLocalizedValue(data?.heroSubtitle, locale) ?? "Exclusive coastal residences on the Gulf of Corinth, Greece.";
   const imageUrl = getSanityImageUrl(data?.heroImage, 1920) ?? "/assets/pdf/page-02-hero.jpg";
 
   return (
     <PageHero backgroundImage={imageUrl} title={title} subtitle={subtitle}>
       <a href={`/${locale}/residences`} className="btn btn-primary">
-        {dict.hero.cta}
+        Explore Residences
       </a>
       <a href={`/${locale}/contact`} className="btn btn-secondary">
-        {dict.hero.ctaSecondary}
+        Request a Brochure
       </a>
     </PageHero>
   );

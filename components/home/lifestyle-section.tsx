@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-import { getDictionary } from "@/lib/dictionaries";
 import { getLocalizedValue, type Locale } from "@/lib/i18n";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import type { HomePage } from "@/lib/sanity/types";
@@ -32,7 +31,6 @@ const fallbackMoments = [
 ];
 
 export function LifestyleSection({ data, locale, title }: LifestyleSectionProps) {
-  const dict = getDictionary(locale);
   const staticImages: Record<string, string> = {
     Morning: "/assets/pdf/lifestyle-morning.jpg",
     Day: "/assets/pdf/lifestyle-day.jpg",
@@ -52,7 +50,7 @@ export function LifestyleSection({ data, locale, title }: LifestyleSectionProps)
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
-            eyebrow={dict.sections.lifestyle}
+            eyebrow="Lifestyle"
             title={title || "A day at Sea'cret"}
             align="center"
           />

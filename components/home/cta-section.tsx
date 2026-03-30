@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { getDictionary } from "@/lib/dictionaries";
 import { getLocalizedValue, type Locale } from "@/lib/i18n";
 import type { HomePage } from "@/lib/sanity/types";
 import { ScrollReveal } from "@/components/scroll-reveal";
@@ -11,9 +10,8 @@ type CtaSectionProps = {
 };
 
 export function CtaSection({ data, locale }: CtaSectionProps) {
-  const dict = getDictionary(locale);
-  const title = getLocalizedValue(data?.ctaTitle, locale) ?? dict.cta.title;
-  const subtitle = getLocalizedValue(data?.ctaSubtitle, locale) ?? dict.cta.subtitle;
+  const title = getLocalizedValue(data?.ctaTitle, locale) ?? "Ready to invest in your future?";
+  const subtitle = getLocalizedValue(data?.ctaSubtitle, locale) ?? "Join a select group of investors in one of Greece's most promising coastal locations.";
 
   return (
     <section className="bg-[var(--color-night)] py-24 sm:py-32">
@@ -25,7 +23,7 @@ export function CtaSection({ data, locale }: CtaSectionProps) {
           </p>
           <div className="mt-10">
             <Link href={`/${locale}/contact`} className="btn btn-primary">
-              {dict.cta.button}
+              Request Information
             </Link>
           </div>
         </ScrollReveal>

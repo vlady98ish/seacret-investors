@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-import { getDictionary } from "@/lib/dictionaries";
 import { getLocalizedValue, type Locale } from "@/lib/i18n";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import type { HomePage } from "@/lib/sanity/types";
@@ -18,8 +17,7 @@ const FALLBACK_COPY =
   "In a world of crowded destinations and standard offerings, we create something different. Sea'cret Residences Chiliadou — modern coastal living in Greece's hidden gem.";
 
 export function ConceptSection({ data, locale, heading, copy: copyProp }: ConceptSectionProps) {
-  const dict = getDictionary(locale);
-  const eyebrow = getLocalizedValue(data?.conceptEyebrow, locale) ?? dict.sections.concept;
+  const eyebrow = getLocalizedValue(data?.conceptEyebrow, locale) ?? "The Concept";
   const copy = copyProp || (getLocalizedValue(data?.conceptCopy, locale) ?? FALLBACK_COPY);
   const imageUrl = getSanityImageUrl(data?.conceptImage, 800) ?? "/assets/pdf/page-04-location.jpg";
 

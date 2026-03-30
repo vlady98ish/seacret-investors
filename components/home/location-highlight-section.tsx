@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Clock, MapPin, Shield, Sun } from "lucide-react";
 
-import { getDictionary } from "@/lib/dictionaries";
 import { type Locale } from "@/lib/i18n";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { SectionHeading } from "@/components/sections/section-heading";
@@ -40,7 +39,6 @@ const fallbackHighlights: HighlightItem[] = [
 ];
 
 export function LocationHighlightSection({ locale, title, description, highlights }: LocationHighlightSectionProps) {
-  const dict = getDictionary(locale);
   const resolvedHighlights = highlights && highlights.length > 0 ? highlights : fallbackHighlights;
 
   return (
@@ -48,7 +46,7 @@ export function LocationHighlightSection({ locale, title, description, highlight
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
-            eyebrow={dict.sections.location}
+            eyebrow="Location"
             title={title || "Greece's best-kept secret"}
             description={description || "Nestled on the northern shore of the Gulf of Corinth, Chiliadou offers untouched beauty just hours from Athens."}
             align="center"
@@ -74,7 +72,7 @@ export function LocationHighlightSection({ locale, title, description, highlight
 
         <ScrollReveal className="mt-12 text-center">
           <Link href={`/${locale}/location`} className="btn btn-outline">
-            {dict.cta.exploreLocation}
+            Explore the Location
           </Link>
         </ScrollReveal>
       </div>

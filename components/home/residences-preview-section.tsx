@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { getDictionary } from "@/lib/dictionaries";
 import { type Locale } from "@/lib/i18n";
 import type { FeaturedVilla } from "@/lib/sanity/types";
 import { ScrollReveal } from "@/components/scroll-reveal";
@@ -45,7 +44,6 @@ const placeholderVillas: Array<{
 ];
 
 export function ResidencesPreviewSection({ villas, locale, title, description }: ResidencesPreviewSectionProps) {
-  const dict = getDictionary(locale);
   const hasVillas = villas && villas.length > 0;
 
   return (
@@ -53,7 +51,7 @@ export function ResidencesPreviewSection({ villas, locale, title, description }:
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
-            eyebrow={dict.sections.residences}
+            eyebrow="Residences"
             title={title || "Designed for the discerning few"}
             description={description || "Each residence is a unique expression of modern Mediterranean architecture, thoughtfully positioned for maximum privacy and views."}
             align="center"
@@ -80,7 +78,7 @@ export function ResidencesPreviewSection({ villas, locale, title, description }:
 
         <ScrollReveal className="mt-12 text-center">
           <Link href={`/${locale}/residences`} className="btn btn-outline">
-            {dict.cta.viewAll} &rarr;
+            View All Residences &rarr;
           </Link>
         </ScrollReveal>
       </div>

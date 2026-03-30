@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { getDictionary } from "@/lib/dictionaries";
 import { type Locale } from "@/lib/i18n";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import type { HomePage } from "@/lib/sanity/types";
@@ -21,7 +20,6 @@ type MasterplanTeaserSectionProps = {
 };
 
 export function MasterplanTeaserSection({ data, stats, locale, title, description, statTotalLabel, statPlotsLabel, statAvailableLabel }: MasterplanTeaserSectionProps) {
-  const dict = getDictionary(locale);
   const imageUrl = getSanityImageUrl(data?.masterplanImage, 1200) ?? "/assets/pdf/masterplan-aerial.jpg";
 
   const totalUnits = stats?.total || 39;
@@ -33,7 +31,7 @@ export function MasterplanTeaserSection({ data, stats, locale, title, descriptio
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
-            eyebrow={dict.sections.masterplan}
+            eyebrow="Masterplan"
             title={title || "The master plan"}
             description={description || "Six private plots along the coastline, each carefully positioned for privacy, views, and natural ventilation."}
             align="center"
@@ -64,7 +62,7 @@ export function MasterplanTeaserSection({ data, stats, locale, title, descriptio
 
         <ScrollReveal className="mt-12 text-center" delay={0.25}>
           <Link href={`/${locale}/masterplan`} className="btn btn-outline">
-            {dict.cta.exploreMasterplan} &rarr;
+            Explore the Masterplan &rarr;
           </Link>
         </ScrollReveal>
       </div>

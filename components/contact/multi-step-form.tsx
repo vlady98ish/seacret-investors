@@ -4,7 +4,6 @@ import { useState } from "react";
 import { z } from "zod";
 
 import { cn } from "@/lib/cn";
-import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import { captureUTM } from "@/lib/utm";
 
@@ -141,28 +140,27 @@ export function MultiStepForm({
   budgetOptions,
   timelineOptions,
 }: MultiStepFormProps) {
-  const raw = getDictionary(locale);
   const dict = {
-    generalInquiry: labelGeneralInquiry || raw.contact.generalInquiry,
+    generalInquiry: labelGeneralInquiry || "General Inquiry",
     successTitle: "Thank you!",
-    successMessage: labelSuccess || raw.form.success,
-    stepInterest: labelStep1 || raw.contact.step1,
+    successMessage: labelSuccess || "We have received your enquiry and will be in touch shortly.",
+    stepInterest: labelStep1 || "What are you interested in?",
     selectInterest: "Choose a villa type or general inquiry",
-    stepDetails: labelStep2 || raw.contact.step2,
-    fullName: labelFullName || raw.form.fullName,
-    email: labelEmail || raw.form.email,
-    phone: labelPhone || raw.form.phone,
+    stepDetails: labelStep2 || "Your details",
+    fullName: labelFullName || "Full Name",
+    email: labelEmail || "Email",
+    phone: labelPhone || "Phone",
     phonePlaceholder: "+30 XXX XXX XXXX",
-    stepAdditional: labelStep3 || raw.contact.step3,
-    budgetRange: labelBudgetRange || raw.contact.budgetRange,
-    timeline: labelTimeline || raw.contact.timeline,
-    message: labelMessage || raw.form.message,
+    stepAdditional: labelStep3 || "Additional information",
+    budgetRange: labelBudgetRange || "Budget Range",
+    timeline: labelTimeline || "Timeline",
+    message: labelMessage || "Message",
     messagePlaceholder: "Tell us about your plans...",
-    gdprConsent: labelGdpr || raw.form.gdpr,
-    errorMessage: labelError || raw.form.error,
+    gdprConsent: labelGdpr || "I agree to the processing of my personal data in accordance with the Privacy Policy.",
+    errorMessage: labelError || "Something went wrong. Please try again or contact us directly.",
     back: labelBack || "Back",
     next: labelNext || "Next",
-    submit: labelSubmit || raw.form.submit,
+    submit: labelSubmit || "Send Enquiry",
     sending: labelSending || "Sending...",
   };
   const resolvedBudgetOptions = budgetOptions?.length ? budgetOptions : DEFAULT_BUDGET_OPTIONS;
