@@ -19,9 +19,13 @@ type VillaCardProps = {
   locale: Locale;
   units?: Array<{ totalArea: number; status: UnitStatus }>;
   staticImageSrc?: string;
+  labelSoldOut?: string;
+  labelBed?: string;
+  labelContactForPricing?: string;
+  labelAvailable?: string;
 };
 
-export function VillaCard({ villa, locale, units, staticImageSrc }: VillaCardProps) {
+export function VillaCard({ villa, locale, units, staticImageSrc, labelSoldOut, labelBed, labelContactForPricing, labelAvailable }: VillaCardProps) {
   const imageUrl = villa.heroImage ? getSanityImageUrl(villa.heroImage, 600) : null;
   const autoStaticSrc = getVillaImages(villa.slug.current).hero;
   const imageSrc = imageUrl ?? staticImageSrc ?? autoStaticSrc;
@@ -55,7 +59,7 @@ export function VillaCard({ villa, locale, units, staticImageSrc }: VillaCardPro
         )}
         {allSold && (
           <div className="absolute inset-x-0 top-3 flex justify-center">
-            <span className="badge badge-sold">Sold Out</span>
+            <span className="badge badge-sold">{labelSoldOut || "Sold Out"}</span>
           </div>
         )}
       </div>
@@ -65,7 +69,7 @@ export function VillaCard({ villa, locale, units, staticImageSrc }: VillaCardPro
         {label && <p className="text-body-muted mt-1 text-sm">{label}</p>}
 
         <div className="mt-3 flex items-center gap-4 text-sm text-[var(--color-muted)]">
-          {villa.typicalBedrooms && <span>{villa.typicalBedrooms} bed</span>}
+          {villa.typicalBedrooms && <span>{villa.typicalBedrooms} {labelBed || "bed"}</span>}
           {villa.areaRange && <span>{villa.areaRange} m²</span>}
         </div>
 
@@ -75,15 +79,15 @@ export function VillaCard({ villa, locale, units, staticImageSrc }: VillaCardPro
           </p>
         )}
         {allSold && (
-          <p className="mt-2 text-sm text-[var(--color-muted)]">Sold Out — similar options available</p>
+          <p className="mt-2 text-sm text-[var(--color-muted)]">{labelSoldOut || "Sold Out"} — similar options available</p>
         )}
         {!units && (
-          <p className="mt-2 text-sm text-[var(--color-muted)]">Contact for pricing</p>
+          <p className="mt-2 text-sm text-[var(--color-muted)]">{labelContactForPricing || "Contact for pricing"}</p>
         )}
 
         {availableUnits.length > 0 && (
           <p className="mt-1 text-xs text-[var(--color-muted)]">
-            {availableUnits.length} unit{availableUnits.length !== 1 ? "s" : ""} available
+            {availableUnits.length} {availableUnits.length !== 1 ? (labelAvailable || "available") : (labelAvailable || "available")}
           </p>
         )}
       </div>

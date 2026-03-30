@@ -7,9 +7,18 @@ import { StatusBadge } from "@/components/sections/status-badge";
 type UnitsTableProps = {
   units: UnitWithRefs[];
   locale: Locale;
+  headerUnit?: string;
+  headerPlot?: string;
+  headerArea?: string;
+  headerBeds?: string;
+  headerPool?: string;
+  headerStatus?: string;
+  labelStatusAvailable?: string;
+  labelStatusReserved?: string;
+  labelStatusSold?: string;
 };
 
-export function UnitsTable({ units }: UnitsTableProps) {
+export function UnitsTable({ units, headerUnit, headerPlot, headerArea, headerBeds, headerPool, headerStatus, labelStatusAvailable, labelStatusReserved, labelStatusSold }: UnitsTableProps) {
   if (units.length === 0) {
     return (
       <div className="tile py-10 text-center text-[var(--color-muted)]">
@@ -28,22 +37,22 @@ export function UnitsTable({ units }: UnitsTableProps) {
           <thead>
             <tr className="border-b border-[var(--color-deep-teal)]/10 text-left">
               <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
-                Unit #
+                {headerUnit || "Unit #"}
               </th>
               <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
-                Plot
+                {headerPlot || "Plot"}
               </th>
               <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
-                Area m²
+                {headerArea || "Area m²"}
               </th>
               <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
-                Beds
+                {headerBeds || "Beds"}
               </th>
               <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
-                Pool
+                {headerPool || "Pool"}
               </th>
               <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
-                Status
+                {headerStatus || "Status"}
               </th>
             </tr>
           </thead>
@@ -72,7 +81,7 @@ export function UnitsTable({ units }: UnitsTableProps) {
                   )}
                 </td>
                 <td className="px-5 py-4">
-                  <StatusBadge status={unit.status} />
+                  <StatusBadge status={unit.status} labelAvailable={labelStatusAvailable} labelReserved={labelStatusReserved} labelSold={labelStatusSold} />
                 </td>
               </tr>
             ))}
@@ -94,7 +103,7 @@ export function UnitsTable({ units }: UnitsTableProps) {
                 <p className="text-xs text-[var(--color-muted)]">{unit.plotName}</p>
               )}
             </div>
-            <StatusBadge status={unit.status} />
+            <StatusBadge status={unit.status} labelAvailable={labelStatusAvailable} labelReserved={labelStatusReserved} labelSold={labelStatusSold} />
           </div>
         ))}
       </div>

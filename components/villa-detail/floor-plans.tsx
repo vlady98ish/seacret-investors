@@ -8,17 +8,18 @@ import { cn } from "@/lib/cn";
 type FloorPlansProps = {
   images: string[];
   labels?: string[];
+  comingSoonText?: string;
 };
 
 const DEFAULT_LABELS = ["Ground Floor", "Upper Floor", "Attic"];
 
-export function FloorPlans({ images, labels }: FloorPlansProps) {
+export function FloorPlans({ images, labels, comingSoonText }: FloorPlansProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   if (images.length === 0) {
     return (
       <div className="flex items-center justify-center rounded-xl border border-[var(--color-deep-teal)]/10 bg-white/60 py-16 text-[var(--color-muted)]">
-        <p>Floor plans coming soon</p>
+        <p>{comingSoonText || "Floor plans coming soon"}</p>
       </div>
     );
   }

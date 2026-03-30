@@ -8,15 +8,16 @@ import { useState } from "react";
 type ImageGalleryProps = {
   images: string[];
   villaName: string;
+  emptyText?: string;
 };
 
-export function ImageGallery({ images, villaName }: ImageGalleryProps) {
+export function ImageGallery({ images, villaName, emptyText }: ImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   if (images.length === 0) {
     return (
       <div className="flex items-center justify-center rounded-xl bg-[var(--color-stone)] py-20 text-[var(--color-muted)]">
-        <p>Gallery images coming soon</p>
+        <p>{emptyText || "Gallery images coming soon"}</p>
       </div>
     );
   }

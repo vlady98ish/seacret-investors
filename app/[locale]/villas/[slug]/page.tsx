@@ -6,8 +6,8 @@ import { buildPageMetadata } from "@/lib/metadata";
 import { formatPriceFrom } from "@/lib/pricing";
 import { sanityClient } from "@/lib/sanity/client";
 import { getSanityImageUrl } from "@/lib/sanity/image";
-import { allVillasQuery, villaBySlugQuery } from "@/lib/sanity/queries";
-import type { UnitWithRefs, Villa } from "@/lib/sanity/types";
+import { allVillasQuery, uiStringsQuery, villaBySlugQuery } from "@/lib/sanity/queries";
+import type { UiStrings, UnitWithRefs, Villa } from "@/lib/sanity/types";
 import { fallbackVillas, getFallbackVillaWithUnits } from "@/lib/fallback-data";
 import { getVillaImages } from "@/lib/villa-images";
 
@@ -36,17 +36,21 @@ type VillaWithUnits = Villa & { units: UnitWithRefs[] };
 async function fetchData(slug: string): Promise<{
   villa: VillaWithUnits | null;
   allVillas: Villa[];
+  uiStrings: UiStrings | null;
 }> {
   let villa: VillaWithUnits | null = null;
   let allVillas: Villa[] = [];
+  let uiStrings: UiStrings | null = null;
 
   try {
-    const [villaResult, villasResult] = await Promise.all([
+    const [villaResult, villasResult, uiStringsResult] = await Promise.all([
       sanityClient.fetch<VillaWithUnits | null>(villaBySlugQuery, { slug }),
       sanityClient.fetch<Villa[]>(allVillasQuery),
+      sanityClient.fetch<UiStrings>(uiStringsQuery),
     ]);
     if (villaResult) villa = villaResult;
     if (villasResult?.length) allVillas = villasResult;
+    if (uiStringsResult) uiStrings = uiStringsResult;
   } catch {
     // CMS unavailable — use fallback data
   }
@@ -54,7 +58,7 @@ async function fetchData(slug: string): Promise<{
   if (!villa) villa = getFallbackVillaWithUnits(slug);
   if (!allVillas.length) allVillas = fallbackVillas;
 
-  return { villa, allVillas };
+  return { villa, allVillas, uiStrings };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -87,7 +91,12 @@ export default async function VillaDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!isValidLocale(locale)) notFound();
 
-  const { villa, allVillas } = await fetchData(slug);
+  const { villa, allVillas, uiStrings } = await fetchData(slug);
+
+  const typedLocale = locale as Locale;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const t = (field: any): string | undefined =>
+    field ? (getLocalizedValue(field, typedLocale) as string | undefined) : undefined;
 
   // Fallback: if slug doesn't match any known villa and CMS has no data
   const isKnownSlug = villaSlugs.includes(slug);
@@ -122,11 +131,56 @@ export default async function VillaDetailPage({ params }: Props) {
 
   const villaName = villa?.name ?? slug.charAt(0).toUpperCase() + slug.slice(1);
   const villaLabel = villa?.label
-    ? getLocalizedValue(villa.label, locale as Locale)
+    ? getLocalizedValue(villa.label, typedLocale)
     : undefined;
   const villaSummary = villa?.summary
-    ? getLocalizedValue(villa.summary, locale as Locale)
+    ? getLocalizedValue(villa.summary, typedLocale)
     : undefined;
+
+  // Resolve CMS labels — fall back to English in JSX with ||
+  const labelGallery = t(uiStrings?.miscGallery) || "Gallery";
+  const labelFloorPlans = t(uiStrings?.miscFloorPlans) || "Floor Plans";
+  const labelPricing = t(uiStrings?.miscPricing) || "Pricing";
+  const labelAvailableUnits = t(uiStrings?.miscAvailableUnits) || "Available Units";
+  const label3dTour = t(uiStrings?.misc3dTour) || "3D Virtual Tour";
+  const labelContactForPricing = t(uiStrings?.pricingContactFor) || "Contact for pricing";
+  const labelPricingDesc = t(uiStrings?.miscContactPromise) || "Pre-sale pricing for qualified buyers. Contact us for a personalised proposal.";
+
+  // Specs labels
+  const labelVillaSpecs = t(uiStrings?.miscVillaSpecs) || "Villa Specifications";
+  const labelDetailsComing = t(uiStrings?.miscDetailsComing) || "Details coming soon";
+  const labelBedrooms = t(uiStrings?.specBedrooms) || "Bedrooms";
+  const labelBathrooms = t(uiStrings?.specBathrooms) || "Bathrooms";
+  const labelTotalArea = t(uiStrings?.specTotalArea) || "Total Area";
+  const labelOutdoorArea = t(uiStrings?.specOutdoorArea) || "Outdoor Area";
+  const labelPool = t(uiStrings?.specPool) || "Swimming Pool";
+  const labelParking = t(uiStrings?.specParking) || "Parking";
+  const labelYes = t(uiStrings?.specYes) || "Yes";
+  const labelNo = t(uiStrings?.specNo) || "No";
+
+  // Units table labels
+  const labelUnitNumber = t(uiStrings?.tableUnitNumber) || "Unit #";
+  const labelPlot = t(uiStrings?.tablePlot) || "Plot";
+  const labelAreaM2 = t(uiStrings?.tableAreaM2) || "Area m²";
+  const labelBeds = t(uiStrings?.tableBeds) || "Beds";
+  const labelPoolHeader = t(uiStrings?.tablePool) || "Pool";
+  const labelStatus = t(uiStrings?.tableStatus) || "Status";
+  const labelStatusAvailable = t(uiStrings?.statusAvailable) || "Available";
+  const labelStatusReserved = t(uiStrings?.statusReserved) || "Reserved";
+  const labelStatusSold = t(uiStrings?.statusSold) || "Sold";
+
+  // Floor plans labels
+  const labelGroundFloor = t(uiStrings?.miscGroundFloor) || "Ground Floor";
+  const labelUpperFloor = t(uiStrings?.miscUpperFloor) || "Upper Floor";
+  const labelAttic = t(uiStrings?.miscAttic) || "Attic";
+  const labelComingSoon = t(uiStrings?.miscComingSoon) || "Coming soon";
+
+  // Related villas labels
+  const labelExploreMore = t(uiStrings?.miscExploreMore) || "EXPLORE MORE";
+  const labelYouMightLike = t(uiStrings?.miscYouMightLike) || "You Might Also Like";
+  const labelYouMightLikeDesc = t(uiStrings?.miscYouMightLikeDesc) || "Discover our other exclusive villa types at Sea'cret Residences.";
+  const labelSoldOut = t(uiStrings?.statusSoldOut) || "Sold Out";
+  const labelBed = t(uiStrings?.miscBed) || "bed";
 
   return (
     <>
@@ -162,7 +216,7 @@ export default async function VillaDetailPage({ params }: Props) {
             rel="noopener noreferrer"
             className="btn btn-secondary"
           >
-            3D Virtual Tour
+            {label3dTour}
           </a>
         )}
       </PageHero>
@@ -170,16 +224,30 @@ export default async function VillaDetailPage({ params }: Props) {
       {/* Specs */}
       <section className="section-shell py-16">
         <ScrollReveal>
-          <SpecsPanel villa={villa ?? null} units={units} locale={locale as Locale} />
+          <SpecsPanel
+            villa={villa ?? null}
+            units={units}
+            locale={typedLocale}
+            labelEyebrow={labelVillaSpecs}
+            labelBedrooms={labelBedrooms}
+            labelBathrooms={labelBathrooms}
+            labelTotalArea={labelTotalArea}
+            labelOutdoorArea={labelOutdoorArea}
+            labelPool={labelPool}
+            labelParking={labelParking}
+            labelYes={labelYes}
+            labelNo={labelNo}
+            labelDetailsComing={labelDetailsComing}
+          />
         </ScrollReveal>
       </section>
 
       {/* Gallery */}
       {(galleryImages.length > 0 || !villa) && (
         <section className="section-shell pb-16">
-          <p className="eyebrow mb-6">Gallery</p>
+          <p className="eyebrow mb-6">{labelGallery}</p>
           <ScrollReveal>
-            <ImageGallery images={galleryImages} villaName={villaName} />
+            <ImageGallery images={galleryImages} villaName={villaName} emptyText={labelComingSoon} />
           </ScrollReveal>
         </section>
       )}
@@ -188,9 +256,13 @@ export default async function VillaDetailPage({ params }: Props) {
       {(floorPlanImages.length > 0 || !villa) && (
         <section className="bg-[var(--color-cream)] py-16">
           <div className="section-shell">
-            <p className="eyebrow mb-6">Floor Plans</p>
+            <p className="eyebrow mb-6">{labelFloorPlans}</p>
             <ScrollReveal>
-              <FloorPlans images={floorPlanImages} />
+              <FloorPlans
+                images={floorPlanImages}
+                labels={[labelGroundFloor, labelUpperFloor, labelAttic]}
+                comingSoonText={labelComingSoon}
+              />
             </ScrollReveal>
           </div>
         </section>
@@ -201,9 +273,9 @@ export default async function VillaDetailPage({ params }: Props) {
         <div className="section-shell">
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="eyebrow text-[var(--color-gold-sun)]">Pricing</p>
+              <p className="eyebrow text-[var(--color-gold-sun)]">{labelPricing}</p>
               <p className="mt-3 text-white/70 max-w-md">
-                Pre-sale pricing for qualified buyers. Contact us for a personalised proposal.
+                {labelPricingDesc}
               </p>
             </div>
             <div className="shrink-0 text-right">
@@ -212,7 +284,7 @@ export default async function VillaDetailPage({ params }: Props) {
                   {formatPriceFrom(minArea)}
                 </p>
               ) : (
-                <p className="text-h2 text-white/60">Contact for pricing</p>
+                <p className="text-h2 text-white/60">{labelContactForPricing}</p>
               )}
             </div>
           </div>
@@ -221,9 +293,21 @@ export default async function VillaDetailPage({ params }: Props) {
 
       {/* Units Table */}
       <section className="section-shell py-16">
-        <p className="eyebrow mb-6">Available Units</p>
+        <p className="eyebrow mb-6">{labelAvailableUnits}</p>
         <ScrollReveal>
-          <UnitsTable units={units} locale={locale as Locale} />
+          <UnitsTable
+            units={units}
+            locale={typedLocale}
+            headerUnit={labelUnitNumber}
+            headerPlot={labelPlot}
+            headerArea={labelAreaM2}
+            headerBeds={labelBeds}
+            headerPool={labelPoolHeader}
+            headerStatus={labelStatus}
+            labelStatusAvailable={labelStatusAvailable}
+            labelStatusReserved={labelStatusReserved}
+            labelStatusSold={labelStatusSold}
+          />
         </ScrollReveal>
       </section>
 
@@ -232,12 +316,19 @@ export default async function VillaDetailPage({ params }: Props) {
         <RelatedVillas
           allVillas={allVillas}
           currentSlug={slug}
-          locale={locale as Locale}
+          locale={typedLocale}
+          labelEyebrow={labelExploreMore}
+          labelTitle={labelYouMightLike}
+          labelDescription={labelYouMightLikeDesc}
+          labelSoldOut={labelSoldOut}
+          labelBed={labelBed}
+          labelContactForPricing={labelContactForPricing}
+          labelAvailable={labelStatusAvailable}
         />
       </div>
 
       {/* Contact */}
-      <InlineContactSection locale={locale as Locale} preferredOption={villaName} />
+      <InlineContactSection locale={typedLocale} preferredOption={villaName} />
     </>
   );
 }

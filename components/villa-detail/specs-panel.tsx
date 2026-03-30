@@ -7,6 +7,16 @@ type SpecsPanelProps = {
   villa: Villa | null;
   units: UnitWithRefs[];
   locale: Locale;
+  labelEyebrow?: string;
+  labelBedrooms?: string;
+  labelBathrooms?: string;
+  labelTotalArea?: string;
+  labelOutdoorArea?: string;
+  labelPool?: string;
+  labelParking?: string;
+  labelYes?: string;
+  labelNo?: string;
+  labelDetailsComing?: string;
 };
 
 type SpecItem = {
@@ -15,11 +25,11 @@ type SpecItem = {
   value: string | number;
 };
 
-export function SpecsPanel({ villa, units }: SpecsPanelProps) {
+export function SpecsPanel({ villa, units, labelEyebrow, labelBedrooms, labelBathrooms, labelTotalArea, labelOutdoorArea, labelPool, labelParking, labelYes, labelNo, labelDetailsComing }: SpecsPanelProps) {
   if (!villa) {
     return (
       <div className="tile py-10 text-center text-[var(--color-muted)]">
-        Details coming soon
+        {labelDetailsComing || "Details coming soon"}
       </div>
     );
   }
@@ -50,42 +60,45 @@ export function SpecsPanel({ villa, units }: SpecsPanelProps) {
   const hasPool = units.some((u) => u.hasPool);
   const hasParking = units.some((u) => u.hasParking);
 
+  const yesLabel = labelYes || "Yes";
+  const noLabel = labelNo || "No";
+
   const specs: SpecItem[] = [
     {
       icon: <BedDouble className="h-5 w-5" />,
-      label: "Bedrooms",
+      label: labelBedrooms || "Bedrooms",
       value: villa.typicalBedrooms ?? "—",
     },
     {
       icon: <Bath className="h-5 w-5" />,
-      label: "Bathrooms",
+      label: labelBathrooms || "Bathrooms",
       value: villa.typicalBathrooms ?? "—",
     },
     {
       icon: <Maximize className="h-5 w-5" />,
-      label: "Total Area",
+      label: labelTotalArea || "Total Area",
       value: areaDisplay,
     },
     {
       icon: <Trees className="h-5 w-5" />,
-      label: "Outdoor Area",
+      label: labelOutdoorArea || "Outdoor Area",
       value: outdoorDisplay,
     },
     {
       icon: <Waves className="h-5 w-5" />,
-      label: "Swimming Pool",
-      value: hasPool ? "Yes" : "No",
+      label: labelPool || "Swimming Pool",
+      value: hasPool ? yesLabel : noLabel,
     },
     {
       icon: <Car className="h-5 w-5" />,
-      label: "Parking",
-      value: hasParking ? "Yes" : "No",
+      label: labelParking || "Parking",
+      value: hasParking ? yesLabel : noLabel,
     },
   ];
 
   return (
     <div className="tile">
-      <p className="eyebrow mb-6">Villa Specifications</p>
+      <p className="eyebrow mb-6">{labelEyebrow || "Villa Specifications"}</p>
       <dl className="grid grid-cols-2 gap-6 sm:grid-cols-3">
         {specs.map((spec) => (
           <div key={spec.label} className="flex items-start gap-3">
