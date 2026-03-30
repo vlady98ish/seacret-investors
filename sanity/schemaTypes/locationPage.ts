@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { PinIcon } from "@sanity/icons";
+import { requireAllTranslations } from "../lib/validation";
 
 export const locationPageType = defineType({
   name: "locationPage",
@@ -18,7 +19,7 @@ export const locationPageType = defineType({
   fields: [
     // Hero
     defineField({ name: "heroImage", title: "Hero Image", type: "image", options: { hotspot: true }, group: "hero", validation: (r) => r.required().error("Please add a hero image for the location page.") }),
-    defineField({ name: "heroTitle", title: "Hero Title", type: "localeString", group: "hero" }),
+    defineField({ name: "heroTitle", title: "Hero Title", type: "localeString", group: "hero", validation: requireAllTranslations }),
 
     // Why Chiliadou
     defineField({ name: "whySection", title: "Why Chiliadou Copy", type: "localeText", group: "why", description: "Main paragraph explaining why Chiliadou is special." }),
@@ -126,7 +127,7 @@ export const locationPageType = defineType({
     defineField({ name: "experiencesDescription", title: "Experiences Description", type: "localeText", group: "experiences" }),
 
     // SEO
-    defineField({ name: "seoTitle", title: "SEO Title", type: "localeString", group: "seo", description: "Title shown in browser tabs and search results." }),
-    defineField({ name: "seoDescription", title: "SEO Description", type: "localeText", group: "seo", description: "Short description for search engines (150-160 characters recommended)." }),
+    defineField({ name: "seoTitle", title: "SEO Title", type: "localeString", group: "seo", description: "Title shown in browser tabs and search results.", validation: requireAllTranslations }),
+    defineField({ name: "seoDescription", title: "SEO Description", type: "localeText", group: "seo", description: "Short description for search engines (150-160 characters recommended).", validation: requireAllTranslations }),
   ],
 });

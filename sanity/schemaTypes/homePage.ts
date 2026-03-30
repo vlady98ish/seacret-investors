@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { HomeIcon } from "@sanity/icons";
+import { requireAllTranslations } from "../lib/validation";
 
 export const homePageType = defineType({
   name: "homePage",
@@ -15,7 +16,7 @@ export const homePageType = defineType({
   ],
   fields: [
     // Hero
-    defineField({ name: "heroTagline", title: "Hero Tagline", type: "localeString", group: "hero", description: "Main headline displayed over the hero image." }),
+    defineField({ name: "heroTagline", title: "Hero Tagline", type: "localeString", group: "hero", description: "Main headline displayed over the hero image.", validation: requireAllTranslations }),
     defineField({ name: "heroSubtitle", title: "Hero Subtitle", type: "localeString", group: "hero", description: "Smaller text below the tagline." }),
     defineField({ name: "heroImage", title: "Hero Image", type: "image", options: { hotspot: true }, group: "hero", description: "Full-width background image for the homepage hero.", validation: (r) => r.required().error("Please add a hero image — it's the first thing visitors see.") }),
     defineField({ name: "heroVideoUrl", title: "Hero Video URL", type: "url", group: "hero", description: "YouTube or Vimeo link. Plays in background on the homepage hero." }),
@@ -79,7 +80,7 @@ export const homePageType = defineType({
     defineField({ name: "inlineContactDescription", title: "Inline Contact Description", type: "localeText", group: "sections" }),
 
     // SEO
-    defineField({ name: "seoTitle", title: "SEO Title", type: "localeString", group: "seo", description: "Title shown in browser tabs and search results." }),
-    defineField({ name: "seoDescription", title: "SEO Description", type: "localeText", group: "seo", description: "Short description for search engines (150-160 characters recommended)." }),
+    defineField({ name: "seoTitle", title: "SEO Title", type: "localeString", group: "seo", description: "Title shown in browser tabs and search results.", validation: requireAllTranslations }),
+    defineField({ name: "seoDescription", title: "SEO Description", type: "localeText", group: "seo", description: "Short description for search engines (150-160 characters recommended).", validation: requireAllTranslations }),
   ],
 });

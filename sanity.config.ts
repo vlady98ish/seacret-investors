@@ -3,6 +3,7 @@ import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 
+import { TranslationBadge } from "./sanity/components/translation-badge";
 import { newDocumentOptions, structure } from "./sanity/desk/structure";
 import { dataset, projectId } from "./sanity/env";
 import { schemaTypes } from "./sanity/schemaTypes";
@@ -34,5 +35,6 @@ export default defineConfig({
   },
   document: {
     newDocumentOptions,
+    badges: (prev) => [...prev, TranslationBadge],
   },
 });

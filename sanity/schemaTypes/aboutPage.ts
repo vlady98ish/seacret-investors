@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
+import { requireAllTranslations } from "../lib/validation";
 
 export const aboutPageType = defineType({
   name: "aboutPage",
@@ -17,7 +18,7 @@ export const aboutPageType = defineType({
   ],
   fields: [
     // Hero
-    defineField({ name: "heroTitle", title: "Hero Title", type: "localeString", group: "hero" }),
+    defineField({ name: "heroTitle", title: "Hero Title", type: "localeString", group: "hero", validation: requireAllTranslations }),
     defineField({ name: "heroSubtitle", title: "Hero Subtitle", type: "localeString", group: "hero" }),
     defineField({ name: "heroImage", title: "Hero Image", type: "image", options: { hotspot: true }, group: "hero", validation: (r) => r.required().error("Please add a hero image for the about page.") }),
 
@@ -84,7 +85,7 @@ export const aboutPageType = defineType({
     defineField({ name: "ctaButton", title: "CTA Button Text", type: "localeString", group: "cta" }),
 
     // SEO
-    defineField({ name: "seoTitle", title: "SEO Title", type: "localeString", group: "seo", description: "Title shown in browser tabs and search results." }),
-    defineField({ name: "seoDescription", title: "SEO Description", type: "localeText", group: "seo", description: "Short description for search engines (150-160 characters recommended)." }),
+    defineField({ name: "seoTitle", title: "SEO Title", type: "localeString", group: "seo", description: "Title shown in browser tabs and search results.", validation: requireAllTranslations }),
+    defineField({ name: "seoDescription", title: "SEO Description", type: "localeText", group: "seo", description: "Short description for search engines (150-160 characters recommended).", validation: requireAllTranslations }),
   ],
 });
