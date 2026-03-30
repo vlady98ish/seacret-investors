@@ -19,6 +19,11 @@ interface AirportConnectivitySectionProps {
   title?: string;
   description?: string;
   airports?: AirportProp[];
+  labelFromChiliadou?: string;
+  labelDestinations?: string;
+  labelCountries?: string;
+  labelWorldwide?: string;
+  labelNearest?: string;
 }
 
 const defaultAirports: AirportProp[] = [
@@ -59,6 +64,11 @@ export function AirportConnectivitySection({
   title,
   description,
   airports,
+  labelFromChiliadou,
+  labelDestinations,
+  labelCountries,
+  labelWorldwide,
+  labelNearest,
 }: AirportConnectivitySectionProps = {}) {
   const resolvedEyebrow = eyebrow || "AIR CONNECTIVITY";
   const resolvedTitle = title || "Three gateways to paradise.";
@@ -116,7 +126,7 @@ export function AirportConnectivitySection({
                       textTransform: "uppercase",
                     }}
                   >
-                    Nearest
+                    {labelNearest || "Nearest"}
                   </div>
                 )}
 
@@ -203,7 +213,7 @@ export function AirportConnectivitySection({
                         color: "var(--color-ink)",
                       }}
                     >
-                      {airport.travelTime} from Chiliadou
+                      {airport.travelTime} {labelFromChiliadou || "from Chiliadou"}
                     </span>
                   </div>
 
@@ -226,8 +236,8 @@ export function AirportConnectivitySection({
                       }}
                     >
                       {airport.destinations}
-                      {airport.destinations === 160 ? "+" : ""} destinations
-                      {airport.countries ? ` · ${airport.countries} countries` : " worldwide"}
+                      {airport.destinations === 160 ? "+" : ""} {labelDestinations || "destinations"}
+                      {airport.countries ? ` · ${airport.countries} ${labelCountries || "countries"}` : ` ${labelWorldwide || "worldwide"}`}
                     </span>
                   </div>
                 </div>

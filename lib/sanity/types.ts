@@ -195,6 +195,12 @@ export interface UiStrings {
   miscSimilarOptions: LocalizedString;
   miscSelectPlot: LocalizedString;
   miscChatWhatsapp: LocalizedString;
+  miscFromChiliadou: LocalizedString;
+  miscDestinations: LocalizedString;
+  miscCountries: LocalizedString;
+  miscWorldwide: LocalizedString;
+  miscNearest: LocalizedString;
+  miscCorinthianGulf: LocalizedString;
 
   // Section labels
   sectionLocation: LocalizedString;

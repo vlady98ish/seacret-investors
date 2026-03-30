@@ -156,5 +156,11 @@ export const uiStringsType = defineType({
     { ...lt("formThankYouMessage", "Form: Thank You Message"), group: "form" },
     { ...ls("miscSelectPlot", "Misc: Select Plot Prompt"), group: "misc" },
     { ...ls("miscChatWhatsapp", "Misc: Chat on WhatsApp"), group: "misc" },
+    { ...ls("miscFromChiliadou", "Misc: From Chiliadou"), group: "misc" },
+    { ...ls("miscDestinations", "Misc: Destinations"), group: "misc" },
+    { ...ls("miscCountries", "Misc: Countries"), group: "misc" },
+    { ...ls("miscWorldwide", "Misc: Worldwide"), group: "misc" },
+    { ...ls("miscNearest", "Misc: Nearest"), group: "misc" },
+    { ...ls("miscCorinthianGulf", "Misc: Corinthian Gulf Location"), group: "misc" },
   ],
 });

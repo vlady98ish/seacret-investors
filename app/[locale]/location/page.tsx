@@ -9,8 +9,8 @@ import { ExperiencesSection } from "@/components/location/experiences-section";
 import { InlineContactSection } from "@/components/inline-contact-section";
 import { isValidLocale, getLocalizedValue, type Locale } from "@/lib/i18n";
 import { sanityClient } from "@/lib/sanity/client";
-import { locationPageQuery, allExperiencesQuery } from "@/lib/sanity/queries";
-import type { LocationPage, Experience } from "@/lib/sanity/types";
+import { locationPageQuery, allExperiencesQuery, uiStringsQuery } from "@/lib/sanity/queries";
+import type { LocationPage, Experience, UiStrings } from "@/lib/sanity/types";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -73,6 +73,13 @@ export default async function LocationPage({ params }: Props) {
     // Use hardcoded fallbacks in ExperiencesSection
   }
 
+  let uiStrings: UiStrings | null = null;
+  try {
+    uiStrings = await sanityClient.fetch<UiStrings>(uiStringsQuery);
+  } catch {
+    // English fallbacks
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const t = (field: any): string | undefined =>
     field ? (getLocalizedValue(field, typedLocale) as string | undefined) : undefined;
@@ -121,6 +128,11 @@ export default async function LocationPage({ params }: Props) {
         eyebrow={t(page?.airportEyebrow) || undefined}
         title={t(page?.airportTitle) || undefined}
         description={t(page?.airportDescription) || undefined}
+        labelFromChiliadou={t(uiStrings?.miscFromChiliadou)}
+        labelDestinations={t(uiStrings?.miscDestinations)}
+        labelCountries={t(uiStrings?.miscCountries)}
+        labelWorldwide={t(uiStrings?.miscWorldwide)}
+        labelNearest={t(uiStrings?.miscNearest)}
         airports={
           page?.airports?.map((a) => ({
             code: a.code,
