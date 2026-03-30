@@ -1,3 +1,4 @@
+import { aboutPageType } from "./aboutPage";
 import { contactPageType } from "./contactPage";
 import { developerType } from "./developer";
 import { experienceType } from "./experience";
@@ -26,6 +27,7 @@ export const schemaTypes = [
   locationPageType,
   masterplanPageType,
   contactPageType,
+  aboutPageType,
   villaType,
   plotType,
   unitType,
