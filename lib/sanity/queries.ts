@@ -42,6 +42,8 @@ export const availabilityStatsQuery = groq`{
   "sold": count(*[_type == "unit" && status == "sold"])
 }`;
 
+export const uiStringsQuery = groq`*[_type == "uiStrings"][0]`;
+export const aboutPageQuery = groq`*[_type == "aboutPage"][0]`;
 export const residencesPageQuery = groq`*[_type == "residencesPage"][0]`;
 export const locationPageQuery = groq`*[_type == "locationPage"][0]`;
 export const masterplanPageQuery = groq`*[_type == "masterplanPage"][0]`;
