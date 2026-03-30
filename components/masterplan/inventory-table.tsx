@@ -9,9 +9,29 @@ import type { Locale } from "@/lib/i18n";
 import { computePriceFrom, formatPriceFrom } from "@/lib/pricing";
 import type { UnitFlat } from "@/lib/sanity/types";
 
+type InventoryTableLabels = {
+  filterPlot: string;
+  filterType: string;
+  filterAllTypes: string;
+  filterAvailableOnly: string;
+  filterShowing: string;
+  filterOf: string;
+  filterNoResults: string;
+  dataComing: string;
+  miscUnits: string;
+  tablePlot: string;
+  tableUnitNumber: string;
+  tableVillaType: string;
+  tableBeds: string;
+  tableTotalArea: string;
+  tablePriceFrom: string;
+  tableStatus: string;
+};
+
 type InventoryTableProps = {
   units: UnitFlat[];
   locale: Locale;
+  labels?: InventoryTableLabels;
 };
 
 type SortKey = "plot" | "price" | "area";
@@ -24,7 +44,25 @@ function getPlotLetter(plotName: string): string {
   return match ? match[0].toUpperCase() : plotName;
 }
 
-export function InventoryTable({ units, locale }: InventoryTableProps) {
+export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
+  const lbl = {
+    filterPlot: labels?.filterPlot || "Plot",
+    filterType: labels?.filterType || "Type",
+    filterAllTypes: labels?.filterAllTypes || "All Types",
+    filterAvailableOnly: labels?.filterAvailableOnly || "Available only",
+    filterShowing: labels?.filterShowing || "Showing",
+    filterOf: labels?.filterOf || "of",
+    filterNoResults: labels?.filterNoResults || "No units match your filters",
+    dataComing: labels?.dataComing || "Inventory data coming soon",
+    miscUnits: labels?.miscUnits || "units",
+    tablePlot: labels?.tablePlot || "Plot",
+    tableUnitNumber: labels?.tableUnitNumber || "Unit #",
+    tableVillaType: labels?.tableVillaType || "Villa Type",
+    tableBeds: labels?.tableBeds || "Beds",
+    tableTotalArea: labels?.tableTotalArea || "Total Area",
+    tablePriceFrom: labels?.tablePriceFrom || "Price From",
+    tableStatus: labels?.tableStatus || "Status",
+  };
   const [plotFilter, setPlotFilter] = useState<string>("All");
   const [villaTypeFilter, setVillaTypeFilter] = useState<string>("All");
   const [availableOnly, setAvailableOnly] = useState(false);
@@ -98,7 +136,7 @@ export function InventoryTable({ units, locale }: InventoryTableProps) {
   if (units.length === 0) {
     return (
       <div className="flex min-h-[200px] items-center justify-center rounded-2xl border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
-        Inventory data coming soon
+        {lbl.dataComing}
       </div>
     );
   }
@@ -110,7 +148,7 @@ export function InventoryTable({ units, locale }: InventoryTableProps) {
         {/* Plot pills */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold uppercase tracking-widest text-[var(--color-muted)]">
-            Plot
+            {lbl.filterPlot}
           </span>
           <div className="flex flex-wrap gap-1.5">
             {PLOT_OPTIONS.map((opt) => (
@@ -133,14 +171,14 @@ export function InventoryTable({ units, locale }: InventoryTableProps) {
         {/* Villa type dropdown */}
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold uppercase tracking-widest text-[var(--color-muted)]">
-            Type
+            {lbl.filterType}
           </span>
           <select
             value={villaTypeFilter}
             onChange={(e) => setVillaTypeFilter(e.target.value)}
             className="rounded-md border border-[rgba(13,103,119,0.2)] bg-white px-3 py-1.5 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-deep-teal)]"
           >
-            <option value="All">All Types</option>
+            <option value="All">{lbl.filterAllTypes}</option>
             {villaTypes.map((vt) => (
               <option key={vt} value={vt}>
                 {vt}
@@ -167,18 +205,18 @@ export function InventoryTable({ units, locale }: InventoryTableProps) {
               )}
             />
           </div>
-          Available only
+          {lbl.filterAvailableOnly}
         </label>
       </div>
 
       {/* Results count */}
       <p className="mb-4 text-xs text-[var(--color-muted)]">
-        Showing {sorted.length} of {units.length} units
+        {lbl.filterShowing} {sorted.length} {lbl.filterOf} {units.length} {lbl.miscUnits}
       </p>
 
       {sorted.length === 0 ? (
         <div className="flex min-h-[160px] items-center justify-center rounded-2xl border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
-          No units match your filters
+          {lbl.filterNoResults}
         </div>
       ) : (
         <>
@@ -191,24 +229,24 @@ export function InventoryTable({ units, locale }: InventoryTableProps) {
                     className="cursor-pointer px-4 py-3 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("plot")}
                   >
-                    Plot{sortIndicator("plot")}
+                    {lbl.tablePlot}{sortIndicator("plot")}
                   </th>
-                  <th className="px-4 py-3">Unit #</th>
-                  <th className="px-4 py-3">Villa Type</th>
-                  <th className="px-4 py-3">Beds</th>
+                  <th className="px-4 py-3">{lbl.tableUnitNumber}</th>
+                  <th className="px-4 py-3">{lbl.tableVillaType}</th>
+                  <th className="px-4 py-3">{lbl.tableBeds}</th>
                   <th
                     className="cursor-pointer px-4 py-3 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("area")}
                   >
-                    Total Area{sortIndicator("area")}
+                    {lbl.tableTotalArea}{sortIndicator("area")}
                   </th>
                   <th
                     className="cursor-pointer px-4 py-3 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("price")}
                   >
-                    Price From{sortIndicator("price")}
+                    {lbl.tablePriceFrom}{sortIndicator("price")}
                   </th>
-                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3">{lbl.tableStatus}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[rgba(13,103,119,0.05)]">

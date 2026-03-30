@@ -6,10 +6,17 @@ import { useCallback } from "react";
 import { cn } from "@/lib/cn";
 import type { PlotWithUnits, UnitStatus } from "@/lib/sanity/types";
 
+type LegendLabels = {
+  available: string;
+  reserved: string;
+  sold: string;
+};
+
 type VisualExplorerProps = {
   plots: PlotWithUnits[];
   selectedPlotId: string | null;
   onPlotSelect: (id: string) => void;
+  legendLabels?: LegendLabels;
 };
 
 // Positions matched to the aerial photo from the PDF presentation
@@ -71,7 +78,13 @@ export function VisualExplorer({
   plots,
   selectedPlotId,
   onPlotSelect,
+  legendLabels,
 }: VisualExplorerProps) {
+  const legend = {
+    available: legendLabels?.available || "Available",
+    reserved: legendLabels?.reserved || "Reserved",
+    sold: legendLabels?.sold || "Sold",
+  };
   const getPosition = useCallback(
     (plot: PlotWithUnits) => {
       if (plot.positionData?.x != null && plot.positionData?.y != null) {
@@ -145,15 +158,15 @@ export function VisualExplorer({
       <div className="absolute bottom-3 left-3 flex items-center gap-3 rounded-lg bg-black/50 px-3 py-2 backdrop-blur-sm">
         <span className="flex items-center gap-1.5 text-xs text-white/80">
           <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500" />
-          Available
+          {legend.available}
         </span>
         <span className="flex items-center gap-1.5 text-xs text-white/80">
           <span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-500" />
-          Reserved
+          {legend.reserved}
         </span>
         <span className="flex items-center gap-1.5 text-xs text-white/80">
           <span className="inline-block h-2.5 w-2.5 rounded-full bg-red-500" />
-          Sold
+          {legend.sold}
         </span>
       </div>
     </div>

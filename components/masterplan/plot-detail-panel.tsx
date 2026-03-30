@@ -10,10 +10,20 @@ import { getLocalizedValue, type Locale } from "@/lib/i18n";
 import { formatPriceFrom } from "@/lib/pricing";
 import type { PlotWithUnits } from "@/lib/sanity/types";
 
+type PanelLabels = {
+  selectPlot: string;
+  unitsAvailable: string;
+  of: string;
+  noUnits: string;
+  unit: string;
+  units: string;
+};
+
 type PlotDetailPanelProps = {
   plot: PlotWithUnits | null;
   locale: Locale;
   onClose: () => void;
+  labels?: PanelLabels;
 };
 
 function groupUnitsByType(units: PlotWithUnits["units"]) {
@@ -45,7 +55,17 @@ export function PlotDetailPanel({
   plot,
   locale,
   onClose,
+  labels,
 }: PlotDetailPanelProps) {
+  const resolved = {
+    selectPlot: labels?.selectPlot || "Select a plot on the map to see details",
+    unitsAvailable: labels?.unitsAvailable || "units available",
+    of: labels?.of || "of",
+    noUnits: labels?.noUnits || "No units assigned to this plot yet.",
+    unit: labels?.unit || "unit",
+    units: labels?.units || "units",
+  };
+
   return (
     <>
       {/* Desktop panel — inline in the grid */}
@@ -60,7 +80,7 @@ export function PlotDetailPanel({
               className="flex min-h-[300px] items-center justify-center rounded-2xl border border-[rgba(13,103,119,0.08)] bg-white/60 p-6"
             >
               <p className="text-center text-sm text-[var(--color-muted)]">
-                Select a plot on the map to see details
+                {resolved.selectPlot}
               </p>
             </motion.div>
           ) : (
@@ -72,7 +92,7 @@ export function PlotDetailPanel({
               transition={{ duration: 0.3, ease: [0.2, 1, 0.22, 1] }}
               className="tile relative overflow-y-auto"
             >
-              <PanelContent plot={plot} locale={locale} onClose={onClose} />
+              <PanelContent plot={plot} locale={locale} onClose={onClose} labels={resolved} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -115,6 +135,7 @@ export function PlotDetailPanel({
                     plot={plot}
                     locale={locale}
                     onClose={onClose}
+                    labels={resolved}
                   />
                 </div>
               </motion.div>
@@ -130,10 +151,18 @@ function PanelContent({
   plot,
   locale,
   onClose,
+  labels,
 }: {
   plot: PlotWithUnits;
   locale: Locale;
   onClose: () => void;
+  labels: {
+    unitsAvailable: string;
+    of: string;
+    noUnits: string;
+    unit: string;
+    units: string;
+  };
 }) {
   const summary = getLocalizedValue(plot.summary, locale);
   const villaGroups = groupUnitsByType(plot.units);
@@ -148,7 +177,7 @@ function PanelContent({
         <div>
           <h3 className="text-h3 text-[var(--color-ink)]">{plot.name}</h3>
           <p className="mt-1 text-xs font-medium text-[var(--color-deep-teal)]">
-            {available} of {total} units available
+            {available} {labels.of} {total} {labels.unitsAvailable}
           </p>
         </div>
         <button
@@ -170,7 +199,7 @@ function PanelContent({
       {/* Unit breakdown by villa type */}
       {villaGroups.length === 0 ? (
         <p className="text-sm text-[var(--color-muted)]">
-          No units assigned to this plot yet.
+          {labels.noUnits}
         </p>
       ) : (
         <div className="space-y-4">
@@ -187,8 +216,7 @@ function PanelContent({
                   {group.villaTypeName}
                 </Link>
                 <span className="text-xs text-[var(--color-muted)]">
-                  {group.units.length} unit
-                  {group.units.length !== 1 ? "s" : ""}
+                  {group.units.length} {group.units.length !== 1 ? labels.units : labels.unit}
                 </span>
               </div>
 
