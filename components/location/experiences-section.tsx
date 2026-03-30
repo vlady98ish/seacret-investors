@@ -11,6 +11,7 @@ interface ExperiencesSectionProps {
   eyebrow?: string;
   title?: string;
   description?: string;
+  categoryLabels?: { culture?: string; nature?: string; gastronomy?: string };
 }
 
 type CategoryKey = "culture" | "nature" | "gastronomy";
@@ -71,6 +72,7 @@ export function ExperiencesSection({
   eyebrow,
   title,
   description,
+  categoryLabels: catLabels,
 }: ExperiencesSectionProps) {
   const hasCmsData = experiences && experiences.length > 0;
   const grouped = hasCmsData ? groupExperiences(experiences) : null;
@@ -130,7 +132,7 @@ export function ExperiencesSection({
                           strokeWidth={1.5}
                         />
                       </div>
-                      <h3 className="text-h3">{meta.label}</h3>
+                      <h3 className="text-h3">{catLabels?.[key] || meta.label}</h3>
                     </div>
 
                     {/* Items list */}

@@ -201,6 +201,12 @@ export interface UiStrings {
   miscWorldwide: LocalizedString;
   miscNearest: LocalizedString;
   miscCorinthianGulf: LocalizedString;
+  miscMorning: LocalizedString;
+  miscDay: LocalizedString;
+  miscEvening: LocalizedString;
+  miscCategoryCulture: LocalizedString;
+  miscCategoryNature: LocalizedString;
+  miscCategoryGastronomy: LocalizedString;
 
   // Section labels
   sectionLocation: LocalizedString;
@@ -236,6 +242,7 @@ export interface HomePage {
   heroImage: SanityImage;
   heroVideoUrl?: string;
   conceptEyebrow: LocalizedString;
+  conceptTitle?: LocalizedString;
   conceptCopy: LocalizedText;
   conceptImage: SanityImage;
   lifestyleMoments: Array<{

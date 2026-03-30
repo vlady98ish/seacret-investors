@@ -124,6 +124,12 @@ export default async function HomePageRoute({ params }: Props) {
         data={data}
         locale={typedLocale}
         title={getLocalizedValue(data?.lifestyleTitle, typedLocale)}
+        eyebrowLabel={getLocalizedValue(uiStrings?.sectionLifestyle, typedLocale)}
+        periodLabels={{
+          Morning: getLocalizedValue(uiStrings?.miscMorning, typedLocale) || "Morning",
+          Day: getLocalizedValue(uiStrings?.miscDay, typedLocale) || "Day",
+          Evening: getLocalizedValue(uiStrings?.miscEvening, typedLocale) || "Evening",
+        }}
       />
       <ResidencesPreviewSection
         villas={data?.featuredVillas}

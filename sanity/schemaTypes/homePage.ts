@@ -23,6 +23,7 @@ export const homePageType = defineType({
 
     // Concept
     defineField({ name: "conceptEyebrow", title: "Concept Eyebrow", type: "localeString", group: "concept", description: "Small label above the concept title (e.g. 'Our Vision')." }),
+    defineField({ name: "conceptTitle", title: "Concept Title", type: "localeString", group: "concept", description: "Main heading for the concept section." }),
     defineField({ name: "conceptCopy", title: "Concept Copy", type: "localeText", group: "concept", description: "Main body text for the concept section." }),
     defineField({ name: "conceptImage", title: "Concept Image", type: "image", options: { hotspot: true }, group: "concept" }),
 

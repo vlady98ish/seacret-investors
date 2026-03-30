@@ -85,7 +85,7 @@ export default async function LocationPage({ params }: Props) {
     field ? (getLocalizedValue(field, typedLocale) as string | undefined) : undefined;
 
   const heroTitle: string = t(page?.heroTitle) ?? "Your Secret Escape";
-  const heroSubtitle =
+  const heroSubtitle = t(page?.whySection) ??
     "Chiliadou — a Blue Flag beach on the Corinthian Gulf, hidden from the world and waiting for you.";
 
   return (
@@ -115,6 +115,7 @@ export default async function LocationPage({ params }: Props) {
         eyebrow={t(page?.distanceEyebrow) || undefined}
         title={t(page?.distanceTitle) || undefined}
         description={t(page?.distanceDescription) || undefined}
+        locationLabel={t(uiStrings?.miscCorinthianGulf)}
         markers={
           page?.distanceMarkers?.map((m) => ({
             place: t(m.place) || "",
@@ -153,6 +154,11 @@ export default async function LocationPage({ params }: Props) {
         eyebrow={t(page?.experiencesEyebrow) || undefined}
         title={t(page?.experiencesTitle) || undefined}
         description={t(page?.experiencesDescription) || undefined}
+        categoryLabels={{
+          culture: t(uiStrings?.miscCategoryCulture),
+          nature: t(uiStrings?.miscCategoryNature),
+          gastronomy: t(uiStrings?.miscCategoryGastronomy),
+        }}
       />
 
       <InlineContactSection locale={typedLocale} />

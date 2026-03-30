@@ -10,6 +10,8 @@ type LifestyleSectionProps = {
   data: HomePage | null;
   locale: Locale;
   title?: string;
+  eyebrowLabel?: string;
+  periodLabels?: Record<string, string>;
 };
 
 const fallbackMoments = [
@@ -30,7 +32,7 @@ const fallbackMoments = [
   },
 ];
 
-export function LifestyleSection({ data, locale, title }: LifestyleSectionProps) {
+export function LifestyleSection({ data, locale, title, eyebrowLabel, periodLabels }: LifestyleSectionProps) {
   const staticImages: Record<string, string> = {
     Morning: "/assets/pdf/lifestyle-morning.jpg",
     Day: "/assets/pdf/lifestyle-day.jpg",
@@ -50,7 +52,7 @@ export function LifestyleSection({ data, locale, title }: LifestyleSectionProps)
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="Lifestyle"
+            eyebrow={eyebrowLabel || "Lifestyle"}
             title={title || "A day at Sea'cret"}
             align="center"
           />
@@ -70,7 +72,7 @@ export function LifestyleSection({ data, locale, title }: LifestyleSectionProps)
                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-night)] via-[var(--color-night)]/30 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
                   <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-gold-sun)]">
-                    {moment.period}
+                    {periodLabels?.[moment.period] || moment.period}
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-white/80">
                     {moment.copy}

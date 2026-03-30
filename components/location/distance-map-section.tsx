@@ -14,6 +14,7 @@ interface DistanceMapSectionProps {
   title?: string;
   description?: string;
   markers?: MarkerProp[];
+  locationLabel?: string;
 }
 
 const defaultDistances: MarkerProp[] = [
@@ -30,6 +31,7 @@ export function DistanceMapSection({
   title,
   description,
   markers,
+  locationLabel,
 }: DistanceMapSectionProps = {}) {
   const resolvedEyebrow = eyebrow || "CONNECTIVITY";
   const resolvedTitle = title || "Easy to reach. Hard to leave.";
@@ -117,7 +119,7 @@ export function DistanceMapSection({
                   className="text-body-muted text-sm"
                   style={{ maxWidth: "200px" }}
                 >
-                  Corinthian Gulf, Central Greece
+                  {locationLabel || "Corinthian Gulf, Central Greece"}
                 </p>
                 <div
                   style={{

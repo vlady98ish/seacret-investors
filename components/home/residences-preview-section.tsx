@@ -75,6 +75,8 @@ export function ResidencesPreviewSection({ villas, locale, title, description, e
                     villa={villa}
                     locale={locale}
                     staticImageSrc={villa.staticImage}
+                    labelBed={labelBed}
+                    labelContactForPricing={labelContactForPricing}
                   />
                 </ScrollReveal>
               ))}

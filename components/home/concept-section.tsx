@@ -18,6 +18,7 @@ const FALLBACK_COPY =
 
 export function ConceptSection({ data, locale, heading, copy: copyProp }: ConceptSectionProps) {
   const eyebrow = getLocalizedValue(data?.conceptEyebrow, locale) ?? "The Concept";
+  const resolvedHeading = heading || getLocalizedValue(data?.conceptTitle, locale) || FALLBACK_HEADING;
   const copy = copyProp || (getLocalizedValue(data?.conceptCopy, locale) ?? FALLBACK_COPY);
   const imageUrl = getSanityImageUrl(data?.conceptImage, 800) ?? "/assets/pdf/page-04-location.jpg";
 
@@ -28,7 +29,7 @@ export function ConceptSection({ data, locale, heading, copy: copyProp }: Concep
           <ScrollReveal direction="left">
             <p className="eyebrow">{eyebrow}</p>
             <h2 className="text-h2 mt-4">
-              {heading || FALLBACK_HEADING}
+              {resolvedHeading}
             </h2>
             <p className="text-body-muted mt-6 max-w-lg leading-relaxed">
               {copy}

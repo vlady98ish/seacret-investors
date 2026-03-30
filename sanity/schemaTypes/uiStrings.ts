@@ -162,5 +162,11 @@ export const uiStringsType = defineType({
     { ...ls("miscWorldwide", "Misc: Worldwide"), group: "misc" },
     { ...ls("miscNearest", "Misc: Nearest"), group: "misc" },
     { ...ls("miscCorinthianGulf", "Misc: Corinthian Gulf Location"), group: "misc" },
+    { ...ls("miscMorning", "Misc: Morning"), group: "misc" },
+    { ...ls("miscDay", "Misc: Day"), group: "misc" },
+    { ...ls("miscEvening", "Misc: Evening"), group: "misc" },
+    { ...ls("miscCategoryCulture", "Misc: Category Culture"), group: "misc" },
+    { ...ls("miscCategoryNature", "Misc: Category Nature"), group: "misc" },
+    { ...ls("miscCategoryGastronomy", "Misc: Category Gastronomy"), group: "misc" },
   ],
 });
