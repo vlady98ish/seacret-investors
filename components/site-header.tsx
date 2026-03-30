@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { cn } from "@/lib/cn";
+import { getLocalizedValue } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n";
 import type { UiStrings, SiteSettings } from "@/lib/sanity/types";
 
@@ -25,11 +26,23 @@ const navItems = [
   { key: "contact", href: "/contact" },
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps) {
+export function SiteHeader({ locale, uiStrings, siteSettings: _siteSettings }: SiteHeaderProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const navLabel = (key: string): string => {
+    if (!uiStrings) return key;
+    const map: Record<string, any> = {
+      home: uiStrings.navHome,
+      residences: uiStrings.navResidences,
+      masterplan: uiStrings.navMasterplan,
+      location: uiStrings.navLocation,
+      about: uiStrings.navAbout,
+      contact: uiStrings.navContact,
+    };
+    return getLocalizedValue(map[key], locale) ?? key;
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -71,7 +84,7 @@ export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps)
                     : "text-white/60 hover:text-white"
                 )}
               >
-                {item.key}
+                {navLabel(item.key)}
               </Link>
             ))}
           </nav>
@@ -111,7 +124,7 @@ export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps)
                 isActive(item.href) ? "text-[var(--color-gold-sun)]" : "text-white/70"
               )}
             >
-              {item.key}
+              {navLabel(item.key)}
             </Link>
           ))}
           <div className="mt-4">
