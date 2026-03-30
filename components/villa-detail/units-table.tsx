@@ -94,10 +94,10 @@ export function UnitsTable({ units, headerUnit, headerPlot, headerArea, headerBe
         {sorted.map((unit) => (
           <div key={unit._id} className="flex items-center justify-between p-4">
             <div className="space-y-0.5">
-              <p className="font-medium text-[var(--color-ink)]">Unit {unit.unitNumber}</p>
+              <p className="font-medium text-[var(--color-ink)]">{headerUnit || "Unit"} {unit.unitNumber}</p>
               <p className="text-xs text-[var(--color-muted)]">
-                {unit.totalArea} m² · {unit.bedrooms} bed
-                {unit.hasPool ? " · Pool" : ""}
+                {unit.totalArea} m² · {unit.bedrooms} {headerBeds || "bed"}
+                {unit.hasPool ? ` · ${headerPool || "Pool"}` : ""}
               </p>
               {unit.plotName && (
                 <p className="text-xs text-[var(--color-muted)]">{unit.plotName}</p>
