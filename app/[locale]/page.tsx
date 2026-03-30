@@ -117,6 +117,8 @@ export default async function HomePageRoute({ params }: Props) {
         title={getLocalizedValue(data?.locationTitle, typedLocale)}
         description={getLocalizedValue(data?.locationDescription, typedLocale)}
         highlights={locationHighlights}
+        eyebrowLabel={getLocalizedValue(uiStrings?.sectionLocation, typedLocale)}
+        ctaLabel={getLocalizedValue(uiStrings?.ctaExploreLocation, typedLocale)}
       />
       <LifestyleSection
         data={data}
@@ -128,6 +130,10 @@ export default async function HomePageRoute({ params }: Props) {
         locale={typedLocale}
         title={getLocalizedValue(data?.residencesTitle, typedLocale)}
         description={getLocalizedValue(data?.residencesDescription, typedLocale)}
+        eyebrowLabel={getLocalizedValue(uiStrings?.sectionResidences, typedLocale)}
+        ctaLabel={getLocalizedValue(uiStrings?.ctaViewAll, typedLocale)}
+        labelBed={getLocalizedValue(uiStrings?.miscBed, typedLocale)}
+        labelContactForPricing={getLocalizedValue(uiStrings?.pricingContactFor, typedLocale)}
       />
       <MasterplanTeaserSection
         data={data}
@@ -138,8 +144,10 @@ export default async function HomePageRoute({ params }: Props) {
         statTotalLabel={getLocalizedValue(uiStrings?.miscAvailableUnits, typedLocale)}
         statPlotsLabel={getLocalizedValue(uiStrings?.filterPlot, typedLocale)}
         statAvailableLabel={getLocalizedValue(uiStrings?.miscAvailable, typedLocale)}
+        eyebrowLabel={getLocalizedValue(uiStrings?.sectionMasterplan, typedLocale)}
+        ctaLabel={getLocalizedValue(uiStrings?.ctaExploreMasterplan, typedLocale)}
       />
-      <CtaSection data={data} locale={typedLocale} />
+      <CtaSection data={data} locale={typedLocale} ctaLabel={getLocalizedValue(uiStrings?.ctaRequestInfo, typedLocale)} />
       <InlineContactSection
         locale={typedLocale}
         strings={{

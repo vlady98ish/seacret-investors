@@ -7,9 +7,10 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 type CtaSectionProps = {
   data: HomePage | null;
   locale: Locale;
+  ctaLabel?: string;
 };
 
-export function CtaSection({ data, locale }: CtaSectionProps) {
+export function CtaSection({ data, locale, ctaLabel }: CtaSectionProps) {
   const title = getLocalizedValue(data?.ctaTitle, locale) ?? "Ready to invest in your future?";
   const subtitle = getLocalizedValue(data?.ctaSubtitle, locale) ?? "Join a select group of investors in one of Greece's most promising coastal locations.";
 
@@ -23,7 +24,7 @@ export function CtaSection({ data, locale }: CtaSectionProps) {
           </p>
           <div className="mt-10">
             <Link href={`/${locale}/contact`} className="btn btn-primary">
-              Request Information
+              {ctaLabel || "Request Information"}
             </Link>
           </div>
         </ScrollReveal>

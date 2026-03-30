@@ -11,6 +11,10 @@ type ResidencesPreviewSectionProps = {
   locale: Locale;
   title?: string;
   description?: string;
+  eyebrowLabel?: string;
+  ctaLabel?: string;
+  labelBed?: string;
+  labelContactForPricing?: string;
 };
 
 const placeholderVillas: Array<{
@@ -43,7 +47,7 @@ const placeholderVillas: Array<{
   },
 ];
 
-export function ResidencesPreviewSection({ villas, locale, title, description }: ResidencesPreviewSectionProps) {
+export function ResidencesPreviewSection({ villas, locale, title, description, eyebrowLabel, ctaLabel, labelBed, labelContactForPricing }: ResidencesPreviewSectionProps) {
   const hasVillas = villas && villas.length > 0;
 
   return (
@@ -51,7 +55,7 @@ export function ResidencesPreviewSection({ villas, locale, title, description }:
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="Residences"
+            eyebrow={eyebrowLabel || "Residences"}
             title={title || "Designed for the discerning few"}
             description={description || "Each residence is a unique expression of modern Mediterranean architecture, thoughtfully positioned for maximum privacy and views."}
             align="center"
@@ -62,7 +66,7 @@ export function ResidencesPreviewSection({ villas, locale, title, description }:
           {hasVillas
             ? villas.map((villa, i) => (
                 <ScrollReveal key={villa._id} delay={i * 0.1}>
-                  <VillaCard villa={villa} locale={locale} />
+                  <VillaCard villa={villa} locale={locale} labelBed={labelBed} labelContactForPricing={labelContactForPricing} />
                 </ScrollReveal>
               ))
             : placeholderVillas.map((villa, i) => (
@@ -78,7 +82,7 @@ export function ResidencesPreviewSection({ villas, locale, title, description }:
 
         <ScrollReveal className="mt-12 text-center">
           <Link href={`/${locale}/residences`} className="btn btn-outline">
-            View All Residences &rarr;
+            {ctaLabel || "View All Residences"} &rarr;
           </Link>
         </ScrollReveal>
       </div>

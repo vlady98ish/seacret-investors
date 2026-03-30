@@ -192,6 +192,34 @@ export interface UiStrings {
   miscFloor: LocalizedString;
   miscVillaSpecs: LocalizedString;
   miscDetailsComing: LocalizedString;
+  miscSimilarOptions: LocalizedString;
+  miscSelectPlot: LocalizedString;
+  miscChatWhatsapp: LocalizedString;
+
+  // Section labels
+  sectionLocation: LocalizedString;
+  sectionResidences: LocalizedString;
+  sectionMasterplan: LocalizedString;
+  sectionLifestyle: LocalizedString;
+
+  // Additional CTAs
+  ctaExploreLocation: LocalizedString;
+  ctaExploreMasterplan: LocalizedString;
+  ctaRequestBrochure: LocalizedString;
+
+  // Additional form fields
+  formStep: LocalizedString;
+  formWhatInterested: LocalizedString;
+  formChooseVilla: LocalizedString;
+  formGeneralInquiry: LocalizedString;
+  formYourDetails: LocalizedString;
+  formPhonePlaceholder: LocalizedString;
+  formAdditionalInfo: LocalizedString;
+  formBudgetRange: LocalizedString;
+  formTimeline: LocalizedString;
+  formMessagePlaceholder: LocalizedString;
+  formThankYou: LocalizedString;
+  formThankYouMessage: LocalizedText;
 }
 
 // === Page Document Types ===

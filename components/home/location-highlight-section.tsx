@@ -15,6 +15,8 @@ type LocationHighlightSectionProps = {
   title?: string;
   description?: string;
   highlights?: HighlightItem[];
+  eyebrowLabel?: string;
+  ctaLabel?: string;
 };
 
 const FALLBACK_ICONS = [Sun, Clock, MapPin, Shield];
@@ -38,7 +40,7 @@ const fallbackHighlights: HighlightItem[] = [
   },
 ];
 
-export function LocationHighlightSection({ locale, title, description, highlights }: LocationHighlightSectionProps) {
+export function LocationHighlightSection({ locale, title, description, highlights, eyebrowLabel, ctaLabel }: LocationHighlightSectionProps) {
   const resolvedHighlights = highlights && highlights.length > 0 ? highlights : fallbackHighlights;
 
   return (
@@ -46,7 +48,7 @@ export function LocationHighlightSection({ locale, title, description, highlight
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="Location"
+            eyebrow={eyebrowLabel || "Location"}
             title={title || "Greece's best-kept secret"}
             description={description || "Nestled on the northern shore of the Gulf of Corinth, Chiliadou offers untouched beauty just hours from Athens."}
             align="center"
@@ -72,7 +74,7 @@ export function LocationHighlightSection({ locale, title, description, highlight
 
         <ScrollReveal className="mt-12 text-center">
           <Link href={`/${locale}/location`} className="btn btn-outline">
-            Explore the Location
+            {ctaLabel || "Explore the Location"}
           </Link>
         </ScrollReveal>
       </div>

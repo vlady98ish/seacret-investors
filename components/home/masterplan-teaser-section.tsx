@@ -17,9 +17,11 @@ type MasterplanTeaserSectionProps = {
   statTotalLabel?: string;
   statPlotsLabel?: string;
   statAvailableLabel?: string;
+  eyebrowLabel?: string;
+  ctaLabel?: string;
 };
 
-export function MasterplanTeaserSection({ data, stats, locale, title, description, statTotalLabel, statPlotsLabel, statAvailableLabel }: MasterplanTeaserSectionProps) {
+export function MasterplanTeaserSection({ data, stats, locale, title, description, statTotalLabel, statPlotsLabel, statAvailableLabel, eyebrowLabel, ctaLabel }: MasterplanTeaserSectionProps) {
   const imageUrl = getSanityImageUrl(data?.masterplanImage, 1200) ?? "/assets/pdf/masterplan-aerial.jpg";
 
   const totalUnits = stats?.total || 39;
@@ -31,7 +33,7 @@ export function MasterplanTeaserSection({ data, stats, locale, title, descriptio
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="Masterplan"
+            eyebrow={eyebrowLabel || "Masterplan"}
             title={title || "The master plan"}
             description={description || "Six private plots along the coastline, each carefully positioned for privacy, views, and natural ventilation."}
             align="center"
@@ -62,7 +64,7 @@ export function MasterplanTeaserSection({ data, stats, locale, title, descriptio
 
         <ScrollReveal className="mt-12 text-center" delay={0.25}>
           <Link href={`/${locale}/masterplan`} className="btn btn-outline">
-            Explore the Masterplan &rarr;
+            {ctaLabel || "Explore the Masterplan"} &rarr;
           </Link>
         </ScrollReveal>
       </div>
