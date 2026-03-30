@@ -83,6 +83,7 @@ export default async function AboutPage({ params }: Props) {
     name: f.name,
     role: getLocalizedValue(f.role, typedLocale) || "",
     bio: getLocalizedValue(f.bio, typedLocale) || "",
+    photo: f.photo,
   }));
 
   const foundersEyebrow = getLocalizedValue(data?.foundersEyebrow, typedLocale);

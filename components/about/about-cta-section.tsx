@@ -11,23 +11,23 @@ type AboutCtaSectionProps = {
 };
 
 export function AboutCtaSection({ locale, title, subtitle, buttonText }: AboutCtaSectionProps) {
-  const resolvedTitle = title || "Ready to invest with confidence?";
-  const resolvedSubtitle = subtitle || "Join dozens of investors already building wealth with Live Better Group";
-  const resolvedButtonText = buttonText || "Schedule a Consultation";
+  if (!title) return null;
 
   return (
     <section className="bg-[var(--color-night)] py-24 sm:py-32">
       <div className="section-shell text-center">
         <ScrollReveal>
           <h2 className="text-display text-white">
-            {resolvedTitle}
+            {title}
           </h2>
-          <p className="mx-auto mt-4 max-w-lg text-lg text-white/60">
-            {resolvedSubtitle}
-          </p>
+          {subtitle && (
+            <p className="mx-auto mt-4 max-w-lg text-lg text-white/60">
+              {subtitle}
+            </p>
+          )}
           <div className="mt-10">
             <Link href={`/${locale}/contact`} className="btn btn-primary">
-              {resolvedButtonText}
+              {buttonText}
             </Link>
           </div>
         </ScrollReveal>
