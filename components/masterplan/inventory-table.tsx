@@ -51,6 +51,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
   const statusSold = useT("statusSold", "Sold");
   const bedLabel = useT("miscBed", "Bed");
   const bedsLabel = useT("miscBeds", "Beds");
+  const fromLabel = useT("pricingFrom", "From");
 
   const lbl = {
     filterPlot: labels?.filterPlot || "Plot",
@@ -277,7 +278,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
                     <td className="px-4 py-3">{unit.bedrooms}</td>
                     <td className="px-4 py-3">{unit.totalArea} m&sup2;</td>
                     <td className="px-4 py-3 font-medium text-[var(--color-deep-teal)]">
-                      {formatPriceFrom(unit.totalArea)}
+                      {formatPriceFrom(unit.totalArea, fromLabel)}
                     </td>
                     <td className="px-4 py-3">
                       <StatusBadge status={unit.status} labelAvailable={statusAvailable} labelReserved={statusReserved} labelSold={statusSold} />
@@ -313,7 +314,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
                   <span>{unit.bedrooms} {unit.bedrooms !== 1 ? bedsLabel : bedLabel}</span>
                   <span>{unit.totalArea} m&sup2;</span>
                   <span className="font-medium text-[var(--color-deep-teal)]">
-                    {formatPriceFrom(unit.totalArea)}
+                    {formatPriceFrom(unit.totalArea, fromLabel)}
                   </span>
                 </div>
               </div>

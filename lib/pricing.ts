@@ -11,6 +11,6 @@ export function formatPrice(euros: number): string {
   return `€${Math.round(euros / 1000)}K`;
 }
 
-export function formatPriceFrom(totalAreaM2: number): string {
-  return `From ${formatPrice(computePriceFrom(totalAreaM2))}`;
+export function formatPriceFrom(totalAreaM2: number, fromLabel: string = "From"): string {
+  return `${fromLabel} ${formatPrice(computePriceFrom(totalAreaM2))}`;
 }

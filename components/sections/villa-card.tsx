@@ -23,9 +23,11 @@ type VillaCardProps = {
   labelBed?: string;
   labelContactForPricing?: string;
   labelAvailable?: string;
+  labelFrom?: string;
+  labelSimilarOptions?: string;
 };
 
-export function VillaCard({ villa, locale, units, staticImageSrc, labelSoldOut, labelBed, labelContactForPricing, labelAvailable }: VillaCardProps) {
+export function VillaCard({ villa, locale, units, staticImageSrc, labelSoldOut, labelBed, labelContactForPricing, labelAvailable, labelFrom, labelSimilarOptions }: VillaCardProps) {
   const imageUrl = villa.heroImage ? getSanityImageUrl(villa.heroImage, 600) : null;
   const autoStaticSrc = getVillaImages(villa.slug.current).hero;
   const imageSrc = imageUrl ?? staticImageSrc ?? autoStaticSrc;
@@ -75,11 +77,11 @@ export function VillaCard({ villa, locale, units, staticImageSrc, labelSoldOut, 
 
         {!allSold && minArea && (
           <p className="mt-2 text-sm font-semibold text-[var(--color-deep-teal)]">
-            {formatPriceFrom(minArea)}
+            {formatPriceFrom(minArea, labelFrom)}
           </p>
         )}
         {allSold && (
-          <p className="mt-2 text-sm text-[var(--color-muted)]">{labelSoldOut || "Sold Out"} — similar options available</p>
+          <p className="mt-2 text-sm text-[var(--color-muted)]">{labelSoldOut || "Sold Out"} {labelSimilarOptions || "— similar options available"}</p>
         )}
         {!units && (
           <p className="mt-2 text-sm text-[var(--color-muted)]">{labelContactForPricing || "Contact for pricing"}</p>
