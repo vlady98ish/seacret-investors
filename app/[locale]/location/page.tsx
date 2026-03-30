@@ -73,8 +73,9 @@ export default async function LocationPage({ params }: Props) {
     // Use hardcoded fallbacks in ExperiencesSection
   }
 
-  const t = (field: Parameters<typeof getLocalizedValue>[0]): string | undefined =>
-    getLocalizedValue(field, typedLocale) as string | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const t = (field: any): string | undefined =>
+    field ? (getLocalizedValue(field, typedLocale) as string | undefined) : undefined;
 
   const heroTitle: string = t(page?.heroTitle) ?? "Your Secret Escape";
   const heroSubtitle =
