@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { groq } from "next-sanity";
+
 import { getLocalizedValue, isValidLocale, locales, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { formatPriceFrom } from "@/lib/pricing";
@@ -8,8 +10,6 @@ import { sanityClient } from "@/lib/sanity/client";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import { allVillasQuery, uiStringsQuery, villaBySlugQuery } from "@/lib/sanity/queries";
 import type { UiStrings, UnitWithRefs, Villa } from "@/lib/sanity/types";
-import { fallbackVillas, getFallbackVillaWithUnits } from "@/lib/fallback-data";
-import { getVillaImages } from "@/lib/villa-images";
 
 import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/sections/page-hero";
@@ -23,12 +23,17 @@ import { RelatedVillas } from "@/components/villa-detail/related-villas";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
-const villaSlugs = ["lola", "mikka", "tai", "michal", "yair", "yehonatan"];
-
-export function generateStaticParams() {
-  return locales.flatMap((locale) =>
-    villaSlugs.map((slug) => ({ locale, slug }))
-  );
+export async function generateStaticParams() {
+  try {
+    const villas = await sanityClient.fetch<Array<{ slug: { current: string } }>>(
+      groq`*[_type == "villa"]{ slug }`
+    );
+    return locales.flatMap((locale) =>
+      villas.map((v) => ({ locale, slug: v.slug.current }))
+    );
+  } catch {
+    return [];
+  }
 }
 
 type VillaWithUnits = Villa & { units: UnitWithRefs[] };
@@ -52,11 +57,8 @@ async function fetchData(slug: string): Promise<{
     if (villasResult?.length) allVillas = villasResult;
     if (uiStringsResult) uiStrings = uiStringsResult;
   } catch {
-    // CMS unavailable — use fallback data
+    // CMS unavailable
   }
-
-  if (!villa) villa = getFallbackVillaWithUnits(slug);
-  if (!allVillas.length) allVillas = fallbackVillas;
 
   return { villa, allVillas, uiStrings };
 }
@@ -98,29 +100,17 @@ export default async function VillaDetailPage({ params }: Props) {
   const t = (field: any): string | undefined =>
     field ? (getLocalizedValue(field, typedLocale) as string | undefined) : undefined;
 
-  // Fallback: if slug doesn't match any known villa and CMS has no data
-  const isKnownSlug = villaSlugs.includes(slug);
-  if (!villa && !isKnownSlug) notFound();
+  if (!villa) notFound();
 
   const units: UnitWithRefs[] = villa?.units ?? [];
-  const staticImages = getVillaImages(slug);
 
-  // Resolve hero image — Sanity first, then static fallback
-  const heroImageUrl = villa?.heroImage
-    ? getSanityImageUrl(villa.heroImage, 1600)
-    : staticImages.hero;
-
-  // Resolve gallery images — Sanity first, then static fallback
-  const sanityGallery = (villa?.galleryImages ?? [])
+  const heroImageUrl = getSanityImageUrl(villa.heroImage, 1600);
+  const galleryImages = (villa.galleryImages ?? [])
     .map((img) => getSanityImageUrl(img, 800))
     .filter((u): u is string => Boolean(u));
-  const galleryImages = sanityGallery.length > 0 ? sanityGallery : staticImages.gallery;
-
-  // Resolve floor plan images — Sanity first, then static fallback
-  const sanityPlans = (villa?.floorPlanImages ?? [])
+  const floorPlanImages = (villa.floorPlanImages ?? [])
     .map((img) => getSanityImageUrl(img, 1200))
     .filter((u): u is string => Boolean(u));
-  const floorPlanImages = sanityPlans.length > 0 ? sanityPlans : staticImages.plans;
 
   // Compute price from min available unit area
   const availableUnits = units.filter((u) => u.status === "available");
@@ -137,50 +127,45 @@ export default async function VillaDetailPage({ params }: Props) {
     ? getLocalizedValue(villa.summary, typedLocale)
     : undefined;
 
-  // Resolve CMS labels — fall back to English in JSX with ||
-  const labelGallery = t(uiStrings?.miscGallery) || "Gallery";
-  const labelFloorPlans = t(uiStrings?.miscFloorPlans) || "Floor Plans";
-  const labelPricing = t(uiStrings?.miscPricing) || "Pricing";
-  const labelAvailableUnits = t(uiStrings?.miscAvailableUnits) || "Available Units";
-  const label3dTour = t(uiStrings?.misc3dTour) || "3D Virtual Tour";
-  const labelContactForPricing = t(uiStrings?.pricingContactFor) || "Contact for pricing";
-  const labelPricingDesc = t(uiStrings?.miscContactPromise) || "Pre-sale pricing for qualified buyers. Contact us for a personalised proposal.";
+  const labelGallery = t(uiStrings?.miscGallery) ?? "";
+  const labelFloorPlans = t(uiStrings?.miscFloorPlans) ?? "";
+  const labelPricing = t(uiStrings?.miscPricing) ?? "";
+  const labelAvailableUnits = t(uiStrings?.miscAvailableUnits) ?? "";
+  const label3dTour = t(uiStrings?.misc3dTour) ?? "";
+  const labelContactForPricing = t(uiStrings?.pricingContactFor) ?? "";
+  const labelPricingDesc = t(uiStrings?.miscContactPromise) ?? "";
 
-  // Specs labels
-  const labelVillaSpecs = t(uiStrings?.miscVillaSpecs) || "Villa Specifications";
-  const labelDetailsComing = t(uiStrings?.miscDetailsComing) || "Details coming soon";
-  const labelBedrooms = t(uiStrings?.specBedrooms) || "Bedrooms";
-  const labelBathrooms = t(uiStrings?.specBathrooms) || "Bathrooms";
-  const labelTotalArea = t(uiStrings?.specTotalArea) || "Total Area";
-  const labelOutdoorArea = t(uiStrings?.specOutdoorArea) || "Outdoor Area";
-  const labelPool = t(uiStrings?.specPool) || "Swimming Pool";
-  const labelParking = t(uiStrings?.specParking) || "Parking";
-  const labelYes = t(uiStrings?.specYes) || "Yes";
-  const labelNo = t(uiStrings?.specNo) || "No";
+  const labelVillaSpecs = t(uiStrings?.miscVillaSpecs) ?? "";
+  const labelDetailsComing = t(uiStrings?.miscDetailsComing) ?? "";
+  const labelBedrooms = t(uiStrings?.specBedrooms) ?? "";
+  const labelBathrooms = t(uiStrings?.specBathrooms) ?? "";
+  const labelTotalArea = t(uiStrings?.specTotalArea) ?? "";
+  const labelOutdoorArea = t(uiStrings?.specOutdoorArea) ?? "";
+  const labelPool = t(uiStrings?.specPool) ?? "";
+  const labelParking = t(uiStrings?.specParking) ?? "";
+  const labelYes = t(uiStrings?.specYes) ?? "";
+  const labelNo = t(uiStrings?.specNo) ?? "";
 
-  // Units table labels
-  const labelUnitNumber = t(uiStrings?.tableUnitNumber) || "Unit #";
-  const labelPlot = t(uiStrings?.tablePlot) || "Plot";
-  const labelAreaM2 = t(uiStrings?.tableAreaM2) || "Area m²";
-  const labelBeds = t(uiStrings?.tableBeds) || "Beds";
-  const labelPoolHeader = t(uiStrings?.tablePool) || "Pool";
-  const labelStatus = t(uiStrings?.tableStatus) || "Status";
-  const labelStatusAvailable = t(uiStrings?.statusAvailable) || "Available";
-  const labelStatusReserved = t(uiStrings?.statusReserved) || "Reserved";
-  const labelStatusSold = t(uiStrings?.statusSold) || "Sold";
+  const labelUnitNumber = t(uiStrings?.tableUnitNumber) ?? "";
+  const labelPlot = t(uiStrings?.tablePlot) ?? "";
+  const labelAreaM2 = t(uiStrings?.tableAreaM2) ?? "";
+  const labelBeds = t(uiStrings?.tableBeds) ?? "";
+  const labelPoolHeader = t(uiStrings?.tablePool) ?? "";
+  const labelStatus = t(uiStrings?.tableStatus) ?? "";
+  const labelStatusAvailable = t(uiStrings?.statusAvailable) ?? "";
+  const labelStatusReserved = t(uiStrings?.statusReserved) ?? "";
+  const labelStatusSold = t(uiStrings?.statusSold) ?? "";
 
-  // Floor plans labels
-  const labelGroundFloor = t(uiStrings?.miscGroundFloor) || "Ground Floor";
-  const labelUpperFloor = t(uiStrings?.miscUpperFloor) || "Upper Floor";
-  const labelAttic = t(uiStrings?.miscAttic) || "Attic";
-  const labelComingSoon = t(uiStrings?.miscComingSoon) || "Coming soon";
+  const labelGroundFloor = t(uiStrings?.miscGroundFloor) ?? "";
+  const labelUpperFloor = t(uiStrings?.miscUpperFloor) ?? "";
+  const labelAttic = t(uiStrings?.miscAttic) ?? "";
+  const labelComingSoon = t(uiStrings?.miscComingSoon) ?? "";
 
-  // Related villas labels
-  const labelExploreMore = t(uiStrings?.miscExploreMore) || "EXPLORE MORE";
-  const labelYouMightLike = t(uiStrings?.miscYouMightLike) || "You Might Also Like";
-  const labelYouMightLikeDesc = t(uiStrings?.miscYouMightLikeDesc) || "Discover our other exclusive villa types at Sea'cret Residences.";
-  const labelSoldOut = t(uiStrings?.statusSoldOut) || "Sold Out";
-  const labelBed = t(uiStrings?.miscBed) || "bed";
+  const labelExploreMore = t(uiStrings?.miscExploreMore) ?? "";
+  const labelYouMightLike = t(uiStrings?.miscYouMightLike) ?? "";
+  const labelYouMightLikeDesc = t(uiStrings?.miscYouMightLikeDesc) ?? "";
+  const labelSoldOut = t(uiStrings?.statusSoldOut) ?? "";
+  const labelBed = t(uiStrings?.miscBed) ?? "";
 
   return (
     <>
@@ -225,7 +210,7 @@ export default async function VillaDetailPage({ params }: Props) {
       <section className="section-shell py-16">
         <ScrollReveal>
           <SpecsPanel
-            villa={villa ?? null}
+            villa={villa}
             units={units}
             locale={typedLocale}
             labelEyebrow={labelVillaSpecs}
@@ -243,7 +228,7 @@ export default async function VillaDetailPage({ params }: Props) {
       </section>
 
       {/* Gallery */}
-      {(galleryImages.length > 0 || !villa) && (
+      {galleryImages.length > 0 && (
         <section className="section-shell pb-16">
           <p className="eyebrow mb-6">{labelGallery}</p>
           <ScrollReveal>
@@ -253,7 +238,7 @@ export default async function VillaDetailPage({ params }: Props) {
       )}
 
       {/* Floor Plans */}
-      {(floorPlanImages.length > 0 || !villa) && (
+      {floorPlanImages.length > 0 && (
         <section className="bg-[var(--color-cream)] py-16">
           <div className="section-shell">
             <p className="eyebrow mb-6">{labelFloorPlans}</p>

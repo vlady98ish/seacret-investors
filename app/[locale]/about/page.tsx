@@ -11,6 +11,7 @@ import { PageHero } from "@/components/sections/page-hero";
 import { getLocalizedValue, isValidLocale, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { sanityClient } from "@/lib/sanity/client";
+import { getSanityImageUrl } from "@/lib/sanity/image";
 import { aboutPageQuery } from "@/lib/sanity/queries";
 import type { AboutPage } from "@/lib/sanity/types";
 import { getUiStrings } from "@/lib/sanity/ui-strings";
@@ -53,13 +54,8 @@ export default async function AboutPage({ params }: Props) {
     getUiStrings(),
   ]);
 
-  // Resolve hero strings
-  const heroTitle =
-    getLocalizedValue(data?.heroTitle, typedLocale) ||
-    "Building the Future of Greek Living";
-  const heroSubtitle =
-    getLocalizedValue(data?.heroSubtitle, typedLocale) ||
-    "Live Better Group — Transforming real estate since 2020";
+  const heroTitle = getLocalizedValue(data?.heroTitle, typedLocale) ?? "";
+  const heroSubtitle = getLocalizedValue(data?.heroSubtitle, typedLocale) ?? undefined;
 
   // Resolve story strings
   const storyEyebrow = getLocalizedValue(data?.storyEyebrow, typedLocale);
@@ -101,7 +97,7 @@ export default async function AboutPage({ params }: Props) {
       <PageHero
         title={heroTitle}
         subtitle={heroSubtitle}
-        backgroundImage="/assets/team/about-hero.jpg"
+        backgroundImage={data?.heroImage ? getSanityImageUrl(data.heroImage, 1920) : undefined}
         compact
       />
       <StatsBar stats={stats} />

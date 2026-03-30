@@ -65,11 +65,9 @@ export default async function CmsContactPageRoute({ params }: Props) {
   const villaNames = villas.length > 0 ? villas.map((v) => v.name) : undefined;
 
   /* ── Hero copy ───────────────────────────────────────────── */
-  const heroTitle =
-    t(contactPage?.heroTitle) ?? "Get in Touch";
+  const heroTitle = t(contactPage?.heroTitle) ?? "";
 
-  const heroSubtitle =
-    t(contactPage?.heroSubtitle) || "Our team is here to guide you through every step.";
+  const heroSubtitle = t(contactPage?.heroSubtitle);
 
   /* ── Direct contact section strings ─────────────────────── */
   const directEyebrow = t(contactPage?.directEyebrow) || undefined;

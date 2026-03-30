@@ -6,7 +6,6 @@ import { buildPageMetadata } from "@/lib/metadata";
 import { sanityClient } from "@/lib/sanity/client";
 import { homePageQuery, availabilityStatsQuery } from "@/lib/sanity/queries";
 import type { HomePage as HomePageData } from "@/lib/sanity/types";
-import { getFallbackHomePage, fallbackStats } from "@/lib/fallback-data";
 import { getUiStrings } from "@/lib/sanity/ui-strings";
 
 import { HeroSection } from "@/components/home/hero-section";
@@ -27,12 +26,10 @@ export function generateStaticParams() {
 
 async function fetchHomePage(): Promise<HomePageData | null> {
   try {
-    const result = await sanityClient.fetch<HomePageData | null>(homePageQuery);
-    if (result) return result;
+    return await sanityClient.fetch<HomePageData | null>(homePageQuery);
   } catch {
-    // CMS unavailable
+    return null;
   }
-  return getFallbackHomePage();
 }
 
 async function fetchStats(): Promise<{
@@ -42,17 +39,15 @@ async function fetchStats(): Promise<{
   sold: number;
 } | null> {
   try {
-    const result = await sanityClient.fetch<{
+    return await sanityClient.fetch<{
       total: number;
       available: number;
       reserved: number;
       sold: number;
     } | null>(availabilityStatsQuery);
-    if (result) return result;
   } catch {
-    // CMS unavailable
+    return null;
   }
-  return fallbackStats;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -126,9 +121,9 @@ export default async function HomePageRoute({ params }: Props) {
         title={getLocalizedValue(data?.lifestyleTitle, typedLocale)}
         eyebrowLabel={getLocalizedValue(uiStrings?.sectionLifestyle, typedLocale)}
         periodLabels={{
-          Morning: getLocalizedValue(uiStrings?.miscMorning, typedLocale) || "Morning",
-          Day: getLocalizedValue(uiStrings?.miscDay, typedLocale) || "Day",
-          Evening: getLocalizedValue(uiStrings?.miscEvening, typedLocale) || "Evening",
+          Morning: getLocalizedValue(uiStrings?.miscMorning, typedLocale) ?? "",
+          Day: getLocalizedValue(uiStrings?.miscDay, typedLocale) ?? "",
+          Evening: getLocalizedValue(uiStrings?.miscEvening, typedLocale) ?? "",
         }}
       />
       <ResidencesPreviewSection

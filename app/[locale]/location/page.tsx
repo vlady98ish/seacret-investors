@@ -9,6 +9,7 @@ import { ExperiencesSection } from "@/components/location/experiences-section";
 import { InlineContactSection } from "@/components/inline-contact-section";
 import { isValidLocale, getLocalizedValue, type Locale } from "@/lib/i18n";
 import { sanityClient } from "@/lib/sanity/client";
+import { getSanityImageUrl } from "@/lib/sanity/image";
 import { locationPageQuery, allExperiencesQuery, uiStringsQuery } from "@/lib/sanity/queries";
 import type { LocationPage, Experience, UiStrings } from "@/lib/sanity/types";
 
@@ -84,16 +85,15 @@ export default async function LocationPage({ params }: Props) {
   const t = (field: any): string | undefined =>
     field ? (getLocalizedValue(field, typedLocale) as string | undefined) : undefined;
 
-  const heroTitle: string = t(page?.heroTitle) ?? "Your Secret Escape";
-  const heroSubtitle = t(page?.whySection) ??
-    "Chiliadou — a Blue Flag beach on the Corinthian Gulf, hidden from the world and waiting for you.";
+  const heroTitle = t(page?.heroTitle) ?? "";
+  const heroSubtitle = t(page?.whySection);
 
   return (
     <>
       <PageHero
         title={heroTitle}
         subtitle={heroSubtitle}
-        backgroundImage="/assets/pdf/page-04-location.jpg"
+        backgroundImage={page?.heroImage ? getSanityImageUrl(page.heroImage, 1920) : undefined}
         compact
       />
 

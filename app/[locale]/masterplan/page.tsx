@@ -24,12 +24,6 @@ import type {
   UiStrings,
   UnitFlat,
 } from "@/lib/sanity/types";
-import {
-  fallbackPlots,
-  fallbackUnitsFlat,
-  fallbackStats,
-  getFallbackMasterplanPage,
-} from "@/lib/fallback-data";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -48,8 +42,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   } catch {
     // fallback metadata
   }
-  if (!page) page = getFallbackMasterplanPage();
-
   return buildPageMetadata(page, locale as Locale, "/masterplan", {
     title: "Masterplan — Sea'cret Residences",
     description:
@@ -78,33 +70,29 @@ export default async function MasterplanPage({ params }: Props) {
     const result = await sanityClient.fetch<MasterplanPageType>(masterplanPageQuery);
     if (result) page = result;
   } catch {
-    // page hero uses fallbacks
+    // CMS unavailable
   }
-  if (!page) page = getFallbackMasterplanPage();
 
   try {
     const result = await sanityClient.fetch<PlotWithUnits[]>(allPlotsQuery);
     if (result?.length) plots = result;
   } catch {
-    // use fallback below
+    // CMS unavailable
   }
-  if (!plots.length) plots = fallbackPlots;
 
   try {
     const result = await sanityClient.fetch<UnitFlat[]>(allUnitsQuery);
     if (result?.length) units = result;
   } catch {
-    // use fallback below
+    // CMS unavailable
   }
-  if (!units.length) units = fallbackUnitsFlat;
 
   try {
     const result = await sanityClient.fetch(availabilityStatsQuery);
     if (result) stats = result;
   } catch {
-    // use fallback below
+    // CMS unavailable
   }
-  if (!stats || stats.total === 0) stats = fallbackStats;
 
   try {
     const result = await sanityClient.fetch<UiStrings>(uiStringsQuery);
@@ -114,17 +102,16 @@ export default async function MasterplanPage({ params }: Props) {
   }
 
   const heroTitle =
-    getLocalizedValue(page?.heroTitle, typedLocale) ?? "The Masterplan";
+    getLocalizedValue(page?.heroTitle, typedLocale) ?? "";
   const heroImageUrl = page?.heroImage
     ? getSanityImageUrl(page.heroImage, 1920)
     : null;
   const introCopy = getLocalizedValue(page?.introCopy, typedLocale);
 
-  // Stat labels from CMS with English fallbacks
-  const statTotalLabel = t(page?.statTotalLabel) || "Total Residences";
-  const statAvailableLabel = t(page?.statAvailableLabel) || "Available";
-  const statReservedLabel = t(page?.statReservedLabel) || "Reserved";
-  const statSoldLabel = t(page?.statSoldLabel) || "Sold";
+  const statTotalLabel = t(page?.statTotalLabel) ?? "";
+  const statAvailableLabel = t(page?.statAvailableLabel) ?? "";
+  const statReservedLabel = t(page?.statReservedLabel) ?? "";
+  const statSoldLabel = t(page?.statSoldLabel) ?? "";
 
   const statsItems = stats
     ? [
@@ -133,46 +120,40 @@ export default async function MasterplanPage({ params }: Props) {
         { label: statReservedLabel, value: stats.reserved },
         { label: statSoldLabel, value: stats.sold },
       ]
-    : [
-        { label: statTotalLabel, value: 39 },
-        { label: t(page?.statPlotsLabel) || "Plots", value: 6 },
-      ];
+    : [];
 
-  // Legend labels for the visual explorer
   const legendLabels = {
-    available: t(uiStrings?.statusAvailable) || "Available",
-    reserved: t(uiStrings?.statusReserved) || "Reserved",
-    sold: t(uiStrings?.statusSold) || "Sold",
+    available: t(uiStrings?.statusAvailable) ?? "",
+    reserved: t(uiStrings?.statusReserved) ?? "",
+    sold: t(uiStrings?.statusSold) ?? "",
   };
 
-  // Panel labels for plot detail panel
   const panelLabels = {
-    selectPlot: t(uiStrings?.miscSelectPlot) || "Select a plot on the map to see details",
-    unitsAvailable: t(uiStrings?.miscAvailable) || "available",
-    of: t(uiStrings?.miscOf) || "of",
-    noUnits: t(uiStrings?.miscDataComing) || "No units assigned to this plot yet.",
-    unit: t(uiStrings?.miscUnit) || "unit",
-    units: t(uiStrings?.miscUnits) || "units",
+    selectPlot: t(uiStrings?.miscSelectPlot) ?? "",
+    unitsAvailable: t(uiStrings?.miscAvailable) ?? "",
+    of: t(uiStrings?.miscOf) ?? "",
+    noUnits: t(uiStrings?.miscDataComing) ?? "",
+    unit: t(uiStrings?.miscUnit) ?? "",
+    units: t(uiStrings?.miscUnits) ?? "",
   };
 
-  // Inventory table labels
   const inventoryLabels = {
-    filterPlot: t(uiStrings?.filterPlot) || "Plot",
-    filterType: t(uiStrings?.filterType) || "Type",
-    filterAllTypes: t(uiStrings?.filterAllTypes) || "All Types",
-    filterAvailableOnly: t(uiStrings?.filterAvailableOnly) || "Available only",
-    filterShowing: t(uiStrings?.filterShowing) || "Showing",
-    filterOf: t(uiStrings?.miscOf) || "of",
-    filterNoResults: t(uiStrings?.filterNoResults) || "No units match your filters",
-    dataComing: t(uiStrings?.miscDataComing) || "Inventory data coming soon",
-    miscUnits: t(uiStrings?.miscUnits) || "units",
-    tablePlot: t(uiStrings?.tablePlot) || "Plot",
-    tableUnitNumber: t(uiStrings?.tableUnitNumber) || "Unit #",
-    tableVillaType: t(uiStrings?.tableVillaType) || "Villa Type",
-    tableBeds: t(uiStrings?.tableBeds) || "Beds",
-    tableTotalArea: t(uiStrings?.tableTotalArea) || "Total Area",
-    tablePriceFrom: t(uiStrings?.tablePriceFrom) || "Price From",
-    tableStatus: t(uiStrings?.tableStatus) || "Status",
+    filterPlot: t(uiStrings?.filterPlot) ?? "",
+    filterType: t(uiStrings?.filterType) ?? "",
+    filterAllTypes: t(uiStrings?.filterAllTypes) ?? "",
+    filterAvailableOnly: t(uiStrings?.filterAvailableOnly) ?? "",
+    filterShowing: t(uiStrings?.filterShowing) ?? "",
+    filterOf: t(uiStrings?.miscOf) ?? "",
+    filterNoResults: t(uiStrings?.filterNoResults) ?? "",
+    dataComing: t(uiStrings?.miscDataComing) ?? "",
+    miscUnits: t(uiStrings?.miscUnits) ?? "",
+    tablePlot: t(uiStrings?.tablePlot) ?? "",
+    tableUnitNumber: t(uiStrings?.tableUnitNumber) ?? "",
+    tableVillaType: t(uiStrings?.tableVillaType) ?? "",
+    tableBeds: t(uiStrings?.tableBeds) ?? "",
+    tableTotalArea: t(uiStrings?.tableTotalArea) ?? "",
+    tablePriceFrom: t(uiStrings?.tablePriceFrom) ?? "",
+    tableStatus: t(uiStrings?.tableStatus) ?? "",
   };
 
   return (
@@ -182,10 +163,7 @@ export default async function MasterplanPage({ params }: Props) {
         title={heroTitle}
         backgroundImage={heroImageUrl}
         compact
-        subtitle={
-          introCopy ??
-          "6 residential plots. 39 exclusive villas. Explore the layout."
-        }
+        subtitle={introCopy}
       />
 
       {/* Stats bar */}
@@ -199,12 +177,9 @@ export default async function MasterplanPage({ params }: Props) {
       <section className="py-20 lg:py-28">
         <div className="section-shell">
           <SectionHeading
-            eyebrow={t(page?.explorerEyebrow) || "Explore"}
-            title={t(page?.explorerTitle) || "Interactive Masterplan"}
-            description={
-              t(page?.explorerDescription) ||
-              "Click on a plot to view its residences, availability, and pricing."
-            }
+            eyebrow={t(page?.explorerEyebrow) ?? ""}
+            title={t(page?.explorerTitle) ?? ""}
+            description={t(page?.explorerDescription) ?? ""}
           />
           <div className="mt-12">
             <MasterplanInteractive
@@ -221,12 +196,9 @@ export default async function MasterplanPage({ params }: Props) {
       <section className="bg-[var(--color-cream)] py-20 lg:py-28">
         <div className="section-shell">
           <SectionHeading
-            eyebrow={t(page?.inventoryEyebrow) || "Full Inventory"}
-            title={t(page?.inventoryTitle) || "All Residences"}
-            description={
-              t(page?.inventoryDescription) ||
-              "Filter, sort, and browse every available unit across all plots."
-            }
+            eyebrow={t(page?.inventoryEyebrow) ?? ""}
+            title={t(page?.inventoryTitle) ?? ""}
+            description={t(page?.inventoryDescription) ?? ""}
           />
           <div className="mt-12">
             <InventoryTable units={units} locale={typedLocale} labels={inventoryLabels} />
