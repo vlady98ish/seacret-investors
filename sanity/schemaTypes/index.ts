@@ -11,6 +11,7 @@ import { masterplanPageType } from "./masterplanPage";
 import { plotType } from "./plot";
 import { residencesPageType } from "./residencesPage";
 import { siteSettingsType } from "./siteSettings";
+import { uiStringsType } from "./uiStrings";
 import { unitType } from "./unit";
 import { upgradeType } from "./upgrade";
 import { villaType } from "./villa";
@@ -19,6 +20,7 @@ export const schemaTypes = [
   localeStringType,
   localeTextType,
   siteSettingsType,
+  uiStringsType,
   homePageType,
   residencesPageType,
   locationPageType,

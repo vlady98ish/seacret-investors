@@ -1,0 +1,138 @@
+import { defineField, defineType } from "sanity";
+
+const ls = (name: string, title: string) =>
+  defineField({ name, title, type: "localeString" });
+
+const lt = (name: string, title: string) =>
+  defineField({ name, title, type: "localeText" });
+
+export const uiStringsType = defineType({
+  name: "uiStrings",
+  title: "UI Strings",
+  type: "document",
+  groups: [
+    { name: "nav", title: "Navigation" },
+    { name: "footer", title: "Footer" },
+    { name: "status", title: "Status" },
+    { name: "specs", title: "Specs" },
+    { name: "form", title: "Form" },
+    { name: "cta", title: "CTA" },
+    { name: "filters", title: "Filters & Tables" },
+    { name: "pricing", title: "Pricing" },
+    { name: "misc", title: "Misc" },
+  ],
+  fields: [
+    // Navigation
+    { ...ls("navHome", "Nav: Home"), group: "nav" },
+    { ...ls("navResidences", "Nav: Residences"), group: "nav" },
+    { ...ls("navMasterplan", "Nav: Masterplan"), group: "nav" },
+    { ...ls("navLocation", "Nav: Location"), group: "nav" },
+    { ...ls("navAbout", "Nav: About"), group: "nav" },
+    { ...ls("navContact", "Nav: Contact"), group: "nav" },
+
+    // Footer
+    { ...lt("footerTagline", "Footer: Tagline"), group: "footer" },
+    { ...ls("footerNavigate", "Footer: Navigate"), group: "footer" },
+    { ...ls("footerLegal", "Footer: Legal"), group: "footer" },
+    { ...ls("footerPrivacyPolicy", "Footer: Privacy Policy"), group: "footer" },
+    { ...ls("footerTerms", "Footer: Terms"), group: "footer" },
+    { ...ls("footerCookiePolicy", "Footer: Cookie Policy"), group: "footer" },
+    { ...ls("footerAllRights", "Footer: All Rights"), group: "footer" },
+
+    // Status
+    { ...ls("statusAvailable", "Status: Available"), group: "status" },
+    { ...ls("statusReserved", "Status: Reserved"), group: "status" },
+    { ...ls("statusSold", "Status: Sold"), group: "status" },
+    { ...ls("statusSoldOut", "Status: Sold Out"), group: "status" },
+
+    // Specs
+    { ...ls("specBedrooms", "Spec: Bedrooms"), group: "specs" },
+    { ...ls("specBathrooms", "Spec: Bathrooms"), group: "specs" },
+    { ...ls("specTotalArea", "Spec: Total Area"), group: "specs" },
+    { ...ls("specOutdoorArea", "Spec: Outdoor Area"), group: "specs" },
+    { ...ls("specPool", "Spec: Pool"), group: "specs" },
+    { ...ls("specParking", "Spec: Parking"), group: "specs" },
+    { ...ls("specYes", "Spec: Yes"), group: "specs" },
+    { ...ls("specNo", "Spec: No"), group: "specs" },
+
+    // Form
+    { ...ls("formFullName", "Form: Full Name"), group: "form" },
+    { ...ls("formEmail", "Form: Email"), group: "form" },
+    { ...ls("formPhone", "Form: Phone"), group: "form" },
+    { ...ls("formMessage", "Form: Message"), group: "form" },
+    { ...ls("formSubmit", "Form: Submit"), group: "form" },
+    { ...ls("formSending", "Form: Sending"), group: "form" },
+    { ...ls("formSuccess", "Form: Success"), group: "form" },
+    { ...ls("formError", "Form: Error"), group: "form" },
+    { ...lt("formGdpr", "Form: GDPR Consent Text"), group: "form" },
+    { ...ls("formSelectOne", "Form: Select One"), group: "form" },
+    { ...ls("formBack", "Form: Back"), group: "form" },
+    { ...ls("formNext", "Form: Next"), group: "form" },
+
+    // CTA
+    { ...ls("ctaScheduleTour", "CTA: Schedule Tour"), group: "cta" },
+    { ...ls("ctaRequestInfo", "CTA: Request Info"), group: "cta" },
+    { ...ls("ctaDownloadBrochure", "CTA: Download Brochure"), group: "cta" },
+    { ...ls("ctaWhatsappUs", "CTA: WhatsApp Us"), group: "cta" },
+    { ...ls("ctaExploreResidences", "CTA: Explore Residences"), group: "cta" },
+    { ...ls("ctaViewAll", "CTA: View All"), group: "cta" },
+    { ...ls("ctaSendRequest", "CTA: Send Request"), group: "cta" },
+    { ...ls("ctaContactUs", "CTA: Contact Us"), group: "cta" },
+
+    // Filters & Tables
+    { ...ls("filterBedrooms", "Filter: Bedrooms"), group: "filters" },
+    { ...ls("filterAvailableOnly", "Filter: Available Only"), group: "filters" },
+    { ...ls("filterSort", "Filter: Sort"), group: "filters" },
+    { ...ls("filterSortName", "Filter: Sort by Name"), group: "filters" },
+    { ...ls("filterPriceLowHigh", "Filter: Price Low–High"), group: "filters" },
+    { ...ls("filterSizeSmallLarge", "Filter: Size Small–Large"), group: "filters" },
+    { ...ls("filterNoResults", "Filter: No Results"), group: "filters" },
+    { ...ls("filterAll", "Filter: All"), group: "filters" },
+    { ...ls("filterAllTypes", "Filter: All Types"), group: "filters" },
+    { ...ls("filterPlot", "Filter: Plot"), group: "filters" },
+    { ...ls("filterType", "Filter: Type"), group: "filters" },
+    { ...ls("filterShowing", "Filter: Showing"), group: "filters" },
+    { ...ls("tableUnitNumber", "Table: Unit Number"), group: "filters" },
+    { ...ls("tableVillaType", "Table: Villa Type"), group: "filters" },
+    { ...ls("tableBeds", "Table: Beds"), group: "filters" },
+    { ...ls("tableTotalArea", "Table: Total Area"), group: "filters" },
+    { ...ls("tablePriceFrom", "Table: Price From"), group: "filters" },
+    { ...ls("tableStatus", "Table: Status"), group: "filters" },
+    { ...ls("tableAreaM2", "Table: Area (m²)"), group: "filters" },
+    { ...ls("tablePool", "Table: Pool"), group: "filters" },
+    { ...ls("tablePlot", "Table: Plot"), group: "filters" },
+
+    // Pricing
+    { ...ls("pricingFrom", "Pricing: From"), group: "pricing" },
+    { ...ls("pricingContactFor", "Pricing: Contact For"), group: "pricing" },
+
+    // Misc
+    { ...ls("miscNoImage", "Misc: No Image"), group: "misc" },
+    { ...ls("miscComingSoon", "Misc: Coming Soon"), group: "misc" },
+    { ...ls("miscImageComing", "Misc: Image Coming"), group: "misc" },
+    { ...ls("miscDataComing", "Misc: Data Coming"), group: "misc" },
+    { ...ls("miscUnit", "Misc: Unit (singular)"), group: "misc" },
+    { ...ls("miscUnits", "Misc: Units (plural)"), group: "misc" },
+    { ...ls("miscAvailable", "Misc: Available"), group: "misc" },
+    { ...ls("miscBed", "Misc: Bed (singular)"), group: "misc" },
+    { ...ls("miscBeds", "Misc: Beds (plural)"), group: "misc" },
+    { ...ls("miscOf", "Misc: Of"), group: "misc" },
+    { ...ls("miscGetInTouch", "Misc: Get In Touch"), group: "misc" },
+    { ...ls("miscReadyToDiscover", "Misc: Ready to Discover"), group: "misc" },
+    { ...lt("miscContactPromise", "Misc: Contact Promise"), group: "misc" },
+    { ...ls("miscGallery", "Misc: Gallery"), group: "misc" },
+    { ...ls("miscFloorPlans", "Misc: Floor Plans"), group: "misc" },
+    { ...ls("miscPricing", "Misc: Pricing"), group: "misc" },
+    { ...ls("miscAvailableUnits", "Misc: Available Units"), group: "misc" },
+    { ...ls("misc3dTour", "Misc: 3D Tour"), group: "misc" },
+    { ...ls("miscExploreMore", "Misc: Explore More"), group: "misc" },
+    { ...ls("miscYouMightLike", "Misc: You Might Like"), group: "misc" },
+    { ...lt("miscYouMightLikeDesc", "Misc: You Might Like Description"), group: "misc" },
+    { ...ls("miscGroundFloor", "Misc: Ground Floor"), group: "misc" },
+    { ...ls("miscUpperFloor", "Misc: Upper Floor"), group: "misc" },
+    { ...ls("miscAttic", "Misc: Attic"), group: "misc" },
+    { ...ls("miscFloor", "Misc: Floor"), group: "misc" },
+    { ...ls("miscVillaSpecs", "Misc: Villa Specs"), group: "misc" },
+    { ...ls("miscDetailsComing", "Misc: Details Coming"), group: "misc" },
+  ],
+});
