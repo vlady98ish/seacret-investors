@@ -13,6 +13,7 @@ interface DirectContactSectionProps {
   labelPhone?: string;
   labelOfficeHours?: string;
   responsePromise?: string;
+  labelChatWhatsapp?: string;
 }
 
 const FALLBACK_WHATSAPP = "972501234567";
@@ -30,6 +31,7 @@ export function DirectContactSection({
   labelPhone,
   labelOfficeHours,
   responsePromise,
+  labelChatWhatsapp,
 }: DirectContactSectionProps) {
   const whatsapp = settings?.whatsappNumber ?? FALLBACK_WHATSAPP;
   const email = settings?.salesEmail ?? FALLBACK_EMAIL;
@@ -64,7 +66,7 @@ export function DirectContactSection({
         className="btn btn-primary flex items-center gap-3 w-full sm:w-auto"
       >
         <MessageCircle className="w-5 h-5 flex-shrink-0" />
-        <span>Chat on WhatsApp</span>
+        <span>{labelChatWhatsapp || "Chat on WhatsApp"}</span>
       </a>
 
       {/* Contact details */}

@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
+import { useT } from "@/lib/ui-strings-context";
 import { captureUTM } from "@/lib/utm";
 
 /* ── Fallback villa names ────────────────────────────────── */
@@ -141,27 +142,27 @@ export function MultiStepForm({
   timelineOptions,
 }: MultiStepFormProps) {
   const dict = {
-    generalInquiry: labelGeneralInquiry || "General Inquiry",
-    successTitle: "Thank you!",
-    successMessage: labelSuccess || "We have received your enquiry and will be in touch shortly.",
-    stepInterest: labelStep1 || "What are you interested in?",
-    selectInterest: "Choose a villa type or general inquiry",
-    stepDetails: labelStep2 || "Your details",
-    fullName: labelFullName || "Full Name",
-    email: labelEmail || "Email",
-    phone: labelPhone || "Phone",
-    phonePlaceholder: "+30 XXX XXX XXXX",
-    stepAdditional: labelStep3 || "Additional information",
-    budgetRange: labelBudgetRange || "Budget Range",
-    timeline: labelTimeline || "Timeline",
-    message: labelMessage || "Message",
-    messagePlaceholder: "Tell us about your plans...",
-    gdprConsent: labelGdpr || "I agree to the processing of my personal data in accordance with the Privacy Policy.",
-    errorMessage: labelError || "Something went wrong. Please try again or contact us directly.",
-    back: labelBack || "Back",
-    next: labelNext || "Next",
-    submit: labelSubmit || "Send Enquiry",
-    sending: labelSending || "Sending...",
+    generalInquiry: labelGeneralInquiry || useT("formGeneralInquiry", "General Inquiry"),
+    successTitle: useT("formThankYou", "Thank you!"),
+    successMessage: labelSuccess || useT("formThankYouMessage", "We have received your enquiry and will be in touch shortly."),
+    stepInterest: labelStep1 || useT("formWhatInterested", "What are you interested in?"),
+    selectInterest: useT("formChooseVilla", "Choose a villa type or general inquiry"),
+    stepDetails: labelStep2 || useT("formYourDetails", "Your details"),
+    fullName: labelFullName || useT("formFullName", "Full Name"),
+    email: labelEmail || useT("formEmail", "Email"),
+    phone: labelPhone || useT("formPhone", "Phone"),
+    phonePlaceholder: useT("formPhonePlaceholder", "+30 XXX XXX XXXX"),
+    stepAdditional: labelStep3 || useT("formAdditionalInfo", "Additional information"),
+    budgetRange: labelBudgetRange || useT("formBudgetRange", "Budget Range"),
+    timeline: labelTimeline || useT("formTimeline", "Timeline"),
+    message: labelMessage || useT("formMessage", "Message"),
+    messagePlaceholder: useT("formMessagePlaceholder", "Tell us about your plans..."),
+    gdprConsent: labelGdpr || useT("formGdpr", "I agree to the processing of my personal data in accordance with the Privacy Policy."),
+    errorMessage: labelError || useT("formError", "Something went wrong. Please try again or contact us directly."),
+    back: labelBack || useT("formBack", "Back"),
+    next: labelNext || useT("formNext", "Next"),
+    submit: labelSubmit || useT("formSubmit", "Send Enquiry"),
+    sending: labelSending || useT("formSending", "Sending..."),
   };
   const resolvedBudgetOptions = budgetOptions?.length ? budgetOptions : DEFAULT_BUDGET_OPTIONS;
   const resolvedTimelineOptions = timelineOptions?.length ? timelineOptions : DEFAULT_TIMELINE_OPTIONS;
@@ -318,7 +319,7 @@ export function MultiStepForm({
         {/* ── Step 1: Interest ────────────────────────── */}
         {step === 1 && (
           <div className="animate-fade-in">
-            <p className="eyebrow text-[var(--color-deep-teal)] mb-2">Step 1 / 3</p>
+            <p className="eyebrow text-[var(--color-deep-teal)] mb-2">{useT("formStep", "Step")} 1 / 3</p>
             <h2 className="text-h2 text-[var(--color-night)] mb-6">{dict.stepInterest}</h2>
             <p className="text-body-muted text-sm mb-6">{dict.selectInterest}</p>
 
@@ -350,7 +351,7 @@ export function MultiStepForm({
         {step === 2 && (
           <div className="animate-fade-in grid gap-5">
             <div>
-              <p className="eyebrow text-[var(--color-deep-teal)] mb-2">Step 2 / 3</p>
+              <p className="eyebrow text-[var(--color-deep-teal)] mb-2">{useT("formStep", "Step")} 2 / 3</p>
               <h2 className="text-h2 text-[var(--color-night)] mb-6">{dict.stepDetails}</h2>
             </div>
 
@@ -396,7 +397,7 @@ export function MultiStepForm({
         {step === 3 && (
           <div className="animate-fade-in grid gap-5">
             <div>
-              <p className="eyebrow text-[var(--color-deep-teal)] mb-2">Step 3 / 3</p>
+              <p className="eyebrow text-[var(--color-deep-teal)] mb-2">{useT("formStep", "Step")} 3 / 3</p>
               <h2 className="text-h2 text-[var(--color-night)] mb-6">{dict.stepAdditional}</h2>
             </div>
 

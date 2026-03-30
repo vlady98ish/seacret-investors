@@ -149,6 +149,7 @@ export default async function ResidencesPage({ params }: Props) {
     contactUs: t(uiStrings?.ctaContactUs) || "Contact us",
     soldOut: t(uiStrings?.statusSoldOut) || "Sold Out",
     available: t(uiStrings?.statusAvailable) || "Available",
+    fromLabel: t(uiStrings?.pricingFrom) || "From",
   };
 
   return (

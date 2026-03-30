@@ -13,6 +13,7 @@ type TableHeaders = {
   contactUs?: string;
   soldOut?: string;
   available?: string;
+  fromLabel?: string;
 };
 
 type ComparisonTableProps = {
@@ -32,6 +33,7 @@ export function ComparisonTable({ villas, units, headers }: ComparisonTableProps
   const contactUsLabel = headers?.contactUs || "Contact us";
   const soldOutLabel = headers?.soldOut || "Sold Out";
   const availableLabel = headers?.available || "Available";
+  const fromLabel = headers?.fromLabel || "From";
 
   return (
     <div className="overflow-x-auto">
@@ -98,7 +100,7 @@ export function ComparisonTable({ villas, units, headers }: ComparisonTableProps
                     <span className="text-[var(--color-muted)]">—</span>
                   ) : minAvailableArea ? (
                     <span className="font-semibold text-[var(--color-deep-teal)]">
-                      {formatPriceFrom(minAvailableArea)}
+                      {formatPriceFrom(minAvailableArea, fromLabel)}
                     </span>
                   ) : (
                     <span className="text-[var(--color-muted)]">{contactUsLabel}</span>
