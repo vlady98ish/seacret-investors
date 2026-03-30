@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { StickyCTA } from "@/components/sticky-cta";
-import { isRtl, isValidLocale, type Locale } from "@/lib/i18n";
+import { getLocalizedValue, isRtl, isValidLocale, type Locale } from "@/lib/i18n";
 import { getUiStrings, getSiteSettings } from "@/lib/sanity/ui-strings";
 
 type LocaleLayoutProps = {
@@ -28,7 +28,14 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
       <SiteHeader locale={typedLocale} uiStrings={uiStrings} siteSettings={siteSettings} />
       <main className="min-h-screen">{children}</main>
       <SiteFooter locale={typedLocale} uiStrings={uiStrings} siteSettings={siteSettings} />
-      <StickyCTA locale={typedLocale} />
+      <StickyCTA
+        locale={typedLocale}
+        labelTitle={getLocalizedValue(uiStrings?.ctaRequestInfo, typedLocale)}
+        labelFullName={getLocalizedValue(uiStrings?.formFullName, typedLocale)}
+        labelEmail={getLocalizedValue(uiStrings?.formEmail, typedLocale)}
+        labelPhone={getLocalizedValue(uiStrings?.formPhone, typedLocale)}
+        labelSubmit={getLocalizedValue(uiStrings?.ctaSendRequest, typedLocale)}
+      />
     </div>
   );
 }

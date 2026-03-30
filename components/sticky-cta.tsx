@@ -9,9 +9,14 @@ import type { Locale } from "@/lib/i18n";
 type StickyCTAProps = {
   locale: Locale;
   context?: string;
+  labelTitle?: string;
+  labelFullName?: string;
+  labelEmail?: string;
+  labelPhone?: string;
+  labelSubmit?: string;
 };
 
-export function StickyCTA({ locale: _locale, context }: StickyCTAProps) {
+export function StickyCTA({ locale: _locale, context, labelTitle, labelFullName, labelEmail, labelPhone, labelSubmit }: StickyCTAProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -47,7 +52,7 @@ export function StickyCTA({ locale: _locale, context }: StickyCTAProps) {
         )}
       >
         <div className="flex items-center justify-between">
-          <p className="eyebrow">Request Information</p>
+          <p className="eyebrow">{labelTitle || "Request Information"}</p>
           <button
             onClick={() => setOpen(false)}
             className="flex h-10 w-10 items-center justify-center rounded-md text-[var(--color-muted)] transition hover:text-[var(--color-ink)]"
@@ -67,26 +72,26 @@ export function StickyCTA({ locale: _locale, context }: StickyCTAProps) {
           <input
             type="text"
             name="fullName"
-            placeholder="Full Name *"
+            placeholder={`${labelFullName || "Full Name"} *`}
             required
             className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
           />
           <input
             type="email"
             name="email"
-            placeholder="Email *"
+            placeholder={`${labelEmail || "Email"} *`}
             required
             className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
           />
           <input
             type="tel"
             name="phone"
-            placeholder="Phone"
+            placeholder={labelPhone || "Phone"}
             className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
           />
           {context && <input type="hidden" name="interest" value={context} />}
           <button type="submit" className="btn btn-primary mt-2 w-full">
-            Send Request
+            {labelSubmit || "Send Request"}
           </button>
         </form>
       </div>
