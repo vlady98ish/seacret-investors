@@ -2,12 +2,16 @@ import Link from "next/link";
 
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import type { Locale } from "@/lib/i18n";
+import type { UiStrings, SiteSettings } from "@/lib/sanity/types";
 
 type SiteFooterProps = {
   locale: Locale;
+  uiStrings?: UiStrings | null;
+  siteSettings?: SiteSettings | null;
 };
 
-export function SiteFooter({ locale }: SiteFooterProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function SiteFooter({ locale, uiStrings, siteSettings }: SiteFooterProps) {
   return (
     <footer className="bg-[var(--color-night)] px-4 py-16 text-white/60 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-3">

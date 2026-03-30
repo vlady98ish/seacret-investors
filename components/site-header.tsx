@@ -8,9 +8,12 @@ import { useEffect, useState } from "react";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
+import type { UiStrings, SiteSettings } from "@/lib/sanity/types";
 
 type SiteHeaderProps = {
   locale: Locale;
+  uiStrings?: UiStrings | null;
+  siteSettings?: SiteSettings | null;
 };
 
 const navItems = [
@@ -22,7 +25,8 @@ const navItems = [
   { key: "contact", href: "/contact" },
 ];
 
-export function SiteHeader({ locale }: SiteHeaderProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
