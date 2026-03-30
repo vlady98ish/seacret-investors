@@ -187,6 +187,7 @@ export default async function MasterplanPage({ params }: Props) {
               locale={typedLocale}
               legendLabels={legendLabels}
               panelLabels={panelLabels}
+              aerialImageUrl={heroImageUrl}
             />
           </div>
         </div>

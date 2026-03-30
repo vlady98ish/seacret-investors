@@ -27,6 +27,7 @@ type MasterplanInteractiveProps = {
   locale: Locale;
   legendLabels?: LegendLabels;
   panelLabels?: PanelLabels;
+  aerialImageUrl?: string | null;
 };
 
 export function MasterplanInteractive({
@@ -34,6 +35,7 @@ export function MasterplanInteractive({
   locale,
   legendLabels,
   panelLabels,
+  aerialImageUrl,
 }: MasterplanInteractiveProps) {
   const [selectedPlotId, setSelectedPlotId] = useState<string | null>(null);
 
@@ -50,6 +52,7 @@ export function MasterplanInteractive({
             setSelectedPlotId((prev) => (prev === id ? null : id))
           }
           legendLabels={legendLabels}
+          aerialImageUrl={aerialImageUrl}
         />
       </div>
 
