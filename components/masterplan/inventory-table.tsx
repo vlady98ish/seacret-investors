@@ -8,6 +8,7 @@ import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
 import { computePriceFrom, formatPriceFrom } from "@/lib/pricing";
 import type { UnitFlat } from "@/lib/sanity/types";
+import { useT } from "@/lib/ui-strings-context";
 
 type InventoryTableLabels = {
   filterPlot: string;
@@ -45,6 +46,12 @@ function getPlotLetter(plotName: string): string {
 }
 
 export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
+  const statusAvailable = useT("statusAvailable", "Available");
+  const statusReserved = useT("statusReserved", "Reserved");
+  const statusSold = useT("statusSold", "Sold");
+  const bedLabel = useT("miscBed", "Bed");
+  const bedsLabel = useT("miscBeds", "Beds");
+
   const lbl = {
     filterPlot: labels?.filterPlot || "Plot",
     filterType: labels?.filterType || "Type",
@@ -162,7 +169,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
                     : "border-[rgba(13,103,119,0.2)] bg-transparent text-[var(--color-ink)] hover:border-[var(--color-deep-teal)]"
                 )}
               >
-                {opt}
+                {opt === "All" ? useT("filterAll", "All") : opt}
               </button>
             ))}
           </div>
@@ -273,7 +280,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
                       {formatPriceFrom(unit.totalArea)}
                     </td>
                     <td className="px-4 py-3">
-                      <StatusBadge status={unit.status} />
+                      <StatusBadge status={unit.status} labelAvailable={statusAvailable} labelReserved={statusReserved} labelSold={statusSold} />
                     </td>
                   </tr>
                 ))}
@@ -291,7 +298,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
                 <div className="mb-2 flex items-start justify-between">
                   <div>
                     <p className="text-sm font-semibold text-[var(--color-ink)]">
-                      Plot {getPlotLetter(unit.plotName)} &middot; #{unit.unitNumber}
+                      {lbl.tablePlot} {getPlotLetter(unit.plotName)} &middot; #{unit.unitNumber}
                     </p>
                     <Link
                       href={`/${locale}/villas/${unit.villaTypeSlug}`}
@@ -300,10 +307,10 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
                       {unit.villaTypeName}
                     </Link>
                   </div>
-                  <StatusBadge status={unit.status} />
+                  <StatusBadge status={unit.status} labelAvailable={statusAvailable} labelReserved={statusReserved} labelSold={statusSold} />
                 </div>
                 <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-muted)]">
-                  <span>{unit.bedrooms} Bed{unit.bedrooms !== 1 ? "s" : ""}</span>
+                  <span>{unit.bedrooms} {unit.bedrooms !== 1 ? bedsLabel : bedLabel}</span>
                   <span>{unit.totalArea} m&sup2;</span>
                   <span className="font-medium text-[var(--color-deep-teal)]">
                     {formatPriceFrom(unit.totalArea)}

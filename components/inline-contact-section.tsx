@@ -1,4 +1,7 @@
+"use client";
+
 import type { Locale } from "@/lib/i18n";
+import { useT } from "@/lib/ui-strings-context";
 
 type InlineContactStrings = {
   eyebrow?: string;
@@ -20,16 +23,16 @@ type InlineContactSectionProps = {
 };
 
 export function InlineContactSection({ locale: _locale, preferredOption, strings }: InlineContactSectionProps) {
-  const eyebrow = strings?.eyebrow || "Get in Touch";
-  const title = strings?.title || "Ready to discover your Sea\u2019cret?";
-  const description = strings?.description || "Schedule a private viewing or request detailed information about our residences. A member of our team will contact you within 24 hours.";
-  const whatsappUs = strings?.whatsappUs || "WhatsApp Us";
-  const formFullName = strings?.formFullName || "Full Name *";
-  const formEmail = strings?.formEmail || "Email *";
-  const formPhone = strings?.formPhone || "Phone";
-  const formMessage = strings?.formMessage || "Message";
-  const formGdpr = strings?.formGdpr || "I agree to the Privacy Policy and consent to being contacted";
-  const formSubmit = strings?.formSubmit || "Send Request";
+  const eyebrow = strings?.eyebrow || useT("miscGetInTouch", "Get in Touch");
+  const title = strings?.title || useT("miscReadyToDiscover", "Ready to discover your Sea\u2019cret?");
+  const description = strings?.description || useT("miscContactPromise", "Schedule a private viewing or request detailed information about our residences.");
+  const whatsappUs = strings?.whatsappUs || useT("ctaWhatsappUs", "WhatsApp Us");
+  const formFullName = strings?.formFullName || useT("formFullName", "Full Name *");
+  const formEmail = strings?.formEmail || useT("formEmail", "Email *");
+  const formPhone = strings?.formPhone || useT("formPhone", "Phone");
+  const formMessage = strings?.formMessage || useT("formMessage", "Message");
+  const formGdpr = strings?.formGdpr || useT("formGdpr", "I agree to the Privacy Policy and consent to being contacted");
+  const formSubmit = strings?.formSubmit || useT("ctaSendRequest", "Send Request");
 
   return (
     <section className="bg-[var(--color-night)] px-4 py-20 sm:px-6 lg:px-8">

@@ -8,6 +8,7 @@ import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
 import { computePriceFrom } from "@/lib/pricing";
 import type { UnitFlat, Villa } from "@/lib/sanity/types";
+import { useT } from "@/lib/ui-strings-context";
 import { getVillaImages } from "@/lib/villa-images";
 
 type FilterLabels = {
@@ -33,14 +34,14 @@ type SortOption = "name" | "price-asc" | "size-asc";
 const BEDROOM_COUNTS = ["1", "2", "3", "5"] as const;
 
 export function VillaFilters({ villas, units, locale, labels }: VillaFiltersProps) {
-  const allLabel = labels?.all || "All";
-  const bedroomsLabel = labels?.bedrooms || "Bedrooms";
-  const availableOnlyLabel = labels?.availableOnly || "Available only";
-  const sortLabel = labels?.sort || "Sort";
-  const sortNameLabel = labels?.sortName || "Name";
-  const sortPriceLowHighLabel = labels?.sortPriceLowHigh || "Price: Low to High";
-  const sortSizeSmallLargeLabel = labels?.sortSizeSmallLarge || "Size: Small to Large";
-  const noResultsLabel = labels?.noResults || "No villas match your criteria";
+  const allLabel = labels?.all || useT("filterAll", "All");
+  const bedroomsLabel = labels?.bedrooms || useT("filterBedrooms", "Bedrooms");
+  const availableOnlyLabel = labels?.availableOnly || useT("filterAvailableOnly", "Available only");
+  const sortLabel = labels?.sort || useT("filterSort", "Sort");
+  const sortNameLabel = labels?.sortName || useT("filterSortName", "Name");
+  const sortPriceLowHighLabel = labels?.sortPriceLowHigh || useT("filterPriceLowHigh", "Price: Low to High");
+  const sortSizeSmallLargeLabel = labels?.sortSizeSmallLarge || useT("filterSizeSmallLarge", "Size: Small to Large");
+  const noResultsLabel = labels?.noResults || useT("filterNoResults", "No villas match your criteria");
 
   // null means "All" (no bedroom filter)
   const [bedroomFilter, setBedroomFilter] = useState<string | null>(null);
@@ -190,6 +191,10 @@ export function VillaFilters({ villas, units, locale, labels }: VillaFiltersProp
                   locale={locale}
                   units={villaUnits.map((u) => ({ totalArea: u.totalArea, status: u.status }))}
                   staticImageSrc={getVillaImages(villa.slug.current).hero}
+                  labelBed={useT("miscBed", "bed")}
+                  labelSoldOut={useT("statusSoldOut", "Sold Out")}
+                  labelContactForPricing={useT("pricingContactFor", "Contact for pricing")}
+                  labelAvailable={useT("miscAvailable", "available")}
                 />
               </ScrollReveal>
             );

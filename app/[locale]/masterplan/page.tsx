@@ -147,7 +147,7 @@ export default async function MasterplanPage({ params }: Props) {
 
   // Panel labels for plot detail panel
   const panelLabels = {
-    selectPlot: "Select a plot on the map to see details",
+    selectPlot: t(uiStrings?.miscSelectPlot) || "Select a plot on the map to see details",
     unitsAvailable: t(uiStrings?.miscAvailable) || "available",
     of: t(uiStrings?.miscOf) || "of",
     noUnits: t(uiStrings?.miscDataComing) || "No units assigned to this plot yet.",
@@ -238,6 +238,18 @@ export default async function MasterplanPage({ params }: Props) {
       <InlineContactSection
         locale={typedLocale}
         preferredOption="Masterplan Inquiry"
+        strings={{
+          eyebrow: t(uiStrings?.miscGetInTouch),
+          title: t(uiStrings?.miscReadyToDiscover),
+          description: t(uiStrings?.miscContactPromise),
+          whatsappUs: t(uiStrings?.ctaWhatsappUs),
+          formFullName: t(uiStrings?.formFullName),
+          formEmail: t(uiStrings?.formEmail),
+          formPhone: t(uiStrings?.formPhone),
+          formMessage: t(uiStrings?.formMessage),
+          formGdpr: t(uiStrings?.formGdpr),
+          formSubmit: t(uiStrings?.ctaSendRequest),
+        }}
       />
     </>
   );
