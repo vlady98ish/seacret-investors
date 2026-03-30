@@ -12,7 +12,8 @@ type SiteFooterProps = {
 };
 
 export function SiteFooter({ locale, uiStrings, siteSettings: _siteSettings }: SiteFooterProps) {
-  const t = (field: any) => getLocalizedValue(field, locale) ?? "";
+  const t = (field: Record<string, string> | undefined | null): string =>
+    getLocalizedValue(field as Record<"en" | "he" | "ru" | "el", string> | undefined, locale) ?? "";
 
   const navLabel = (key: string): string => {
     if (!uiStrings) return key;

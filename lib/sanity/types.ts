@@ -213,20 +213,20 @@ export interface HomePage {
   masterplanImage: SanityImage;
   ctaTitle: LocalizedString;
   ctaSubtitle: LocalizedString;
-  locationTitle: LocalizedString;
-  locationDescription: LocalizedText;
-  locationHighlights: Array<{
+  locationTitle?: LocalizedString;
+  locationDescription?: LocalizedText;
+  locationHighlights?: Array<{
     title: LocalizedString;
     description: LocalizedText;
   }>;
-  residencesTitle: LocalizedString;
-  residencesDescription: LocalizedText;
-  masterplanTitle: LocalizedString;
-  masterplanDescription: LocalizedText;
-  lifestyleTitle: LocalizedString;
-  inlineContactEyebrow: LocalizedString;
-  inlineContactTitle: LocalizedString;
-  inlineContactDescription: LocalizedText;
+  residencesTitle?: LocalizedString;
+  residencesDescription?: LocalizedText;
+  masterplanTitle?: LocalizedString;
+  masterplanDescription?: LocalizedText;
+  lifestyleTitle?: LocalizedString;
+  inlineContactEyebrow?: LocalizedString;
+  inlineContactTitle?: LocalizedString;
+  inlineContactDescription?: LocalizedText;
   seoTitle: LocalizedString;
   seoDescription: LocalizedText;
 }
@@ -246,17 +246,17 @@ export interface ResidencesPage {
   heroImage: SanityImage;
   heroTitle: LocalizedString;
   introCopy: LocalizedText;
-  collectionEyebrow: LocalizedString;
-  collectionTitle: LocalizedString;
-  collectionDescription: LocalizedText;
-  compareEyebrow: LocalizedString;
-  compareTitle: LocalizedString;
-  compareDescription: LocalizedText;
-  upgradesEyebrow: LocalizedString;
-  upgradesTitle: LocalizedString;
-  upgradesDescription: LocalizedText;
-  faqEyebrow: LocalizedString;
-  faqTitle: LocalizedString;
+  collectionEyebrow?: LocalizedString;
+  collectionTitle?: LocalizedString;
+  collectionDescription?: LocalizedText;
+  compareEyebrow?: LocalizedString;
+  compareTitle?: LocalizedString;
+  compareDescription?: LocalizedText;
+  upgradesEyebrow?: LocalizedString;
+  upgradesTitle?: LocalizedString;
+  upgradesDescription?: LocalizedText;
+  faqEyebrow?: LocalizedString;
+  faqTitle?: LocalizedString;
   seoTitle: LocalizedString;
   seoDescription: LocalizedText;
 }
@@ -266,33 +266,33 @@ export interface LocationPage {
   heroTitle: LocalizedString;
   whySection: LocalizedText;
   distances: Array<{ place: string; time: string; lat: number; lng: number }>;
-  whyEyebrow: LocalizedString;
-  whyTitle: LocalizedString;
-  whyFeatures: Array<{
+  whyEyebrow?: LocalizedString;
+  whyTitle?: LocalizedString;
+  whyFeatures?: Array<{
     icon: string;
     heading: LocalizedString;
     description: LocalizedText;
   }>;
-  highlightTitle: LocalizedString;
-  highlightDescription: LocalizedText;
-  highlights: Array<{
+  highlightTitle?: LocalizedString;
+  highlightDescription?: LocalizedText;
+  highlights?: Array<{
     title: LocalizedString;
     description: LocalizedText;
   }>;
-  distanceEyebrow: LocalizedString;
-  distanceTitle: LocalizedString;
-  distanceDescription: LocalizedText;
-  distanceMarkers: Array<{
+  distanceEyebrow?: LocalizedString;
+  distanceTitle?: LocalizedString;
+  distanceDescription?: LocalizedText;
+  distanceMarkers?: Array<{
     place: LocalizedString;
     time: LocalizedString;
     detail: LocalizedString;
     lat: number;
     lng: number;
   }>;
-  airportEyebrow: LocalizedString;
-  airportTitle: LocalizedString;
-  airportDescription: LocalizedText;
-  airports: Array<{
+  airportEyebrow?: LocalizedString;
+  airportTitle?: LocalizedString;
+  airportDescription?: LocalizedText;
+  airports?: Array<{
     code: string;
     name: LocalizedString;
     city: LocalizedString;
@@ -302,9 +302,9 @@ export interface LocationPage {
     note: LocalizedString;
     isNearest: boolean;
   }>;
-  experiencesEyebrow: LocalizedString;
-  experiencesTitle: LocalizedString;
-  experiencesDescription: LocalizedText;
+  experiencesEyebrow?: LocalizedString;
+  experiencesTitle?: LocalizedString;
+  experiencesDescription?: LocalizedText;
   seoTitle: LocalizedString;
   seoDescription: LocalizedText;
 }
@@ -313,34 +313,34 @@ export interface MasterplanPage {
   heroImage: SanityImage;
   heroTitle: LocalizedString;
   introCopy: LocalizedText;
-  statTotalLabel: LocalizedString;
-  statAvailableLabel: LocalizedString;
-  statReservedLabel: LocalizedString;
-  statSoldLabel: LocalizedString;
-  statPlotsLabel: LocalizedString;
-  explorerEyebrow: LocalizedString;
-  explorerTitle: LocalizedString;
-  explorerDescription: LocalizedText;
-  inventoryEyebrow: LocalizedString;
-  inventoryTitle: LocalizedString;
-  inventoryDescription: LocalizedText;
+  statTotalLabel?: LocalizedString;
+  statAvailableLabel?: LocalizedString;
+  statReservedLabel?: LocalizedString;
+  statSoldLabel?: LocalizedString;
+  statPlotsLabel?: LocalizedString;
+  explorerEyebrow?: LocalizedString;
+  explorerTitle?: LocalizedString;
+  explorerDescription?: LocalizedText;
+  inventoryEyebrow?: LocalizedString;
+  inventoryTitle?: LocalizedString;
+  inventoryDescription?: LocalizedText;
   seoTitle: LocalizedString;
   seoDescription: LocalizedText;
 }
 
 export interface ContactPage {
   heroTitle: LocalizedString;
-  heroSubtitle: LocalizedString;
-  responsePromise: LocalizedString;
-  officeInfo: LocalizedText;
-  directEyebrow: LocalizedString;
-  directTitle: LocalizedString;
-  directDescription: LocalizedText;
-  labelEmail: LocalizedString;
-  labelPhone: LocalizedString;
-  labelOfficeHours: LocalizedString;
-  budgetOptions: LocalizedString[];
-  timelineOptions: LocalizedString[];
+  heroSubtitle?: LocalizedString;
+  responsePromise?: LocalizedString;
+  officeInfo?: LocalizedText;
+  directEyebrow?: LocalizedString;
+  directTitle?: LocalizedString;
+  directDescription?: LocalizedText;
+  labelEmail?: LocalizedString;
+  labelPhone?: LocalizedString;
+  labelOfficeHours?: LocalizedString;
+  budgetOptions?: LocalizedString[];
+  timelineOptions?: LocalizedString[];
   seoTitle: LocalizedString;
   seoDescription: LocalizedText;
 }
