@@ -541,10 +541,527 @@ const homePage = {
       },
     },
   ],
+  // --- Expanded fields ---
+  locationTitle: { en: "Greece's best-kept secret" },
+  locationDescription: {
+    en: "Nestled on the northern shore of the Gulf of Corinth, Chiliadou offers untouched beauty just hours from Athens.",
+  },
+  locationHighlights: [
+    {
+      _key: "highlight-blueflag",
+      title: { en: "Blue Flag Beach" },
+      description: { en: "Chiliadou — pristine, uncrowded, award-winning coastline." },
+    },
+    {
+      _key: "highlight-patras",
+      title: { en: "30 min from Patras" },
+      description: { en: "Quick access to Greece's third-largest city and its port." },
+    },
+    {
+      _key: "highlight-athens",
+      title: { en: "2.5 h from Athens" },
+      description: { en: "An easy drive from the capital, via the scenic Rio-Antirrio bridge." },
+    },
+    {
+      _key: "highlight-nocrowds",
+      title: { en: "No crowds" },
+      description: { en: "A hidden cove away from mass tourism — serenity guaranteed." },
+    },
+  ],
+  residencesTitle: { en: "Designed for the discerning few" },
+  residencesDescription: {
+    en: "Each residence is a unique expression of modern Mediterranean architecture, thoughtfully positioned for maximum privacy and views.",
+  },
+  masterplanTitle: { en: "The master plan" },
+  masterplanDescription: {
+    en: "Six private plots along the coastline, each carefully positioned for privacy, views, and natural ventilation.",
+  },
+  lifestyleTitle: { en: "A day at Sea'cret" },
+  inlineContactEyebrow: { en: "Get in Touch" },
+  inlineContactTitle: { en: "Ready to discover your Sea'cret?" },
+  inlineContactDescription: {
+    en: "Schedule a private viewing or request detailed information about our residences. A member of our team will contact you within 24 hours.",
+  },
 };
 
 // ---------------------------------------------------------------------------
-// 10. Main: seed in order
+// 10. UI Strings singleton
+// ---------------------------------------------------------------------------
+
+const uiStringsDoc = {
+  _id: "uiStrings",
+  _type: "uiStrings",
+
+  // Navigation
+  navHome: { en: "Home" },
+  navResidences: { en: "Residences" },
+  navMasterplan: { en: "Masterplan" },
+  navLocation: { en: "Location" },
+  navAbout: { en: "About" },
+  navContact: { en: "Contact" },
+
+  // Footer
+  footerTagline: {
+    en: "The Sea'cret Residences Chiliadou — Luxury coastal living on Greece's Corinthian Gulf.",
+  },
+  footerNavigate: { en: "Navigate" },
+  footerLegal: { en: "Legal" },
+  footerPrivacyPolicy: { en: "Privacy Policy" },
+  footerTerms: { en: "Terms & Conditions" },
+  footerCookiePolicy: { en: "Cookie Policy" },
+  footerAllRights: { en: "All rights reserved." },
+
+  // Status
+  statusAvailable: { en: "Available" },
+  statusReserved: { en: "Reserved" },
+  statusSold: { en: "Sold" },
+  statusSoldOut: { en: "Sold Out" },
+
+  // Specs
+  specBedrooms: { en: "Bedrooms" },
+  specBathrooms: { en: "Bathrooms" },
+  specTotalArea: { en: "Total Area" },
+  specOutdoorArea: { en: "Outdoor Area" },
+  specPool: { en: "Swimming Pool" },
+  specParking: { en: "Parking" },
+  specYes: { en: "Yes" },
+  specNo: { en: "No" },
+
+  // Form
+  formFullName: { en: "Full Name" },
+  formEmail: { en: "Email" },
+  formPhone: { en: "Phone" },
+  formMessage: { en: "Message" },
+  formSubmit: { en: "Send Request" },
+  formSending: { en: "Sending..." },
+  formSuccess: { en: "Thank you! We'll be in touch within 24 hours." },
+  formError: { en: "Something went wrong. Please try again." },
+  formGdpr: {
+    en: "I agree to the Privacy Policy and consent to being contacted",
+  },
+  formSelectOne: { en: "Select one" },
+  formBack: { en: "Back" },
+  formNext: { en: "Next" },
+
+  // CTA
+  ctaScheduleTour: { en: "Schedule a Viewing" },
+  ctaRequestInfo: { en: "Request Information" },
+  ctaDownloadBrochure: { en: "Download Brochure" },
+  ctaWhatsappUs: { en: "WhatsApp Us" },
+  ctaExploreResidences: { en: "Explore Residences" },
+  ctaViewAll: { en: "View All Residences" },
+  ctaSendRequest: { en: "Send Request" },
+  ctaContactUs: { en: "Contact Us" },
+
+  // Filters & Tables
+  filterBedrooms: { en: "Bedrooms" },
+  filterAvailableOnly: { en: "Available only" },
+  filterSort: { en: "Sort" },
+  filterSortName: { en: "Name" },
+  filterPriceLowHigh: { en: "Price: Low to High" },
+  filterSizeSmallLarge: { en: "Size: Small to Large" },
+  filterNoResults: { en: "No villas match your criteria" },
+  filterAll: { en: "All" },
+  filterAllTypes: { en: "All Types" },
+  filterPlot: { en: "Plot" },
+  filterType: { en: "Type" },
+  filterShowing: { en: "Showing" },
+  tableUnitNumber: { en: "Unit #" },
+  tableVillaType: { en: "Villa Type" },
+  tableBeds: { en: "Beds" },
+  tableTotalArea: { en: "Total Area" },
+  tablePriceFrom: { en: "Price From" },
+  tableStatus: { en: "Status" },
+  tableAreaM2: { en: "Area m\u00B2" },
+  tablePool: { en: "Pool" },
+  tablePlot: { en: "Plot" },
+
+  // Pricing
+  pricingFrom: { en: "From" },
+  pricingContactFor: { en: "Contact for pricing" },
+
+  // Misc
+  miscNoImage: { en: "No image" },
+  miscComingSoon: { en: "Coming soon" },
+  miscImageComing: { en: "Image coming soon" },
+  miscDataComing: { en: "Data coming soon" },
+  miscUnit: { en: "unit" },
+  miscUnits: { en: "units" },
+  miscAvailable: { en: "available" },
+  miscBed: { en: "bed" },
+  miscBeds: { en: "beds" },
+  miscOf: { en: "of" },
+  miscGetInTouch: { en: "Get in Touch" },
+  miscReadyToDiscover: { en: "Ready to discover your Sea'cret?" },
+  miscContactPromise: {
+    en: "Schedule a private viewing or request detailed information about our residences. A member of our team will contact you within 24 hours.",
+  },
+  miscGallery: { en: "Gallery" },
+  miscFloorPlans: { en: "Floor Plans" },
+  miscPricing: { en: "Pricing" },
+  miscAvailableUnits: { en: "Available Units" },
+  misc3dTour: { en: "3D Virtual Tour" },
+  miscExploreMore: { en: "Explore More" },
+  miscYouMightLike: { en: "You Might Also Like" },
+  miscYouMightLikeDesc: {
+    en: "Discover our other exclusive villa types at Sea'cret Residences.",
+  },
+  miscGroundFloor: { en: "Ground Floor" },
+  miscUpperFloor: { en: "Upper Floor" },
+  miscAttic: { en: "Attic" },
+  miscFloor: { en: "Floor" },
+  miscVillaSpecs: { en: "Villa Specifications" },
+  miscDetailsComing: { en: "Details coming soon" },
+};
+
+// ---------------------------------------------------------------------------
+// 11. About Page singleton
+// ---------------------------------------------------------------------------
+
+const aboutPage = {
+  _id: "aboutPage",
+  _type: "aboutPage",
+
+  // Hero
+  heroTitle: { en: "About Live Better Group" },
+  heroSubtitle: { en: "From a pandemic-era idea to Greece's most dynamic developer" },
+
+  // Our Story
+  storyEyebrow: { en: "Our Story" },
+  storyTitle: { en: "From a pandemic-era idea to Greece's most dynamic developer" },
+  storyContent: {
+    en: `In September 2020, while the world was in lockdown, Tom Linkovsky and Evgeny Kalika — friends for over 30 years — saw what others missed: untapped potential in the Greek real estate market. They started in Patras, a vibrant university city and major transport hub on the Peloponnese coast.
+
+The problem was clear — students were living in outdated, poorly maintained apartments. The solution became Live Better's first concept: the "Airbnb for students" — fully furnished apartments for long-term rental. Five years in, the model has a perfect track record: zero vacant units exceeding one week.
+
+From student housing, the group expanded into family residences, property flips, villa construction, and luxury vacation homes. Today Live Better Group operates across Patras, Athens, and the resort towns of Chiliadou and Akrata — with 14 projects in progress and over 420 housing units in the pipeline.`,
+  },
+
+  // Stats Bar
+  stats: [
+    { _key: "stat-projects", value: "12+", label: { en: "Completed Projects" } },
+    { _key: "stat-units", value: "80+", label: { en: "Units Delivered" } },
+    { _key: "stat-capital", value: "\u20AC10M+", label: { en: "Capital Raised" } },
+    { _key: "stat-roi", value: "45%+", label: { en: "ROI in 2023\u20132024" } },
+  ],
+
+  // Values
+  valuesEyebrow: { en: "Why Live Better" },
+  valuesTitle: { en: "A 360\u00B0 approach to real estate investment" },
+  values: [
+    {
+      _key: "value-transparency",
+      icon: "Shield",
+      title: { en: "Full Transparency" },
+      description: { en: "Honesty at every stage. Online access to construction monitoring." },
+    },
+    {
+      _key: "value-ownership",
+      icon: "Key",
+      title: { en: "Real Ownership" },
+      description: { en: "Full property rights registered in your name from day one." },
+    },
+    {
+      _key: "value-global",
+      icon: "Globe",
+      title: { en: "Global Investor Base" },
+      description: { en: "Dozens of investors from Israel, Greece, Poland, Germany, USA, and beyond." },
+    },
+    {
+      _key: "value-returns",
+      icon: "TrendingUp",
+      title: { en: "Above-Market Returns" },
+      description: { en: "Investment profitability exceeded 45% in 2023\u20132024. Expected 7\u201310% annual rental yield." },
+    },
+    {
+      _key: "value-support",
+      icon: "Handshake",
+      title: { en: "End-to-End Support" },
+      description: { en: "Full transaction support from property selection to key handover." },
+    },
+    {
+      _key: "value-local",
+      icon: "MapPin",
+      title: { en: "Local Expertise" },
+      description: { en: "Deep relationships with Greek agents, architects, engineers, contractors, and authorities." },
+    },
+  ],
+
+  // Founders
+  foundersEyebrow: { en: "The Founders" },
+  founders: [
+    {
+      _key: "founder-tom",
+      name: "Tom Linkovsky",
+      role: { en: "Co-Founder" },
+      bio: {
+        en: "Entrepreneur with over 20 years of experience. Previously owned a restaurant chain in Tel Aviv, worked in import and large-scale event management. Brings operational drive and strategic vision to every project.",
+      },
+    },
+    {
+      _key: "founder-evgeny",
+      name: "Evgeny Kalika",
+      role: { en: "Co-Founder" },
+      bio: {
+        en: "Specialist in marketing, strategic consulting, and advertising. Known for discipline, reliability, and responsibility. Drives the group's investor relations and market positioning across Europe.",
+      },
+    },
+  ],
+
+  // CTA
+  ctaTitle: { en: "Ready to invest with confidence?" },
+  ctaSubtitle: { en: "Join dozens of investors already building wealth with Live Better Group" },
+  ctaButton: { en: "Schedule a Consultation" },
+
+  // SEO
+  seoTitle: { en: "About Us — Live Better Group" },
+  seoDescription: {
+    en: "Learn about Live Better Group — from a pandemic-era idea to Greece's most dynamic real estate developer. Meet the founders and discover our values.",
+  },
+};
+
+// ---------------------------------------------------------------------------
+// 12. Location Page singleton
+// ---------------------------------------------------------------------------
+
+const locationPage = {
+  _id: "locationPage",
+  _type: "locationPage",
+
+  heroTitle: { en: "Your Secret Escape" },
+
+  // Why Chiliadou
+  whySection: {
+    en: "A village that still belongs to those who seek authenticity over convenience — and find it in abundance.",
+  },
+  whyEyebrow: { en: "Why Chiliadou" },
+  whyTitle: { en: "Hidden from many. Perfect for few." },
+  whyFeatures: [
+    {
+      _key: "why-blueflag",
+      icon: "Waves",
+      heading: { en: "Blue Flag Beach" },
+      description: {
+        en: "Chiliadou boasts an EU Blue Flag certified beach — a mark of exceptional water quality, safety, and environmental management. Crystal-clear waters of the Corinthian Gulf, just steps from your doorstep.",
+      },
+    },
+    {
+      _key: "why-nocrowds",
+      icon: "Users",
+      heading: { en: "No Crowds" },
+      description: {
+        en: "Hidden from mass tourism, Chiliadou remains one of the last unspoiled stretches of the Greek coastline. No resort hotels. No noisy beach bars. Just the sea, the olive groves, and absolute peace.",
+      },
+    },
+    {
+      _key: "why-authentic",
+      icon: "Heart",
+      heading: { en: "Pure Authenticity" },
+      description: {
+        en: "Life here moves at the rhythm of the tides and the harvest seasons. Stone-built tavernas, olive oil pressed from century-old trees, local fishermen bringing in the day's catch — Greece as it was meant to be.",
+      },
+    },
+  ],
+
+  // Distance section
+  distanceEyebrow: { en: "Connectivity" },
+  distanceTitle: { en: "Easy to reach. Hard to leave." },
+  distanceDescription: {
+    en: "Chiliadou sits at the heart of the Corinthian Gulf, connecting you effortlessly to the best of Greece.",
+  },
+  distanceMarkers: [
+    { _key: "dist-nafpaktos", place: { en: "Nafpaktos" }, time: { en: "10 min" }, detail: { en: "Historic castle town" } },
+    { _key: "dist-rio", place: { en: "Rio Bridge" }, time: { en: "20 min" }, detail: { en: "Landmark suspension bridge" } },
+    { _key: "dist-trizonia", place: { en: "Trizonia Island" }, time: { en: "20 min" }, detail: { en: "Scenic island ferry" } },
+    { _key: "dist-patras", place: { en: "Patras" }, time: { en: "30 min" }, detail: { en: "Major port city" } },
+    { _key: "dist-galaxidi", place: { en: "Galaxidi" }, time: { en: "1 hour" }, detail: { en: "Charming seafront village" } },
+    { _key: "dist-athens", place: { en: "Athens" }, time: { en: "2.5 hours" }, detail: { en: "International hub" } },
+  ],
+
+  // Airport section
+  airportEyebrow: { en: "Air Connectivity" },
+  airportTitle: { en: "Three gateways to paradise." },
+  airportDescription: {
+    en: "Whether you fly direct from Europe or connect through Athens, the Corinthian Gulf is closer than you think.",
+  },
+  airports: [
+    {
+      _key: "airport-pvk",
+      code: "PVK",
+      name: { en: "Aktion National Airport" },
+      city: { en: "Preveza" },
+      travelTime: { en: "1h 45m" },
+      destinations: 38,
+      countries: 14,
+      note: { en: "Closest summer gateway — direct from major EU cities" },
+      isNearest: false,
+    },
+    {
+      _key: "airport-gpa",
+      code: "GPA",
+      name: { en: "Araxos Airport" },
+      city: { en: "Patras" },
+      travelTime: { en: "1h 10m" },
+      destinations: 17,
+      countries: 9,
+      note: { en: "Nearest airport, expanding international routes every season" },
+      isNearest: true,
+    },
+    {
+      _key: "airport-ath",
+      code: "ATH",
+      name: { en: "Athens Int'l Airport" },
+      city: { en: "Eleftherios Venizelos" },
+      travelTime: { en: "2h 44m" },
+      destinations: 160,
+      note: { en: "Year-round hub connecting 160+ airports worldwide" },
+      isNearest: false,
+    },
+  ],
+
+  // Experiences section
+  experiencesEyebrow: { en: "Local Experiences" },
+  experiencesTitle: { en: "A life well-lived, every day." },
+  experiencesDescription: {
+    en: "From ancient ruins to fresh-caught seafood — the richness of this region becomes your everyday backdrop.",
+  },
+
+  // SEO
+  seoTitle: { en: "Location & Connectivity | The Sea'cret Residences Chiliadou" },
+  seoDescription: {
+    en: "Discover Chiliadou — a hidden Blue Flag beach on the Corinthian Gulf. Easily reached from Athens, Patras, and major European airports.",
+  },
+};
+
+// ---------------------------------------------------------------------------
+// 13. Residences Page singleton
+// ---------------------------------------------------------------------------
+
+const residencesPage = {
+  _id: "residencesPage",
+  _type: "residencesPage",
+
+  heroTitle: { en: "The Residences" },
+  introCopy: { en: "Six distinct villa types. Each a private world." },
+
+  // Collection section
+  collectionEyebrow: { en: "Our Collection" },
+  collectionTitle: { en: "Choose Your Villa" },
+  collectionDescription: {
+    en: "Filter and sort all six villa types to find the one that fits your vision.",
+  },
+
+  // Compare section
+  compareEyebrow: { en: "Side by Side" },
+  compareTitle: { en: "Compare Villa Types" },
+  compareDescription: {
+    en: "A quick reference for all specifications and pricing across our collection.",
+  },
+
+  // Upgrades section
+  upgradesEyebrow: { en: "Personalise Your Home" },
+  upgradesTitle: { en: "Optional Upgrades" },
+  upgradesDescription: {
+    en: "Elevate your villa with bespoke additions, from private pools to full smart-home automation.",
+  },
+
+  // FAQ section
+  faqEyebrow: { en: "FAQ" },
+  faqTitle: { en: "Frequently Asked Questions" },
+
+  // SEO
+  seoTitle: { en: "Residences — Sea'cret Residences" },
+  seoDescription: {
+    en: "Discover all 6 villa types. Filter, compare, and find the perfect private retreat.",
+  },
+};
+
+// ---------------------------------------------------------------------------
+// 14. Masterplan Page singleton
+// ---------------------------------------------------------------------------
+
+const masterplanPage = {
+  _id: "masterplanPage",
+  _type: "masterplanPage",
+
+  heroTitle: { en: "The Masterplan" },
+  introCopy: { en: "6 residential plots. 39 exclusive villas. Explore the layout." },
+
+  // Stat labels
+  statTotalLabel: { en: "Total Residences" },
+  statAvailableLabel: { en: "Available" },
+  statReservedLabel: { en: "Reserved" },
+  statSoldLabel: { en: "Sold" },
+  statPlotsLabel: { en: "Plots" },
+
+  // Explorer section
+  explorerEyebrow: { en: "Explore" },
+  explorerTitle: { en: "Interactive Masterplan" },
+  explorerDescription: {
+    en: "Click on a plot to view its residences, availability, and pricing.",
+  },
+
+  // Inventory section
+  inventoryEyebrow: { en: "Full Inventory" },
+  inventoryTitle: { en: "All Residences" },
+  inventoryDescription: {
+    en: "Filter, sort, and browse every available unit across all plots.",
+  },
+
+  // SEO
+  seoTitle: { en: "Masterplan — Sea'cret Residences" },
+  seoDescription: {
+    en: "Explore the interactive masterplan. Browse plots, check availability, and find your ideal residence.",
+  },
+};
+
+// ---------------------------------------------------------------------------
+// 15. Contact Page singleton
+// ---------------------------------------------------------------------------
+
+const contactPage = {
+  _id: "contactPage",
+  _type: "contactPage",
+
+  heroTitle: { en: "Get in Touch" },
+  heroSubtitle: { en: "Our team is here to guide you through every step." },
+  responsePromise: { en: "We respond to all inquiries within 24 hours." },
+
+  // Direct contact section
+  directEyebrow: { en: "Direct Contact" },
+  directTitle: { en: "Speak with our team" },
+  directDescription: {
+    en: "Prefer a direct conversation? Reach us on WhatsApp, by email, or give us a call.",
+  },
+  labelEmail: { en: "Email" },
+  labelPhone: { en: "Phone" },
+  labelOfficeHours: { en: "Office Hours" },
+
+  // Budget options
+  budgetOptions: [
+    { _key: "budget-1", en: "Under \u20AC150,000" },
+    { _key: "budget-2", en: "\u20AC150,000 \u2013 \u20AC250,000" },
+    { _key: "budget-3", en: "\u20AC250,000 \u2013 \u20AC400,000" },
+    { _key: "budget-4", en: "Over \u20AC400,000" },
+  ],
+
+  // Timeline options
+  timelineOptions: [
+    { _key: "timeline-1", en: "Within 3 months" },
+    { _key: "timeline-2", en: "3\u20136 months" },
+    { _key: "timeline-3", en: "6\u201312 months" },
+    { _key: "timeline-4", en: "Just exploring" },
+  ],
+
+  // SEO
+  seoTitle: { en: "Contact Us — Sea'cret Residences" },
+  seoDescription: {
+    en: "Get in touch with The Sea'cret Residences team. Inquire about villa types, pricing, and availability. We respond within 24 hours.",
+  },
+};
+
+// ---------------------------------------------------------------------------
+// 16. Main: seed in order
 // ---------------------------------------------------------------------------
 
 async function seed() {
@@ -582,6 +1099,30 @@ async function seed() {
   console.log("\nSeeding homepage...");
   await upsert(homePage);
 
+  // --- UI Strings ---
+  console.log("\nSeeding UI strings...");
+  await upsert(uiStringsDoc);
+
+  // --- About Page ---
+  console.log("\nSeeding about page...");
+  await upsert(aboutPage);
+
+  // --- Location Page ---
+  console.log("\nSeeding location page...");
+  await upsert(locationPage);
+
+  // --- Residences Page ---
+  console.log("\nSeeding residences page...");
+  await upsert(residencesPage);
+
+  // --- Masterplan Page ---
+  console.log("\nSeeding masterplan page...");
+  await upsert(masterplanPage);
+
+  // --- Contact Page ---
+  console.log("\nSeeding contact page...");
+  await upsert(contactPage);
+
   // --- Summary ---
   console.log("\n--- Seed complete ---");
   console.log(`  ${villas.length} villa types`);
@@ -590,6 +1131,12 @@ async function seed() {
   console.log(`  ${upgrades.length} upgrades`);
   console.log("  1 site settings");
   console.log("  1 homepage");
+  console.log("  1 UI strings");
+  console.log("  1 about page");
+  console.log("  1 location page");
+  console.log("  1 residences page");
+  console.log("  1 masterplan page");
+  console.log("  1 contact page");
 }
 
 seed().catch((err) => {
