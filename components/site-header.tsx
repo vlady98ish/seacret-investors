@@ -26,7 +26,7 @@ const navItems = [
   { key: "contact", href: "/contact" },
 ];
 
-export function SiteHeader({ locale, uiStrings, siteSettings: _siteSettings }: SiteHeaderProps) {
+export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -90,14 +90,16 @@ export function SiteHeader({ locale, uiStrings, siteSettings: _siteSettings }: S
           </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <a
-              href="/brochure/seacret-residences-brochure.pdf"
-              download
-              className="flex h-9 w-9 items-center justify-center rounded-md text-white/60 transition hover:text-white"
-              aria-label="Download brochure"
-            >
-              <Download className="h-4 w-4" />
-            </a>
+            {siteSettings?.brochurePdf?.[locale]?.asset?.url && (
+              <a
+                href={siteSettings.brochurePdf[locale].asset.url}
+                download
+                className="flex h-9 w-9 items-center justify-center rounded-md text-white/60 transition hover:text-white"
+                aria-label="Download brochure"
+              >
+                <Download className="h-4 w-4" />
+              </a>
+            )}
             <LocaleSwitcher locale={locale} />
           </div>
 
