@@ -50,6 +50,26 @@ interface FieldErrors {
 interface MultiStepFormProps {
   locale: Locale;
   villaNames?: string[];
+  // CMS / uiStrings overrides
+  labelFullName?: string;
+  labelEmail?: string;
+  labelPhone?: string;
+  labelMessage?: string;
+  labelSubmit?: string;
+  labelSending?: string;
+  labelSuccess?: string;
+  labelError?: string;
+  labelGdpr?: string;
+  labelBack?: string;
+  labelNext?: string;
+  labelGeneralInquiry?: string;
+  labelBudgetRange?: string;
+  labelTimeline?: string;
+  labelStep1?: string;
+  labelStep2?: string;
+  labelStep3?: string;
+  budgetOptions?: string[];
+  timelineOptions?: string[];
 }
 
 /* ── Progress indicator ──────────────────────────────────── */
@@ -93,40 +113,60 @@ const inputClass =
 const selectClass =
   "w-full rounded-[1.1rem] border border-[var(--color-deep-teal)]/10 bg-white px-4 py-4 outline-none transition focus:border-[var(--color-deep-teal)] focus:ring-1 focus:ring-[var(--color-deep-teal)]/20 appearance-none";
 
+/* ── Default budget / timeline options ───────────────────── */
+const DEFAULT_BUDGET_OPTIONS = ["Under €200K", "€200K – €400K", "€400K – €600K", "Over €600K"];
+const DEFAULT_TIMELINE_OPTIONS = ["Immediately", "Within 6 months", "Within 1 year", "Just exploring"];
+
 /* ── Main component ──────────────────────────────────────── */
-export function MultiStepForm({ locale, villaNames }: MultiStepFormProps) {
+export function MultiStepForm({
+  locale,
+  villaNames,
+  labelFullName,
+  labelEmail,
+  labelPhone,
+  labelMessage,
+  labelSubmit,
+  labelSending,
+  labelSuccess,
+  labelError,
+  labelGdpr,
+  labelBack,
+  labelNext,
+  labelGeneralInquiry,
+  labelBudgetRange,
+  labelTimeline,
+  labelStep1,
+  labelStep2,
+  labelStep3,
+  budgetOptions,
+  timelineOptions,
+}: MultiStepFormProps) {
   const raw = getDictionary(locale);
   const dict = {
-    generalInquiry: raw.contact.generalInquiry,
+    generalInquiry: labelGeneralInquiry || raw.contact.generalInquiry,
     successTitle: "Thank you!",
-    successMessage: raw.form.success,
-    stepInterest: raw.contact.step1,
+    successMessage: labelSuccess || raw.form.success,
+    stepInterest: labelStep1 || raw.contact.step1,
     selectInterest: "Choose a villa type or general inquiry",
-    stepDetails: raw.contact.step2,
-    fullName: raw.form.fullName,
-    email: raw.form.email,
-    phone: raw.form.phone,
+    stepDetails: labelStep2 || raw.contact.step2,
+    fullName: labelFullName || raw.form.fullName,
+    email: labelEmail || raw.form.email,
+    phone: labelPhone || raw.form.phone,
     phonePlaceholder: "+30 XXX XXX XXXX",
-    stepAdditional: raw.contact.step3,
-    budgetRange: raw.contact.budgetRange,
-    budgetUnder200k: "Under €200K",
-    budget200to400k: "€200K – €400K",
-    budget400to600k: "€400K – €600K",
-    budgetOver600k: "Over €600K",
-    timeline: raw.contact.timeline,
-    timelineImmediate: "Immediately",
-    timelineWithin6m: "Within 6 months",
-    timelineWithin1y: "Within 1 year",
-    timelineExploring: "Just exploring",
-    message: raw.form.message,
+    stepAdditional: labelStep3 || raw.contact.step3,
+    budgetRange: labelBudgetRange || raw.contact.budgetRange,
+    timeline: labelTimeline || raw.contact.timeline,
+    message: labelMessage || raw.form.message,
     messagePlaceholder: "Tell us about your plans...",
-    gdprConsent: raw.form.gdpr,
-    errorMessage: raw.form.error,
-    back: "Back",
-    next: "Next",
-    submit: raw.form.submit,
-    sending: "Sending...",
+    gdprConsent: labelGdpr || raw.form.gdpr,
+    errorMessage: labelError || raw.form.error,
+    back: labelBack || "Back",
+    next: labelNext || "Next",
+    submit: labelSubmit || raw.form.submit,
+    sending: labelSending || "Sending...",
   };
+  const resolvedBudgetOptions = budgetOptions?.length ? budgetOptions : DEFAULT_BUDGET_OPTIONS;
+  const resolvedTimelineOptions = timelineOptions?.length ? timelineOptions : DEFAULT_TIMELINE_OPTIONS;
   const names = villaNames?.length ? villaNames : FALLBACK_VILLA_NAMES;
 
   const [step, setStep] = useState(1);
@@ -371,10 +411,9 @@ export function MultiStepForm({ locale, villaNames }: MultiStepFormProps) {
                   className={selectClass}
                 >
                   <option value="">— Select —</option>
-                  <option value="under_200k">{dict.budgetUnder200k}</option>
-                  <option value="200k_400k">{dict.budget200to400k}</option>
-                  <option value="400k_600k">{dict.budget400to600k}</option>
-                  <option value="over_600k">{dict.budgetOver600k}</option>
+                  {resolvedBudgetOptions.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
                 </select>
                 <svg
                   className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-muted)]"
@@ -397,10 +436,9 @@ export function MultiStepForm({ locale, villaNames }: MultiStepFormProps) {
                   className={selectClass}
                 >
                   <option value="">— Select —</option>
-                  <option value="immediately">{dict.timelineImmediate}</option>
-                  <option value="within_6m">{dict.timelineWithin6m}</option>
-                  <option value="within_1y">{dict.timelineWithin1y}</option>
-                  <option value="exploring">{dict.timelineExploring}</option>
+                  {resolvedTimelineOptions.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
                 </select>
                 <svg
                   className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-muted)]"
