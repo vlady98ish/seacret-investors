@@ -105,7 +105,12 @@ export default async function HomePageRoute({ params }: Props) {
           longitude: 21.8892,
         },
       }} />
-      <HeroSection data={data} locale={typedLocale} />
+      <HeroSection
+        data={data}
+        locale={typedLocale}
+        ctaExplore={getLocalizedValue(uiStrings?.ctaExploreResidences, typedLocale)}
+        ctaBrochure={getLocalizedValue(uiStrings?.ctaDownloadBrochure, typedLocale)}
+      />
       <ConceptSection data={data} locale={typedLocale} />
       <LocationHighlightSection
         locale={typedLocale}
