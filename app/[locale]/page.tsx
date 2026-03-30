@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { isValidLocale, type Locale } from "@/lib/i18n";
+import { isValidLocale, getLocalizedValue, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { sanityClient } from "@/lib/sanity/client";
 import { homePageQuery, availabilityStatsQuery } from "@/lib/sanity/queries";
 import type { HomePage as HomePageData } from "@/lib/sanity/types";
 import { getFallbackHomePage, fallbackStats } from "@/lib/fallback-data";
+import { getUiStrings } from "@/lib/sanity/ui-strings";
 
 import { HeroSection } from "@/components/home/hero-section";
 import { ConceptSection } from "@/components/home/concept-section";
@@ -72,7 +73,17 @@ export default async function HomePageRoute({ params }: Props) {
 
   const typedLocale = locale as Locale;
 
-  const [data, stats] = await Promise.all([fetchHomePage(), fetchStats()]);
+  const [data, stats, uiStrings] = await Promise.all([
+    fetchHomePage(),
+    fetchStats(),
+    getUiStrings(),
+  ]);
+
+  // Resolve location highlights from CMS
+  const locationHighlights = data?.locationHighlights?.map((h) => ({
+    title: getLocalizedValue(h.title, typedLocale) ?? "",
+    description: getLocalizedValue(h.description, typedLocale) ?? "",
+  }));
 
   return (
     <>
@@ -96,12 +107,49 @@ export default async function HomePageRoute({ params }: Props) {
       }} />
       <HeroSection data={data} locale={typedLocale} />
       <ConceptSection data={data} locale={typedLocale} />
-      <LocationHighlightSection locale={typedLocale} />
-      <LifestyleSection data={data} locale={typedLocale} />
-      <ResidencesPreviewSection villas={data?.featuredVillas} locale={typedLocale} />
-      <MasterplanTeaserSection data={data} stats={stats} locale={typedLocale} />
+      <LocationHighlightSection
+        locale={typedLocale}
+        title={getLocalizedValue(data?.locationTitle, typedLocale)}
+        description={getLocalizedValue(data?.locationDescription, typedLocale)}
+        highlights={locationHighlights}
+      />
+      <LifestyleSection
+        data={data}
+        locale={typedLocale}
+        title={getLocalizedValue(data?.lifestyleTitle, typedLocale)}
+      />
+      <ResidencesPreviewSection
+        villas={data?.featuredVillas}
+        locale={typedLocale}
+        title={getLocalizedValue(data?.residencesTitle, typedLocale)}
+        description={getLocalizedValue(data?.residencesDescription, typedLocale)}
+      />
+      <MasterplanTeaserSection
+        data={data}
+        stats={stats}
+        locale={typedLocale}
+        title={getLocalizedValue(data?.masterplanTitle, typedLocale)}
+        description={getLocalizedValue(data?.masterplanDescription, typedLocale)}
+        statTotalLabel={getLocalizedValue(uiStrings?.miscAvailableUnits, typedLocale)}
+        statPlotsLabel={getLocalizedValue(uiStrings?.filterPlot, typedLocale)}
+        statAvailableLabel={getLocalizedValue(uiStrings?.miscAvailable, typedLocale)}
+      />
       <CtaSection data={data} locale={typedLocale} />
-      <InlineContactSection locale={typedLocale} />
+      <InlineContactSection
+        locale={typedLocale}
+        strings={{
+          eyebrow: getLocalizedValue(data?.inlineContactEyebrow, typedLocale) || getLocalizedValue(uiStrings?.miscGetInTouch, typedLocale),
+          title: getLocalizedValue(data?.inlineContactTitle, typedLocale) || getLocalizedValue(uiStrings?.miscReadyToDiscover, typedLocale),
+          description: getLocalizedValue(data?.inlineContactDescription, typedLocale) || getLocalizedValue(uiStrings?.miscContactPromise, typedLocale),
+          whatsappUs: getLocalizedValue(uiStrings?.ctaWhatsappUs, typedLocale),
+          formFullName: getLocalizedValue(uiStrings?.formFullName, typedLocale),
+          formEmail: getLocalizedValue(uiStrings?.formEmail, typedLocale),
+          formPhone: getLocalizedValue(uiStrings?.formPhone, typedLocale),
+          formMessage: getLocalizedValue(uiStrings?.formMessage, typedLocale),
+          formGdpr: getLocalizedValue(uiStrings?.formGdpr, typedLocale),
+          formSubmit: getLocalizedValue(uiStrings?.ctaSendRequest, typedLocale),
+        }}
+      />
     </>
   );
 }

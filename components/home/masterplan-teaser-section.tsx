@@ -13,9 +13,14 @@ type MasterplanTeaserSectionProps = {
   data: HomePage | null;
   stats: { total: number; available: number; reserved: number; sold: number } | null;
   locale: Locale;
+  title?: string;
+  description?: string;
+  statTotalLabel?: string;
+  statPlotsLabel?: string;
+  statAvailableLabel?: string;
 };
 
-export function MasterplanTeaserSection({ data, stats, locale }: MasterplanTeaserSectionProps) {
+export function MasterplanTeaserSection({ data, stats, locale, title, description, statTotalLabel, statPlotsLabel, statAvailableLabel }: MasterplanTeaserSectionProps) {
   const dict = getDictionary(locale);
   const imageUrl = getSanityImageUrl(data?.masterplanImage, 1200) ?? "/assets/pdf/masterplan-aerial.jpg";
 
@@ -29,8 +34,8 @@ export function MasterplanTeaserSection({ data, stats, locale }: MasterplanTease
         <ScrollReveal>
           <SectionHeading
             eyebrow={dict.sections.masterplan}
-            title="The master plan"
-            description="Six private plots along the coastline, each carefully positioned for privacy, views, and natural ventilation."
+            title={title || "The master plan"}
+            description={description || "Six private plots along the coastline, each carefully positioned for privacy, views, and natural ventilation."}
             align="center"
           />
         </ScrollReveal>
@@ -50,9 +55,9 @@ export function MasterplanTeaserSection({ data, stats, locale }: MasterplanTease
         <ScrollReveal className="mt-12" delay={0.2}>
           <StatsBar
             stats={[
-              { label: "Total Residences", value: totalUnits },
-              { label: "Plots", value: plots },
-              { label: "Available", value: availableUnits },
+              { label: statTotalLabel || "Total Residences", value: totalUnits },
+              { label: statPlotsLabel || "Plots", value: plots },
+              { label: statAvailableLabel || "Available", value: availableUnits },
             ]}
           />
         </ScrollReveal>

@@ -9,15 +9,18 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 type ConceptSectionProps = {
   data: HomePage | null;
   locale: Locale;
+  heading?: string;
+  copy?: string;
 };
 
+const FALLBACK_HEADING = "A new standard of coastal living";
 const FALLBACK_COPY =
   "In a world of crowded destinations and standard offerings, we create something different. Sea'cret Residences Chiliadou — modern coastal living in Greece's hidden gem.";
 
-export function ConceptSection({ data, locale }: ConceptSectionProps) {
+export function ConceptSection({ data, locale, heading, copy: copyProp }: ConceptSectionProps) {
   const dict = getDictionary(locale);
   const eyebrow = getLocalizedValue(data?.conceptEyebrow, locale) ?? dict.sections.concept;
-  const copy = getLocalizedValue(data?.conceptCopy, locale) ?? FALLBACK_COPY;
+  const copy = copyProp || (getLocalizedValue(data?.conceptCopy, locale) ?? FALLBACK_COPY);
   const imageUrl = getSanityImageUrl(data?.conceptImage, 800) ?? "/assets/pdf/page-04-location.jpg";
 
   return (
@@ -27,7 +30,7 @@ export function ConceptSection({ data, locale }: ConceptSectionProps) {
           <ScrollReveal direction="left">
             <p className="eyebrow">{eyebrow}</p>
             <h2 className="text-h2 mt-4">
-              A new standard of coastal living
+              {heading || FALLBACK_HEADING}
             </h2>
             <p className="text-body-muted mt-6 max-w-lg leading-relaxed">
               {copy}

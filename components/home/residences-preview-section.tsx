@@ -10,6 +10,8 @@ import { VillaCard } from "@/components/sections/villa-card";
 type ResidencesPreviewSectionProps = {
   villas: FeaturedVilla[] | null | undefined;
   locale: Locale;
+  title?: string;
+  description?: string;
 };
 
 const placeholderVillas: Array<{
@@ -42,7 +44,7 @@ const placeholderVillas: Array<{
   },
 ];
 
-export function ResidencesPreviewSection({ villas, locale }: ResidencesPreviewSectionProps) {
+export function ResidencesPreviewSection({ villas, locale, title, description }: ResidencesPreviewSectionProps) {
   const dict = getDictionary(locale);
   const hasVillas = villas && villas.length > 0;
 
@@ -52,8 +54,8 @@ export function ResidencesPreviewSection({ villas, locale }: ResidencesPreviewSe
         <ScrollReveal>
           <SectionHeading
             eyebrow={dict.sections.residences}
-            title="Designed for the discerning few"
-            description="Each residence is a unique expression of modern Mediterranean architecture, thoughtfully positioned for maximum privacy and views."
+            title={title || "Designed for the discerning few"}
+            description={description || "Each residence is a unique expression of modern Mediterranean architecture, thoughtfully positioned for maximum privacy and views."}
             align="center"
           />
         </ScrollReveal>

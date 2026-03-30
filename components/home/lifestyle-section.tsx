@@ -10,6 +10,7 @@ import { SectionHeading } from "@/components/sections/section-heading";
 type LifestyleSectionProps = {
   data: HomePage | null;
   locale: Locale;
+  title?: string;
 };
 
 const fallbackMoments = [
@@ -30,7 +31,7 @@ const fallbackMoments = [
   },
 ];
 
-export function LifestyleSection({ data, locale }: LifestyleSectionProps) {
+export function LifestyleSection({ data, locale, title }: LifestyleSectionProps) {
   const dict = getDictionary(locale);
   const staticImages: Record<string, string> = {
     Morning: "/assets/pdf/lifestyle-morning.jpg",
@@ -52,7 +53,7 @@ export function LifestyleSection({ data, locale }: LifestyleSectionProps) {
         <ScrollReveal>
           <SectionHeading
             eyebrow={dict.sections.lifestyle}
-            title="A day at Sea'cret"
+            title={title || "A day at Sea'cret"}
             align="center"
           />
         </ScrollReveal>
