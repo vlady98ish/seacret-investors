@@ -8,6 +8,9 @@ import type { Locale } from "@/lib/i18n";
 interface ExperiencesSectionProps {
   locale: Locale;
   experiences?: Experience[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
 }
 
 type CategoryKey = "culture" | "nature" | "gastronomy";
@@ -65,18 +68,27 @@ function groupExperiences(experiences: Experience[]): Record<CategoryKey, Experi
 export function ExperiencesSection({
   locale,
   experiences,
+  eyebrow,
+  title,
+  description,
 }: ExperiencesSectionProps) {
   const hasCmsData = experiences && experiences.length > 0;
   const grouped = hasCmsData ? groupExperiences(experiences) : null;
+
+  const resolvedEyebrow = eyebrow || "LOCAL EXPERIENCES";
+  const resolvedTitle = title || "A life well-lived, every day.";
+  const resolvedDescription =
+    description ||
+    "From ancient ruins to fresh-caught seafood — the richness of this region becomes your everyday backdrop.";
 
   return (
     <section className="py-20" style={{ background: "var(--color-cream)" }}>
       <div className="section-shell flex flex-col gap-12">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="LOCAL EXPERIENCES"
-            title="A life well-lived, every day."
-            description="From ancient ruins to fresh-caught seafood — the richness of this region becomes your everyday backdrop."
+            eyebrow={resolvedEyebrow}
+            title={resolvedTitle}
+            description={resolvedDescription}
           />
         </ScrollReveal>
 

@@ -3,7 +3,25 @@ import { Plane, Clock, Globe } from "lucide-react";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { SectionHeading } from "@/components/sections/section-heading";
 
-const airports = [
+interface AirportProp {
+  code: string;
+  name: string;
+  city: string;
+  travelTime: string;
+  destinations: number;
+  countries?: number | null;
+  note: string;
+  isNearest?: boolean;
+}
+
+interface AirportConnectivitySectionProps {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  airports?: AirportProp[];
+}
+
+const defaultAirports: AirportProp[] = [
   {
     code: "PVK",
     name: "Aktion National Airport",
@@ -12,7 +30,7 @@ const airports = [
     destinations: 38,
     countries: 14,
     note: "Closest summer gateway — direct from major EU cities",
-    highlight: false,
+    isNearest: false,
   },
   {
     code: "GPA",
@@ -22,7 +40,7 @@ const airports = [
     destinations: 17,
     countries: 9,
     note: "Nearest airport, expanding international routes every season",
-    highlight: true,
+    isNearest: true,
   },
   {
     code: "ATH",
@@ -32,19 +50,33 @@ const airports = [
     destinations: 160,
     countries: null,
     note: "Year-round hub connecting 160+ airports worldwide",
-    highlight: false,
+    isNearest: false,
   },
-] as const;
+];
 
-export function AirportConnectivitySection() {
+export function AirportConnectivitySection({
+  eyebrow,
+  title,
+  description,
+  airports,
+}: AirportConnectivitySectionProps = {}) {
+  const resolvedEyebrow = eyebrow || "AIR CONNECTIVITY";
+  const resolvedTitle = title || "Three gateways to paradise.";
+  const resolvedDescription =
+    description ||
+    "Whether you fly direct from Europe or connect through Athens, the Corinthian Gulf is closer than you think.";
+
+  const resolvedAirports =
+    airports && airports.length > 0 ? airports : defaultAirports;
+
   return (
     <section className="py-20" style={{ background: "var(--color-sand)" }}>
       <div className="section-shell flex flex-col gap-12">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="AIR CONNECTIVITY"
-            title="Three gateways to paradise."
-            description="Whether you fly direct from Europe or connect through Athens, the Corinthian Gulf is closer than you think."
+            eyebrow={resolvedEyebrow}
+            title={resolvedTitle}
+            description={resolvedDescription}
           />
         </ScrollReveal>
 
@@ -56,12 +88,12 @@ export function AirportConnectivitySection() {
           }}
           className="sm:grid-cols-3"
         >
-          {airports.map((airport, i) => (
-            <ScrollReveal key={airport.code} delay={i * 0.1}>
+          {resolvedAirports.map((airport, i) => (
+            <ScrollReveal key={airport.code || i} delay={i * 0.1}>
               <div
                 className="tile flex flex-col gap-5 h-full"
                 style={
-                  airport.highlight
+                  airport.isNearest
                     ? {
                         border: "1px solid rgba(239,198,118,0.4)",
                         background: "rgba(255,250,241,0.98)",
@@ -70,7 +102,7 @@ export function AirportConnectivitySection() {
                     : undefined
                 }
               >
-                {airport.highlight && (
+                {airport.isNearest && (
                   <div
                     style={{
                       alignSelf: "flex-start",

@@ -3,24 +3,51 @@ import { Car, Clock } from "lucide-react";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { SectionHeading } from "@/components/sections/section-heading";
 
-const distances = [
+interface MarkerProp {
+  place: string;
+  time: string;
+  detail: string;
+}
+
+interface DistanceMapSectionProps {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  markers?: MarkerProp[];
+}
+
+const defaultDistances: MarkerProp[] = [
   { place: "Nafpaktos", time: "10 min", detail: "Historic castle town" },
   { place: "Rio Bridge", time: "20 min", detail: "Landmark suspension bridge" },
   { place: "Trizonia Island", time: "20 min", detail: "Scenic island ferry" },
   { place: "Patras", time: "30 min", detail: "Major port city" },
   { place: "Galaxidi", time: "1 hour", detail: "Charming seafront village" },
   { place: "Athens", time: "2.5 hours", detail: "International hub" },
-] as const;
+];
 
-export function DistanceMapSection() {
+export function DistanceMapSection({
+  eyebrow,
+  title,
+  description,
+  markers,
+}: DistanceMapSectionProps = {}) {
+  const resolvedEyebrow = eyebrow || "CONNECTIVITY";
+  const resolvedTitle = title || "Easy to reach. Hard to leave.";
+  const resolvedDescription =
+    description ||
+    "Chiliadou sits at the heart of the Corinthian Gulf, connecting you effortlessly to the best of Greece.";
+
+  const resolvedDistances =
+    markers && markers.length > 0 ? markers : defaultDistances;
+
   return (
     <section className="py-20" style={{ background: "var(--color-cream)" }}>
       <div className="section-shell flex flex-col gap-12">
         <ScrollReveal>
           <SectionHeading
-            eyebrow="CONNECTIVITY"
-            title="Easy to reach. Hard to leave."
-            description="Chiliadou sits at the heart of the Corinthian Gulf, connecting you effortlessly to the best of Greece."
+            eyebrow={resolvedEyebrow}
+            title={resolvedTitle}
+            description={resolvedDescription}
           />
         </ScrollReveal>
 
@@ -118,8 +145,8 @@ export function DistanceMapSection() {
           {/* Distance markers */}
           <ScrollReveal direction="right">
             <div className="flex flex-col gap-3">
-              {distances.map((d, i) => (
-                <ScrollReveal key={d.place} delay={i * 0.06}>
+              {resolvedDistances.map((d, i) => (
+                <ScrollReveal key={d.place || i} delay={i * 0.06}>
                   <div
                     className="tile flex items-center gap-4"
                     style={{ padding: "1rem 1.25rem" }}
