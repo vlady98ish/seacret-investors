@@ -10,24 +10,46 @@ import { computePriceFrom } from "@/lib/pricing";
 import type { UnitFlat, Villa } from "@/lib/sanity/types";
 import { getVillaImages } from "@/lib/villa-images";
 
+type FilterLabels = {
+  bedrooms?: string;
+  availableOnly?: string;
+  sort?: string;
+  sortName?: string;
+  sortPriceLowHigh?: string;
+  sortSizeSmallLarge?: string;
+  noResults?: string;
+  all?: string;
+};
+
 type VillaFiltersProps = {
   villas: Villa[];
   units: UnitFlat[];
   locale: Locale;
+  labels?: FilterLabels;
 };
 
 type SortOption = "name" | "price-asc" | "size-asc";
 
-const BEDROOM_OPTIONS = ["All", "1", "2", "3", "5"] as const;
+const BEDROOM_COUNTS = ["1", "2", "3", "5"] as const;
 
-export function VillaFilters({ villas, units, locale }: VillaFiltersProps) {
-  const [bedroomFilter, setBedroomFilter] = useState<string>("All");
+export function VillaFilters({ villas, units, locale, labels }: VillaFiltersProps) {
+  const allLabel = labels?.all || "All";
+  const bedroomsLabel = labels?.bedrooms || "Bedrooms";
+  const availableOnlyLabel = labels?.availableOnly || "Available only";
+  const sortLabel = labels?.sort || "Sort";
+  const sortNameLabel = labels?.sortName || "Name";
+  const sortPriceLowHighLabel = labels?.sortPriceLowHigh || "Price: Low to High";
+  const sortSizeSmallLargeLabel = labels?.sortSizeSmallLarge || "Size: Small to Large";
+  const noResultsLabel = labels?.noResults || "No villas match your criteria";
+
+  // null means "All" (no bedroom filter)
+  const [bedroomFilter, setBedroomFilter] = useState<string | null>(null);
   const [availableOnly, setAvailableOnly] = useState(false);
   const [sort, setSort] = useState<SortOption>("name");
 
   // Filter
   let filtered = villas.filter((villa) => {
-    if (bedroomFilter !== "All" && villa.typicalBedrooms !== Number(bedroomFilter)) {
+    if (bedroomFilter !== null && villa.typicalBedrooms !== Number(bedroomFilter)) {
       return false;
     }
 
@@ -80,10 +102,22 @@ export function VillaFilters({ villas, units, locale }: VillaFiltersProps) {
         {/* Bedroom pills */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold uppercase tracking-widest text-[var(--color-muted)]">
-            Bedrooms
+            {bedroomsLabel}
           </span>
           <div className="flex flex-wrap gap-2">
-            {BEDROOM_OPTIONS.map((opt) => (
+            {/* "All" pill */}
+            <button
+              onClick={() => setBedroomFilter(null)}
+              className={cn(
+                "rounded-full border px-4 py-1 text-sm font-medium transition-colors",
+                bedroomFilter === null
+                  ? "border-[var(--color-deep-teal)] bg-[var(--color-deep-teal)] text-white"
+                  : "border-[rgba(13,103,119,0.2)] bg-transparent text-[var(--color-ink)] hover:border-[var(--color-deep-teal)]"
+              )}
+            >
+              {allLabel}
+            </button>
+            {BEDROOM_COUNTS.map((opt) => (
               <button
                 key={opt}
                 onClick={() => setBedroomFilter(opt)}
@@ -116,22 +150,22 @@ export function VillaFilters({ villas, units, locale }: VillaFiltersProps) {
               )}
             />
           </div>
-          Available only
+          {availableOnlyLabel}
         </label>
 
         {/* Sort dropdown */}
         <div className="ml-auto flex items-center gap-2">
           <span className="text-xs font-semibold uppercase tracking-widest text-[var(--color-muted)]">
-            Sort
+            {sortLabel}
           </span>
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as SortOption)}
             className="rounded-md border border-[rgba(13,103,119,0.2)] bg-white px-3 py-1.5 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-deep-teal)]"
           >
-            <option value="name">Name</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="size-asc">Size: Small to Large</option>
+            <option value="name">{sortNameLabel}</option>
+            <option value="price-asc">{sortPriceLowHighLabel}</option>
+            <option value="size-asc">{sortSizeSmallLargeLabel}</option>
           </select>
         </div>
       </div>
@@ -139,7 +173,7 @@ export function VillaFilters({ villas, units, locale }: VillaFiltersProps) {
       {/* Villa grid */}
       {filtered.length === 0 ? (
         <div className="flex min-h-[200px] items-center justify-center rounded-2xl border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
-          No villas match your criteria
+          {noResultsLabel}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">

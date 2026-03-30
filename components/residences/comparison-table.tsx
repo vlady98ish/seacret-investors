@@ -3,35 +3,58 @@ import type { Locale } from "@/lib/i18n";
 import { formatPriceFrom } from "@/lib/pricing";
 import type { UnitFlat, Villa } from "@/lib/sanity/types";
 
+type TableHeaders = {
+  villaType?: string;
+  bedrooms?: string;
+  bathrooms?: string;
+  areaRange?: string;
+  priceFrom?: string;
+  availability?: string;
+  contactUs?: string;
+  soldOut?: string;
+  available?: string;
+};
+
 type ComparisonTableProps = {
   villas: Villa[];
   units: UnitFlat[];
   locale: Locale;
+  headers?: TableHeaders;
 };
 
-export function ComparisonTable({ villas, units }: ComparisonTableProps) {
+export function ComparisonTable({ villas, units, headers }: ComparisonTableProps) {
+  const villaTypeLabel = headers?.villaType || "Villa Type";
+  const bedroomsLabel = headers?.bedrooms || "Bedrooms";
+  const bathroomsLabel = headers?.bathrooms || "Bathrooms";
+  const areaRangeLabel = headers?.areaRange || "Area Range";
+  const priceFromLabel = headers?.priceFrom || "Price From";
+  const availabilityLabel = headers?.availability || "Availability";
+  const contactUsLabel = headers?.contactUs || "Contact us";
+  const soldOutLabel = headers?.soldOut || "Sold Out";
+  const availableLabel = headers?.available || "Available";
+
   return (
     <div className="overflow-x-auto">
       <table className="tile w-full min-w-[720px] border-collapse text-sm">
         <thead>
           <tr className="border-b border-[rgba(13,103,119,0.12)]">
             <th className="py-3 pr-6 text-left font-semibold tracking-wide text-[var(--color-ink)]">
-              Villa Type
+              {villaTypeLabel}
             </th>
             <th className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
-              Bedrooms
+              {bedroomsLabel}
             </th>
             <th className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
-              Bathrooms
+              {bathroomsLabel}
             </th>
             <th className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
-              Area Range
+              {areaRangeLabel}
             </th>
             <th className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
-              Price From
+              {priceFromLabel}
             </th>
             <th className="pl-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
-              Availability
+              {availabilityLabel}
             </th>
           </tr>
         </thead>
@@ -78,18 +101,18 @@ export function ComparisonTable({ villas, units }: ComparisonTableProps) {
                       {formatPriceFrom(minAvailableArea)}
                     </span>
                   ) : (
-                    <span className="text-[var(--color-muted)]">Contact us</span>
+                    <span className="text-[var(--color-muted)]">{contactUsLabel}</span>
                   )}
                 </td>
                 <td className="pl-4 py-4 text-center">
                   {isSoldOut ? (
-                    <span className="badge badge-sold">Sold Out</span>
+                    <span className="badge badge-sold">{soldOutLabel}</span>
                   ) : availableUnits.length > 0 ? (
                     <span className="badge badge-available">
-                      {availableUnits.length} Available
+                      {availableUnits.length} {availableLabel}
                     </span>
                   ) : (
-                    <span className="badge badge-reserved">Contact Us</span>
+                    <span className="badge badge-reserved">{contactUsLabel}</span>
                   )}
                 </td>
               </tr>
