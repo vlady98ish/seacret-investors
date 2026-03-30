@@ -1,45 +1,67 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { HomeIcon } from "@sanity/icons";
 
 export const homePageType = defineType({
   name: "homePage",
   title: "Home Page",
   type: "document",
+  icon: HomeIcon,
+  groups: [
+    { name: "hero", title: "Hero", default: true },
+    { name: "concept", title: "Concept" },
+    { name: "lifestyle", title: "Lifestyle" },
+    { name: "sections", title: "Sections" },
+    { name: "seo", title: "SEO" },
+  ],
   fields: [
-    defineField({ name: "heroTagline", title: "Hero Tagline", type: "localeString" }),
-    defineField({ name: "heroSubtitle", title: "Hero Subtitle", type: "localeString" }),
-    defineField({ name: "heroImage", title: "Hero Image", type: "image", options: { hotspot: true } }),
-    defineField({ name: "heroVideoUrl", title: "Hero Video URL (Tier 2)", type: "url" }),
-    defineField({ name: "conceptEyebrow", title: "Concept Eyebrow", type: "localeString" }),
-    defineField({ name: "conceptCopy", title: "Concept Copy", type: "localeText" }),
-    defineField({ name: "conceptImage", title: "Concept Image", type: "image", options: { hotspot: true } }),
+    // Hero
+    defineField({ name: "heroTagline", title: "Hero Tagline", type: "localeString", group: "hero", description: "Main headline displayed over the hero image." }),
+    defineField({ name: "heroSubtitle", title: "Hero Subtitle", type: "localeString", group: "hero", description: "Smaller text below the tagline." }),
+    defineField({ name: "heroImage", title: "Hero Image", type: "image", options: { hotspot: true }, group: "hero", description: "Full-width background image for the homepage hero.", validation: (r) => r.required().error("Please add a hero image — it's the first thing visitors see.") }),
+    defineField({ name: "heroVideoUrl", title: "Hero Video URL", type: "url", group: "hero", description: "YouTube or Vimeo link. Plays in background on the homepage hero." }),
+
+    // Concept
+    defineField({ name: "conceptEyebrow", title: "Concept Eyebrow", type: "localeString", group: "concept", description: "Small label above the concept title (e.g. 'Our Vision')." }),
+    defineField({ name: "conceptCopy", title: "Concept Copy", type: "localeText", group: "concept", description: "Main body text for the concept section." }),
+    defineField({ name: "conceptImage", title: "Concept Image", type: "image", options: { hotspot: true }, group: "concept" }),
+
+    // Lifestyle
+    defineField({ name: "lifestyleTitle", title: "Lifestyle Section Title", type: "localeString", group: "lifestyle" }),
     defineField({
       name: "lifestyleMoments",
       title: "Lifestyle Moments",
       type: "array",
+      group: "lifestyle",
+      description: "Add moments that showcase the Sea'cret lifestyle. Each needs a time period, description, and photo.",
       of: [{
         type: "object",
         fields: [
-          defineField({ name: "period", title: "Period (Morning/Day/Evening)", type: "string" }),
+          defineField({ name: "period", title: "Period", type: "string", description: "e.g. 'Morning', 'Afternoon', 'Evening'" }),
           defineField({ name: "copy", title: "Copy", type: "localeText" }),
           defineField({ name: "image", title: "Image", type: "image", options: { hotspot: true } }),
         ],
       }],
     }),
+
+    // Sections
     defineField({
       name: "featuredVillas",
-      title: "Featured Villas (Homepage Preview)",
+      title: "Featured Villas",
       type: "array",
+      group: "sections",
+      description: "Select villas to highlight on the homepage.",
       of: [defineArrayMember({ type: "reference", to: [{ type: "villa" }] })],
     }),
-    defineField({ name: "masterplanImage", title: "Masterplan Aerial Image", type: "image", options: { hotspot: true } }),
-    defineField({ name: "ctaTitle", title: "CTA Title", type: "localeString" }),
-    defineField({ name: "ctaSubtitle", title: "CTA Subtitle", type: "localeString" }),
-    defineField({ name: "locationTitle", title: "Location Section Title", type: "localeString" }),
-    defineField({ name: "locationDescription", title: "Location Section Description", type: "localeText" }),
+    defineField({ name: "masterplanImage", title: "Masterplan Aerial Image", type: "image", options: { hotspot: true }, group: "sections" }),
+    defineField({ name: "ctaTitle", title: "CTA Title", type: "localeString", group: "sections" }),
+    defineField({ name: "ctaSubtitle", title: "CTA Subtitle", type: "localeString", group: "sections" }),
+    defineField({ name: "locationTitle", title: "Location Section Title", type: "localeString", group: "sections" }),
+    defineField({ name: "locationDescription", title: "Location Section Description", type: "localeText", group: "sections" }),
     defineField({
       name: "locationHighlights",
       title: "Location Highlights",
       type: "array",
+      group: "sections",
       of: [{
         type: "object",
         fields: [
@@ -48,15 +70,16 @@ export const homePageType = defineType({
         ],
       }],
     }),
-    defineField({ name: "residencesTitle", title: "Residences Section Title", type: "localeString" }),
-    defineField({ name: "residencesDescription", title: "Residences Section Description", type: "localeText" }),
-    defineField({ name: "masterplanTitle", title: "Masterplan Section Title", type: "localeString" }),
-    defineField({ name: "masterplanDescription", title: "Masterplan Section Description", type: "localeText" }),
-    defineField({ name: "lifestyleTitle", title: "Lifestyle Section Title", type: "localeString" }),
-    defineField({ name: "inlineContactEyebrow", title: "Inline Contact Eyebrow", type: "localeString" }),
-    defineField({ name: "inlineContactTitle", title: "Inline Contact Title", type: "localeString" }),
-    defineField({ name: "inlineContactDescription", title: "Inline Contact Description", type: "localeText" }),
-    defineField({ name: "seoTitle", title: "SEO Title", type: "localeString" }),
-    defineField({ name: "seoDescription", title: "SEO Description", type: "localeText" }),
+    defineField({ name: "residencesTitle", title: "Residences Section Title", type: "localeString", group: "sections" }),
+    defineField({ name: "residencesDescription", title: "Residences Section Description", type: "localeText", group: "sections" }),
+    defineField({ name: "masterplanTitle", title: "Masterplan Section Title", type: "localeString", group: "sections" }),
+    defineField({ name: "masterplanDescription", title: "Masterplan Section Description", type: "localeText", group: "sections" }),
+    defineField({ name: "inlineContactEyebrow", title: "Inline Contact Eyebrow", type: "localeString", group: "sections" }),
+    defineField({ name: "inlineContactTitle", title: "Inline Contact Title", type: "localeString", group: "sections" }),
+    defineField({ name: "inlineContactDescription", title: "Inline Contact Description", type: "localeText", group: "sections" }),
+
+    // SEO
+    defineField({ name: "seoTitle", title: "SEO Title", type: "localeString", group: "seo", description: "Title shown in browser tabs and search results." }),
+    defineField({ name: "seoDescription", title: "SEO Description", type: "localeText", group: "seo", description: "Short description for search engines (150-160 characters recommended)." }),
   ],
 });
