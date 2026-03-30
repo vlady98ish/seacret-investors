@@ -1,9 +1,13 @@
 import { defineField, defineType } from "sanity";
+import { EnvelopeIcon } from "@sanity/icons";
 
 export const leadSubmissionType = defineType({
   name: "leadSubmission",
   title: "Lead Submission",
   type: "document",
+  icon: EnvelopeIcon,
+  readOnly: true,
+  description: "Submissions from the contact form. View only.",
   fields: [
     defineField({ name: "fullName", title: "Full Name", type: "string" }),
     defineField({ name: "email", title: "Email", type: "string" }),
