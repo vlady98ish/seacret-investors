@@ -17,6 +17,8 @@ type RelatedVillasProps = {
 };
 
 export function RelatedVillas({ allVillas, currentSlug, locale, labelEyebrow, labelTitle, labelDescription, labelSoldOut, labelBed, labelContactForPricing, labelAvailable }: RelatedVillasProps) {
+  if (!allVillas?.length) return null;
+
   const related = allVillas.filter((v) => v.slug.current !== currentSlug).slice(0, 3);
 
   if (related.length === 0) return null;
@@ -24,9 +26,9 @@ export function RelatedVillas({ allVillas, currentSlug, locale, labelEyebrow, la
   return (
     <section className="section-shell py-20">
       <SectionHeading
-        eyebrow={labelEyebrow || "EXPLORE MORE"}
-        title={labelTitle || "You Might Also Like"}
-        description={labelDescription || "Discover our other exclusive villa types at Sea'cret Residences."}
+        eyebrow={labelEyebrow}
+        title={labelTitle}
+        description={labelDescription}
       />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {related.map((villa) => (

@@ -2,7 +2,6 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { VillaCard } from "@/components/sections/villa-card";
 import type { Locale } from "@/lib/i18n";
 import type { UnitFlat, Villa } from "@/lib/sanity/types";
-import { getVillaImages } from "@/lib/villa-images";
 
 type VillaTypeGridProps = {
   villas: Villa[];
@@ -24,7 +23,6 @@ export function VillaTypeGrid({ villas, units, locale }: VillaTypeGridProps) {
               villa={villa}
               locale={locale}
               units={villaUnits.map((u) => ({ totalArea: u.totalArea, status: u.status }))}
-              staticImageSrc={getVillaImages(villa.slug.current).hero}
             />
           </ScrollReveal>
         );

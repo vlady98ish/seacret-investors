@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback } from "react";
 
 import { cn } from "@/lib/cn";
 import type { PlotWithUnits, UnitStatus } from "@/lib/sanity/types";
@@ -17,16 +16,7 @@ type VisualExplorerProps = {
   selectedPlotId: string | null;
   onPlotSelect: (id: string) => void;
   legendLabels?: LegendLabels;
-};
-
-// Positions matched to the aerial photo from the PDF presentation
-const FALLBACK_POSITIONS: Record<string, { x: number; y: number }> = {
-  A: { x: 22, y: 62 },
-  B: { x: 32, y: 72 },
-  C: { x: 46, y: 58 },
-  D: { x: 56, y: 45 },
-  E: { x: 68, y: 33 },
-  F: { x: 82, y: 27 },
+  aerialImageUrl?: string | null;
 };
 
 function getPlotLetter(name: string): string {
@@ -79,33 +69,26 @@ export function VisualExplorer({
   selectedPlotId,
   onPlotSelect,
   legendLabels,
+  aerialImageUrl,
 }: VisualExplorerProps) {
   const legend = {
-    available: legendLabels?.available || "Available",
-    reserved: legendLabels?.reserved || "Reserved",
-    sold: legendLabels?.sold || "Sold",
+    available: legendLabels?.available ?? "",
+    reserved: legendLabels?.reserved ?? "",
+    sold: legendLabels?.sold ?? "",
   };
-  const getPosition = useCallback(
-    (plot: PlotWithUnits) => {
-      if (plot.positionData?.x != null && plot.positionData?.y != null) {
-        return { x: plot.positionData.x, y: plot.positionData.y };
-      }
-      const letter = getPlotLetter(plot.name);
-      return FALLBACK_POSITIONS[letter] ?? { x: 50, y: 50 };
-    },
-    []
-  );
 
   return (
     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-[var(--color-night)]">
-      <Image
-        src="/assets/pdf/masterplan-aerial.jpg"
-        alt="Aerial masterplan view"
-        fill
-        className="object-cover"
-        sizes="(max-width: 1024px) 100vw, 60vw"
-        priority
-      />
+      {aerialImageUrl && (
+        <Image
+          src={aerialImageUrl}
+          alt="Aerial masterplan view"
+          fill
+          className="object-cover"
+          sizes="(max-width: 1024px) 100vw, 60vw"
+          priority
+        />
+      )}
 
       {/* Overlay for contrast */}
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-night)]/40 to-transparent" />
@@ -119,8 +102,11 @@ export function VisualExplorer({
           </div>
         </div>
       ) : (
-        plots.map((plot) => {
-          const pos = getPosition(plot);
+        plots.flatMap((plot) => {
+          if (plot.positionData?.x == null || plot.positionData?.y == null) {
+            return [];
+          }
+          const pos = { x: plot.positionData.x, y: plot.positionData.y };
           const letter = getPlotLetter(plot.name);
           const colors = getPlotColor(plot.units);
           const isSelected = plot._id === selectedPlotId;

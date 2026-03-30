@@ -9,7 +9,6 @@ import type { Locale } from "@/lib/i18n";
 import { computePriceFrom } from "@/lib/pricing";
 import type { UnitFlat, Villa } from "@/lib/sanity/types";
 import { useT } from "@/lib/ui-strings-context";
-import { getVillaImages } from "@/lib/villa-images";
 
 type FilterLabels = {
   bedrooms?: string;
@@ -34,14 +33,14 @@ type SortOption = "name" | "price-asc" | "size-asc";
 const BEDROOM_COUNTS = ["1", "2", "3", "5"] as const;
 
 export function VillaFilters({ villas, units, locale, labels }: VillaFiltersProps) {
-  const allLabel = labels?.all || useT("filterAll", "All");
-  const bedroomsLabel = labels?.bedrooms || useT("filterBedrooms", "Bedrooms");
-  const availableOnlyLabel = labels?.availableOnly || useT("filterAvailableOnly", "Available only");
-  const sortLabel = labels?.sort || useT("filterSort", "Sort");
-  const sortNameLabel = labels?.sortName || useT("filterSortName", "Name");
-  const sortPriceLowHighLabel = labels?.sortPriceLowHigh || useT("filterPriceLowHigh", "Price: Low to High");
-  const sortSizeSmallLargeLabel = labels?.sortSizeSmallLarge || useT("filterSizeSmallLarge", "Size: Small to Large");
-  const noResultsLabel = labels?.noResults || useT("filterNoResults", "No villas match your criteria");
+  const allLabel = labels?.all || useT("filterAll");
+  const bedroomsLabel = labels?.bedrooms || useT("filterBedrooms");
+  const availableOnlyLabel = labels?.availableOnly || useT("filterAvailableOnly");
+  const sortLabel = labels?.sort || useT("filterSort");
+  const sortNameLabel = labels?.sortName || useT("filterSortName");
+  const sortPriceLowHighLabel = labels?.sortPriceLowHigh || useT("filterPriceLowHigh");
+  const sortSizeSmallLargeLabel = labels?.sortSizeSmallLarge || useT("filterSizeSmallLarge");
+  const noResultsLabel = labels?.noResults || useT("filterNoResults");
 
   // null means "All" (no bedroom filter)
   const [bedroomFilter, setBedroomFilter] = useState<string | null>(null);
@@ -190,13 +189,12 @@ export function VillaFilters({ villas, units, locale, labels }: VillaFiltersProp
                   villa={villa}
                   locale={locale}
                   units={villaUnits.map((u) => ({ totalArea: u.totalArea, status: u.status }))}
-                  staticImageSrc={getVillaImages(villa.slug.current).hero}
-                  labelBed={useT("miscBed", "bed")}
-                  labelSoldOut={useT("statusSoldOut", "Sold Out")}
-                  labelContactForPricing={useT("pricingContactFor", "Contact for pricing")}
-                  labelAvailable={useT("miscAvailable", "available")}
-                  labelFrom={useT("pricingFrom", "From")}
-                  labelSimilarOptions={useT("miscSimilarOptions", "— similar options available")}
+                  labelBed={useT("miscBed")}
+                  labelSoldOut={useT("statusSoldOut")}
+                  labelContactForPricing={useT("pricingContactFor")}
+                  labelAvailable={useT("miscAvailable")}
+                  labelFrom={useT("pricingFrom")}
+                  labelSimilarOptions={useT("miscSimilarOptions")}
                 />
               </ScrollReveal>
             );

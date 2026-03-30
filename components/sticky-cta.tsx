@@ -52,7 +52,7 @@ export function StickyCTA({ locale: _locale, context, labelTitle, labelFullName,
         )}
       >
         <div className="flex items-center justify-between">
-          <p className="eyebrow">{labelTitle || "Request Information"}</p>
+          <p className="eyebrow">{labelTitle}</p>
           <button
             onClick={() => setOpen(false)}
             className="flex h-10 w-10 items-center justify-center rounded-md text-[var(--color-muted)] transition hover:text-[var(--color-ink)]"
@@ -72,26 +72,26 @@ export function StickyCTA({ locale: _locale, context, labelTitle, labelFullName,
           <input
             type="text"
             name="fullName"
-            placeholder={`${labelFullName || "Full Name"} *`}
+            placeholder={labelFullName ? `${labelFullName} *` : ""}
             required
             className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
           />
           <input
             type="email"
             name="email"
-            placeholder={`${labelEmail || "Email"} *`}
+            placeholder={labelEmail ? `${labelEmail} *` : ""}
             required
             className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
           />
           <input
             type="tel"
             name="phone"
-            placeholder={labelPhone || "Phone"}
+            placeholder={labelPhone}
             className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
           />
           {context && <input type="hidden" name="interest" value={context} />}
           <button type="submit" className="btn btn-primary mt-2 w-full">
-            {labelSubmit || "Send Request"}
+            {labelSubmit}
           </button>
         </form>
       </div>

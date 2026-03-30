@@ -17,7 +17,7 @@ export function ImageGallery({ images, villaName, emptyText }: ImageGalleryProps
   if (images.length === 0) {
     return (
       <div className="flex items-center justify-center rounded-xl bg-[var(--color-stone)] py-20 text-[var(--color-muted)]">
-        <p>{emptyText || "Gallery images coming soon"}</p>
+        <p>{emptyText}</p>
       </div>
     );
   }
