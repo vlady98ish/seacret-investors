@@ -6,7 +6,7 @@ import { buildPageMetadata } from "@/lib/metadata";
 import { sanityClient } from "@/lib/sanity/client";
 import { homePageQuery, availabilityStatsQuery } from "@/lib/sanity/queries";
 import type { HomePage as HomePageData } from "@/lib/sanity/types";
-import { getUiStrings } from "@/lib/sanity/ui-strings";
+import { getUiStrings, getSiteSettings } from "@/lib/sanity/ui-strings";
 
 import { HeroSection } from "@/components/home/hero-section";
 import { ConceptSection } from "@/components/home/concept-section";
@@ -68,10 +68,11 @@ export default async function HomePageRoute({ params }: Props) {
 
   const typedLocale = locale as Locale;
 
-  const [data, stats, uiStrings] = await Promise.all([
+  const [data, stats, uiStrings, siteSettings] = await Promise.all([
     fetchHomePage(),
     fetchStats(),
     getUiStrings(),
+    getSiteSettings(),
   ]);
 
   // Resolve location highlights from CMS
@@ -151,6 +152,7 @@ export default async function HomePageRoute({ params }: Props) {
       <CtaSection data={data} locale={typedLocale} ctaLabel={getLocalizedValue(uiStrings?.ctaRequestInfo, typedLocale)} />
       <InlineContactSection
         locale={typedLocale}
+        whatsappUrl={siteSettings?.whatsappNumber ? `https://wa.me/${siteSettings.whatsappNumber.replace(/\D/g, "")}` : undefined}
         strings={{
           eyebrow: getLocalizedValue(data?.inlineContactEyebrow, typedLocale) || getLocalizedValue(uiStrings?.miscGetInTouch, typedLocale),
           title: getLocalizedValue(data?.inlineContactTitle, typedLocale) || getLocalizedValue(uiStrings?.miscReadyToDiscover, typedLocale),

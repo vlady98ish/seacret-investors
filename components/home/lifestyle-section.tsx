@@ -54,7 +54,7 @@ export function LifestyleSection({ data, locale, title, eyebrowLabel, periodLabe
                   <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-gold-sun)]">
                     {periodLabels?.[moment.period] || moment.period}
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-white/80">
+                  <p className="mt-2 text-base leading-relaxed text-white/80">
                     {moment.copy}
                   </p>
                 </div>

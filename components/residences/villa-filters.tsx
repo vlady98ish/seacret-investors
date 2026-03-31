@@ -195,6 +195,7 @@ export function VillaFilters({ villas, units, locale, labels }: VillaFiltersProp
                   labelAvailable={useT("miscAvailable")}
                   labelFrom={useT("pricingFrom")}
                   labelSimilarOptions={useT("miscSimilarOptions")}
+                  luxury
                 />
               </ScrollReveal>
             );

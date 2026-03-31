@@ -43,8 +43,8 @@ body {
   min-height: 100dvh;
   background: var(--color-sand);
   color: var(--color-ink);
-  font-family: var(--font-sans), "Josefin Sans", sans-serif;
-  font-weight: 300;
+  font-family: var(--font-sans), "Assistant", sans-serif;
+  font-weight: 400;
   line-height: 1.7;
 }
 
@@ -53,7 +53,7 @@ button, input, select, textarea { font: inherit; }
 
 /* ── Typography ───────────────────────────────────────────── */
 .font-serif { font-family: var(--font-serif), "Cinzel", serif; }
-.font-sans { font-family: var(--font-sans), "Josefin Sans", sans-serif; }
+.font-sans { font-family: var(--font-sans), "Assistant", sans-serif; }
 
 .text-display {
   font-family: var(--font-serif), "Cinzel", serif;
@@ -88,7 +88,7 @@ button, input, select, textarea { font: inherit; }
 }
 
 .eyebrow {
-  font-family: var(--font-sans), "Josefin Sans", sans-serif;
+  font-family: var(--font-sans), "Assistant", sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.3em;
@@ -97,16 +97,16 @@ button, input, select, textarea { font: inherit; }
 }
 
 .text-body {
-  font-size: 1rem;
-  font-weight: 300;
-  line-height: 1.7;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.75;
   color: var(--color-ink);
 }
 
 .text-body-muted {
-  font-size: 1rem;
-  font-weight: 300;
-  line-height: 1.7;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.75;
   color: var(--color-muted);
 }
 
