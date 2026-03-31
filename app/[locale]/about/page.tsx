@@ -14,7 +14,7 @@ import { sanityClient } from "@/lib/sanity/client";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import { aboutPageQuery } from "@/lib/sanity/queries";
 import type { AboutPage } from "@/lib/sanity/types";
-import { getUiStrings } from "@/lib/sanity/ui-strings";
+import { getUiStrings, getSiteSettings } from "@/lib/sanity/ui-strings";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -49,9 +49,10 @@ export default async function AboutPage({ params }: Props) {
 
   const typedLocale = locale as Locale;
 
-  const [data, uiStrings] = await Promise.all([
+  const [data, uiStrings, siteSettings] = await Promise.all([
     fetchAboutPage(),
     getUiStrings(),
+    getSiteSettings(),
   ]);
 
   const heroTitle = getLocalizedValue(data?.heroTitle, typedLocale) ?? "";
@@ -98,7 +99,7 @@ export default async function AboutPage({ params }: Props) {
       <PageHero
         title={heroTitle}
         subtitle={heroSubtitle}
-        backgroundImage={data?.heroImage ? getSanityImageUrl(data.heroImage, 1920) : undefined}
+        backgroundImage={data?.heroImage ? getSanityImageUrl(data.heroImage) : undefined}
         compact
       />
       <StatsBar stats={stats} />
@@ -124,6 +125,7 @@ export default async function AboutPage({ params }: Props) {
       />
       <InlineContactSection
         locale={typedLocale}
+        whatsappUrl={siteSettings?.whatsappNumber ? `https://wa.me/${siteSettings.whatsappNumber.replace(/\D/g, "")}` : undefined}
         strings={{
           eyebrow: getLocalizedValue(uiStrings?.miscGetInTouch, typedLocale),
           title: getLocalizedValue(uiStrings?.miscReadyToDiscover, typedLocale),

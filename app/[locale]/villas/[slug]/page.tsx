@@ -9,7 +9,8 @@ import { formatPriceFrom } from "@/lib/pricing";
 import { sanityClient } from "@/lib/sanity/client";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import { allVillasQuery, uiStringsQuery, villaBySlugQuery } from "@/lib/sanity/queries";
-import type { UiStrings, UnitWithRefs, Villa } from "@/lib/sanity/types";
+import { getSiteSettings } from "@/lib/sanity/ui-strings";
+import type { SiteSettings, UiStrings, UnitWithRefs, Villa } from "@/lib/sanity/types";
 
 import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/sections/page-hero";
@@ -46,16 +47,19 @@ async function fetchData(slug: string): Promise<{
   let villa: VillaWithUnits | null = null;
   let allVillas: Villa[] = [];
   let uiStrings: UiStrings | null = null;
+  let siteSettings: SiteSettings | null = null;
 
   try {
-    const [villaResult, villasResult, uiStringsResult] = await Promise.all([
+    const [villaResult, villasResult, uiStringsResult, settingsResult] = await Promise.all([
       sanityClient.fetch<VillaWithUnits | null>(villaBySlugQuery, { slug }),
       sanityClient.fetch<Villa[]>(allVillasQuery),
       sanityClient.fetch<UiStrings>(uiStringsQuery),
+      getSiteSettings(),
     ]);
     if (villaResult) villa = villaResult;
     if (villasResult?.length) allVillas = villasResult;
     if (uiStringsResult) uiStrings = uiStringsResult;
+    if (settingsResult) siteSettings = settingsResult;
   } catch {
     // CMS unavailable
   }
@@ -104,9 +108,9 @@ export default async function VillaDetailPage({ params }: Props) {
 
   const units: UnitWithRefs[] = villa?.units ?? [];
 
-  const heroImageUrl = getSanityImageUrl(villa.heroImage, 1600);
+  const heroImageUrl = getSanityImageUrl(villa.heroImage);
   const galleryImages = (villa.galleryImages ?? [])
-    .map((img) => getSanityImageUrl(img, 800))
+    .map((img) => getSanityImageUrl(img))
     .filter((u): u is string => Boolean(u));
   const floorPlanImages = (villa.floorPlanImages ?? [])
     .map((img) => getSanityImageUrl(img, 1200))
@@ -313,7 +317,11 @@ export default async function VillaDetailPage({ params }: Props) {
       </div>
 
       {/* Contact */}
-      <InlineContactSection locale={typedLocale} preferredOption={villaName} />
+      <InlineContactSection
+        locale={typedLocale}
+        preferredOption={villaName}
+        whatsappUrl={siteSettings?.whatsappNumber ? `https://wa.me/${siteSettings.whatsappNumber.replace(/\D/g, "")}` : undefined}
+      />
     </>
   );
 }

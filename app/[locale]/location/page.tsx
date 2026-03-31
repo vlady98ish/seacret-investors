@@ -11,7 +11,8 @@ import { isValidLocale, getLocalizedValue, type Locale } from "@/lib/i18n";
 import { sanityClient } from "@/lib/sanity/client";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import { locationPageQuery, allExperiencesQuery, uiStringsQuery } from "@/lib/sanity/queries";
-import type { LocationPage, Experience, UiStrings } from "@/lib/sanity/types";
+import { getSiteSettings } from "@/lib/sanity/ui-strings";
+import type { LocationPage, Experience, SiteSettings, UiStrings } from "@/lib/sanity/types";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -81,6 +82,13 @@ export default async function LocationPage({ params }: Props) {
     // English fallbacks
   }
 
+  let siteSettings: SiteSettings | null = null;
+  try {
+    siteSettings = await getSiteSettings();
+  } catch {
+    // CMS unavailable
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const t = (field: any): string | undefined =>
     field ? (getLocalizedValue(field, typedLocale) as string | undefined) : undefined;
@@ -93,7 +101,7 @@ export default async function LocationPage({ params }: Props) {
       <PageHero
         title={heroTitle}
         subtitle={heroSubtitle}
-        backgroundImage={page?.heroImage ? getSanityImageUrl(page.heroImage, 1920) : undefined}
+        backgroundImage={page?.heroImage ? getSanityImageUrl(page.heroImage) : undefined}
         compact
       />
 
@@ -161,7 +169,10 @@ export default async function LocationPage({ params }: Props) {
         }}
       />
 
-      <InlineContactSection locale={typedLocale} />
+      <InlineContactSection
+        locale={typedLocale}
+        whatsappUrl={siteSettings?.whatsappNumber ? `https://wa.me/${siteSettings.whatsappNumber.replace(/\D/g, "")}` : undefined}
+      />
     </>
   );
 }

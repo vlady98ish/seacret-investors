@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { InlineContactSection } from "@/components/inline-contact-section";
+import { getSiteSettings } from "@/lib/sanity/ui-strings";
 import { ComparisonTable } from "@/components/residences/comparison-table";
 import { UpgradesShowcase } from "@/components/residences/upgrades-showcase";
 import { VillaFilters } from "@/components/residences/villa-filters";
@@ -62,6 +63,7 @@ export default async function ResidencesPage({ params }: Props) {
   let upgrades: Upgrade[] | null = null;
   let faqs: FAQ[] = [];
   let uiStrings: UiStrings | null = null;
+  let siteSettings: Awaited<ReturnType<typeof getSiteSettings>> = null;
 
   try {
     const result = await sanityClient.fetch<ResidencesPage>(residencesPageQuery);
@@ -105,8 +107,14 @@ export default async function ResidencesPage({ params }: Props) {
     // use English fallbacks in components
   }
 
+  try {
+    siteSettings = await getSiteSettings();
+  } catch {
+    // CMS unavailable
+  }
+
   const heroTitle = t(page?.heroTitle) ?? "";
-  const heroImageUrl = page?.heroImage ? getSanityImageUrl(page.heroImage, 1920) : null;
+  const heroImageUrl = page?.heroImage ? getSanityImageUrl(page.heroImage) : null;
   const introCopy = t(page?.introCopy);
 
   // Resolve FAQ items
@@ -214,7 +222,11 @@ export default async function ResidencesPage({ params }: Props) {
       </section>
 
       {/* Contact */}
-      <InlineContactSection locale={typedLocale} preferredOption="Residences Inquiry" />
+      <InlineContactSection
+        locale={typedLocale}
+        preferredOption="Residences Inquiry"
+        whatsappUrl={siteSettings?.whatsappNumber ? `https://wa.me/${siteSettings.whatsappNumber.replace(/\D/g, "")}` : undefined}
+      />
     </>
   );
 }

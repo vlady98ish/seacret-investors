@@ -18,9 +18,11 @@ import {
   masterplanPageQuery,
   uiStringsQuery,
 } from "@/lib/sanity/queries";
+import { getSiteSettings } from "@/lib/sanity/ui-strings";
 import type {
   MasterplanPage as MasterplanPageType,
   PlotWithUnits,
+  SiteSettings,
   UiStrings,
   UnitFlat,
 } from "@/lib/sanity/types";
@@ -65,6 +67,7 @@ export default async function MasterplanPage({ params }: Props) {
   let units: UnitFlat[] = [];
   let stats: { total: number; available: number; reserved: number; sold: number } | null = null;
   let uiStrings: UiStrings | null = null;
+  let siteSettings: SiteSettings | null = null;
 
   try {
     const result = await sanityClient.fetch<MasterplanPageType>(masterplanPageQuery);
@@ -101,10 +104,16 @@ export default async function MasterplanPage({ params }: Props) {
     // use English fallbacks in components
   }
 
+  try {
+    siteSettings = await getSiteSettings();
+  } catch {
+    // CMS unavailable
+  }
+
   const heroTitle =
     getLocalizedValue(page?.heroTitle, typedLocale) ?? "";
   const heroImageUrl = page?.heroImage
-    ? getSanityImageUrl(page.heroImage, 1920)
+    ? getSanityImageUrl(page.heroImage)
     : null;
   const introCopy = getLocalizedValue(page?.introCopy, typedLocale);
 
@@ -211,6 +220,7 @@ export default async function MasterplanPage({ params }: Props) {
       <InlineContactSection
         locale={typedLocale}
         preferredOption="Masterplan Inquiry"
+        whatsappUrl={siteSettings?.whatsappNumber ? `https://wa.me/${siteSettings.whatsappNumber.replace(/\D/g, "")}` : undefined}
         strings={{
           eyebrow: t(uiStrings?.miscGetInTouch),
           title: t(uiStrings?.miscReadyToDiscover),
