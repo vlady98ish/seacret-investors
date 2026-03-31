@@ -1,6 +1,7 @@
 "use client";
 
 import { Download, Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -68,8 +69,15 @@ export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps)
               : "border border-transparent bg-[rgba(9,34,42,0.15)] backdrop-blur-sm"
           )}
         >
-          <Link href={`/${locale}`} className="font-serif text-xl tracking-[0.06em] sm:text-2xl">
-            Sea&apos;cret
+          <Link href={`/${locale}`} className="flex items-center">
+            <Image
+              src="/logos/logo-negative.jpg"
+              alt="The Sea'cret Residences"
+              width={160}
+              height={48}
+              className="h-8 w-auto sm:h-10"
+              priority
+            />
           </Link>
 
           <nav className="hidden items-center gap-7 lg:flex">
