@@ -11,8 +11,9 @@ export function urlFor(source: SanityImage) {
 
 export function getSanityImageUrl(
   image: SanityImage | null | undefined,
-  width: number
+  width?: number
 ): string | null {
   if (!image?.asset) return null;
-  return urlFor(image).width(width).auto("format").url();
+  const b = urlFor(image).auto("format");
+  return width ? b.width(width).url() : b.url();
 }
