@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { LocaleSwitcher } from "@/components/locale-switcher";
@@ -31,8 +32,14 @@ export function SiteFooter({ locale, uiStrings, siteSettings: _siteSettings }: S
     <footer className="bg-[var(--color-night)] px-4 py-16 text-white/60 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-3">
         <div>
-          <Link href={`/${locale}`} className="font-serif text-2xl tracking-[0.06em] text-white">
-            Sea&apos;cret
+          <Link href={`/${locale}`} className="inline-block">
+            <Image
+              src="/logos/logo-full.png"
+              alt="The Sea'cret Residences Chiliadou"
+              width={180}
+              height={200}
+              className="h-24 w-auto brightness-0 invert"
+            />
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed">
             {t(uiStrings?.footerTagline) || "The Sea\u2019cret Residences Chiliadou \u2014 Luxury coastal living on Greece\u2019s Corinthian Gulf."}
