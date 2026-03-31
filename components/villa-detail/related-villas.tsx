@@ -40,6 +40,7 @@ export function RelatedVillas({ allVillas, currentSlug, locale, labelEyebrow, la
             labelBed={labelBed}
             labelContactForPricing={labelContactForPricing}
             labelAvailable={labelAvailable}
+            luxury
           />
         ))}
       </div>
