@@ -43,6 +43,7 @@ async function fetchData(slug: string): Promise<{
   villa: VillaWithUnits | null;
   allVillas: Villa[];
   uiStrings: UiStrings | null;
+  siteSettings: SiteSettings | null;
 }> {
   let villa: VillaWithUnits | null = null;
   let allVillas: Villa[] = [];
@@ -64,7 +65,7 @@ async function fetchData(slug: string): Promise<{
     // CMS unavailable
   }
 
-  return { villa, allVillas, uiStrings };
+  return { villa, allVillas, uiStrings, siteSettings };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -97,7 +98,7 @@ export default async function VillaDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!isValidLocale(locale)) notFound();
 
-  const { villa, allVillas, uiStrings } = await fetchData(slug);
+  const { villa, allVillas, uiStrings, siteSettings } = await fetchData(slug);
 
   const typedLocale = locale as Locale;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
