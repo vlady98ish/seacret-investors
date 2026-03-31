@@ -22,7 +22,7 @@ type MasterplanTeaserSectionProps = {
   ctaLabel?: string;
 };
 
-export function MasterplanTeaserSection({ data, stats, locale, title, description, statTotalLabel, statAvailableLabel, eyebrowLabel, ctaLabel }: MasterplanTeaserSectionProps) {
+export function MasterplanTeaserSection({ data, stats, locale, title, description, statTotalLabel, statPlotsLabel, statAvailableLabel, eyebrowLabel, ctaLabel }: MasterplanTeaserSectionProps) {
   const imageUrl = getSanityImageUrl(data?.masterplanImage, 1200);
 
   if (!imageUrl && !stats) return null;
@@ -58,6 +58,7 @@ export function MasterplanTeaserSection({ data, stats, locale, title, descriptio
             <StatsBar
               stats={[
                 { label: statTotalLabel, value: stats.total },
+                { label: statPlotsLabel, value: 6 },
                 { label: statAvailableLabel, value: stats.available },
               ]}
             />

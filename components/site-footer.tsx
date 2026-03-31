@@ -34,11 +34,11 @@ export function SiteFooter({ locale, uiStrings, siteSettings: _siteSettings }: S
         <div>
           <Link href={`/${locale}`} className="inline-block">
             <Image
-              src="/logos/logo-full.png"
+              src="/logos/sr-letters.png"
               alt="The Sea'cret Residences Chiliadou"
-              width={180}
-              height={200}
-              className="h-24 w-auto brightness-0 invert"
+              width={80}
+              height={70}
+              className="h-16 w-auto sm:h-20"
             />
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed">

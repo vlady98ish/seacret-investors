@@ -71,11 +71,11 @@ export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps)
         >
           <Link href={`/${locale}`} className="flex items-center">
             <Image
-              src="/logos/logo-negative.jpg"
+              src="/logos/sr-letters.png"
               alt="The Sea'cret Residences"
-              width={160}
+              width={56}
               height={48}
-              className="h-8 w-auto sm:h-10"
+              className="h-10 w-auto sm:h-12"
               priority
             />
           </Link>

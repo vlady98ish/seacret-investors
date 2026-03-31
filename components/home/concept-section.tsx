@@ -14,7 +14,7 @@ export function ConceptSection({ data, locale }: ConceptSectionProps) {
   const eyebrow = getLocalizedValue(data?.conceptEyebrow, locale);
   const heading = getLocalizedValue(data?.conceptTitle, locale);
   const copy = getLocalizedValue(data?.conceptCopy, locale);
-  const imageUrl = getSanityImageUrl(data?.conceptImage, 800);
+  const imageUrl = getSanityImageUrl(data?.conceptImage, 1600);
 
   if (!heading && !copy) return null;
 
