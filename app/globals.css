@@ -4,12 +4,14 @@
 :root {
   --color-night: #09222a;
   --color-ink: #13242a;
-  --color-deep-teal: #0d6777;
+  --color-deep-teal: #1a6b6e;
+  --color-teal-medium: #4e9b9e;
   --color-muted: #5e6d70;
-  --color-gold-sun: #efc676;
+  --color-gold-sun: #e8a340;
+  --color-coral: #e06050;
   --color-sand: #f3ead7;
   --color-stone: #eadbc2;
-  --color-cream: #fff9f0;
+  --color-cream: #f5efda;
 
   --shadow-soft: 0 24px 60px rgba(9, 34, 42, 0.10);
   --shadow-card: 0 8px 30px rgba(9, 34, 42, 0.08);
@@ -157,7 +159,7 @@ button, input, select, textarea { font: inherit; }
 .btn:active { transform: translateY(0); }
 
 .btn-primary {
-  background: linear-gradient(135deg, #f0cf88, #d8ad63);
+  background: linear-gradient(135deg, #e8a340, #d4922e);
   color: var(--color-night);
 }
 
