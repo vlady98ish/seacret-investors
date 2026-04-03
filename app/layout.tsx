@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Josefin_Sans } from "next/font/google";
-
+import { Cinzel, Assistant } from "next/font/google";
 import "./globals.css";
 
 const serif = Cinzel({
@@ -10,10 +9,10 @@ const serif = Cinzel({
   display: "swap",
 });
 
-const sans = Josefin_Sans({
+const sans = Assistant({
   subsets: ["latin"],
   variable: "--font-sans",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -39,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

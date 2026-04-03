@@ -32,26 +32,28 @@ export function UnitsTable({ units, headerUnit, headerPlot, headerArea, headerBe
   return (
     <div className="tile overflow-hidden p-0">
       {/* Desktop table */}
-      <div className="hidden overflow-x-auto sm:block">
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+      <div className="hidden overflow-x-auto sm:block" role="region" aria-label="Units table" tabIndex={0}>
         <table className="w-full text-sm">
+          <caption className="sr-only">Available units</caption>
           <thead>
             <tr className="border-b border-[var(--color-deep-teal)]/10 text-left">
-              <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
+              <th scope="col" className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
                 {headerUnit || "Unit #"}
               </th>
-              <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
+              <th scope="col" className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
                 {headerPlot || "Plot"}
               </th>
-              <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
+              <th scope="col" className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
                 {headerArea || "Area m²"}
               </th>
-              <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
+              <th scope="col" className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
                 {headerBeds || "Beds"}
               </th>
-              <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
+              <th scope="col" className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
                 {headerPool || "Pool"}
               </th>
-              <th className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
+              <th scope="col" className="px-5 py-4 font-semibold uppercase tracking-widest text-[var(--color-muted)] text-xs">
                 {headerStatus || "Status"}
               </th>
             </tr>
@@ -75,10 +77,11 @@ export function UnitsTable({ units, headerUnit, headerPlot, headerArea, headerBe
                 <td className="px-5 py-4 text-[var(--color-ink)]">{unit.bedrooms}</td>
                 <td className="px-5 py-4">
                   {unit.hasPool ? (
-                    <Check className="h-4 w-4 text-[var(--color-deep-teal)]" />
+                    <Check className="h-4 w-4 text-[var(--color-deep-teal)]" aria-hidden="true" />
                   ) : (
-                    <Minus className="h-4 w-4 text-[var(--color-muted)]" />
+                    <Minus className="h-4 w-4 text-[var(--color-muted)]" aria-hidden="true" />
                   )}
+                  <span className="sr-only">{unit.hasPool ? "Yes" : "No"}</span>
                 </td>
                 <td className="px-5 py-4">
                   <StatusBadge status={unit.status} labelAvailable={labelStatusAvailable} labelReserved={labelStatusReserved} labelSold={labelStatusSold} />

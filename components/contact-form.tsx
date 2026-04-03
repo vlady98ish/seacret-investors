@@ -147,16 +147,18 @@ export function ContactForm({ locale, dict, preferredOption }: ContactFormProps)
         </button>
       </form>
 
-      <p
+      <div
+        role={status === "error" ? "alert" : "status"}
+        aria-live="polite"
         className={cn(
           "mt-4 text-sm",
           status === "success" && "text-[var(--color-deep-teal)]",
           status === "error" && "text-red-600",
-          status === "idle" && "text-transparent",
+          status === "idle" && "sr-only",
         )}
       >
-        {feedback || "."}
-      </p>
+        {feedback}
+      </div>
     </div>
   );
 }
