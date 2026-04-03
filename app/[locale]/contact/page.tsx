@@ -109,7 +109,7 @@ export default async function CmsContactPageRoute({ params }: Props) {
 
       {/* ── Split layout: form left, direct contact right ── */}
       <section className="section-shell py-20">
-        <div className="grid gap-12 lg:grid-cols-[1fr_420px] lg:gap-16">
+        <div className="grid gap-12 lg:grid-cols-[1fr_420px] lg:items-start lg:gap-16">
           {/* Multi-step form */}
           <div>
             <MultiStepForm
