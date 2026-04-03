@@ -221,6 +221,50 @@ button, input, select, textarea { font: inherit; }
 .badge-reserved { background: #fef3c7; color: #92400e; }
 .badge-sold { background: #fee2e2; color: #991b1b; }
 
+/* ── Legal / prose content ───────────────────────────────── */
+.legal-content h2 {
+  font-family: var(--font-serif), "Cinzel", serif;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.legal-content h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.legal-content p {
+  margin-bottom: 1rem;
+  color: var(--color-muted);
+}
+
+.legal-content ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--color-muted);
+}
+
+.legal-content li {
+  margin-bottom: 0.25rem;
+}
+
+.legal-content a {
+  color: var(--color-deep-teal);
+}
+
+.legal-content a:hover {
+  text-decoration: underline;
+}
+
 /* ── Brand patterns ──────────────────────────────────────── */
 .bg-pattern-teal {
   background-image: url('/patterns/pattern-teal.jpg');

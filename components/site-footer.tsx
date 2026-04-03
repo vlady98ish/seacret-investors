@@ -60,8 +60,8 @@ export function SiteFooter({ locale, uiStrings, siteSettings: _siteSettings }: S
           <div>
             <p className="eyebrow mb-4 text-[#7a8f96]">{t(uiStrings?.footerLegal) || "Legal"}</p>
             <nav aria-label="Legal" className="flex flex-col gap-2">
-              <span className="cursor-default">{t(uiStrings?.footerPrivacyPolicy) || "Privacy Policy"}</span>
-              <span className="cursor-default">{t(uiStrings?.footerTerms) || "Terms & Conditions"}</span>
+              <Link href={`/${locale}/privacy-policy`} className="transition hover:text-white focus-visible:text-white focus-visible:outline-none">{t(uiStrings?.footerPrivacyPolicy) || "Privacy Policy"}</Link>
+              <Link href={`/${locale}/terms`} className="transition hover:text-white focus-visible:text-white focus-visible:outline-none">{t(uiStrings?.footerTerms) || "Terms & Conditions"}</Link>
               <span className="cursor-default">{t(uiStrings?.footerCookiePolicy) || "Cookie Policy"}</span>
             </nav>
           </div>
