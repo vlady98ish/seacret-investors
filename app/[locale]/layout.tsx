@@ -27,8 +27,17 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <UiStringsProvider uiStrings={uiStrings} locale={typedLocale}>
       <div lang={locale} dir={rtl ? "rtl" : "ltr"}>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-[var(--color-gold-sun)] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[var(--color-night)]"
+        >
+          {getLocalizedValue(
+            { en: "Skip to main content", he: "דלג לתוכן הראשי", ru: "Перейти к основному содержанию", el: "Μετάβαση στο κύριο περιεχόμενο" },
+            typedLocale
+          )}
+        </a>
         <SiteHeader locale={typedLocale} uiStrings={uiStrings} siteSettings={siteSettings} />
-        <main className="min-h-screen">{children}</main>
+        <main id="main-content" className="min-h-screen">{children}</main>
         <SiteFooter locale={typedLocale} uiStrings={uiStrings} siteSettings={siteSettings} />
         <StickyCTA
           locale={typedLocale}

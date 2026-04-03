@@ -11,6 +11,13 @@ export const localeLabels: Record<Locale, string> = {
   el: "GR",
 };
 
+export const localeNames: Record<Locale, string> = {
+  en: "English",
+  he: "עברית",
+  ru: "Русский",
+  el: "Ελληνικά",
+};
+
 export function isValidLocale(locale: string): locale is Locale {
   return locales.includes(locale as Locale);
 }
