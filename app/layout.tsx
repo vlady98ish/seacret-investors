@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cinzel, Assistant } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const serif = Cinzel({
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body>
         {children}
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
