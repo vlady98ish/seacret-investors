@@ -190,6 +190,20 @@ button, input, select, textarea { font: inherit; }
 .animate-rise { animation: rise 800ms cubic-bezier(0.2, 1, 0.22, 1) both; }
 .animate-fade-in { animation: fade-in 1000ms ease both; }
 
+/* ── Accordion ───────────────────────────────────────────── */
+@keyframes accordion-down {
+  from { height: 0; opacity: 0; }
+  to { height: var(--radix-accordion-content-height); opacity: 1; }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); opacity: 1; }
+  to { height: 0; opacity: 0; }
+}
+
+.animate-accordion-down { animation: accordion-down 300ms ease-out; }
+.animate-accordion-up { animation: accordion-up 300ms ease-out; }
+
 /* ── Status badges ────────────────────────────────────────── */
 .badge {
   display: inline-flex;
