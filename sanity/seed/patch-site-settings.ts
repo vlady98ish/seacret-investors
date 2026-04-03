@@ -66,6 +66,8 @@ async function patchSiteSettings() {
         salesPhone: "+30 693 1843439",
         whatsappNumber: "306931843439",
         viberNumber: "306931843439",
+        officeAddress: "Georg. Olimpiou 33-35, Patras, Greece 26222",
+        officeRegion: "Patras, Western Greece",
       })
       .commit();
 

@@ -1,4 +1,4 @@
-import { Clock, Mail, Phone } from "lucide-react";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 
 import type { Locale } from "@/lib/i18n";
 import type { SiteSettings } from "@/lib/sanity/types";
@@ -33,6 +33,8 @@ export function DirectContactSection({
   const email = settings?.salesEmail;
   const phone = settings?.salesPhone;
   const officeHours = settings?.officeHours?.[locale] ?? settings?.officeHours?.en;
+  const officeAddress = settings?.officeAddress;
+  const officeRegion = settings?.officeRegion;
 
   if (!whatsapp && !email && !phone) return null;
 
@@ -156,6 +158,24 @@ export function DirectContactSection({
                   </p>
                 )}
                 <p className="text-sm font-medium text-[var(--color-ink)]">{officeHours}</p>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Office address */}
+        {officeAddress && (
+          <>
+            <div className="h-px bg-[var(--color-deep-teal)]/8" />
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-[var(--color-deep-teal)]/10 flex items-center justify-center flex-shrink-0">
+                <MapPin className="w-4 h-4 text-[var(--color-deep-teal)]" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-[var(--color-ink)]">{officeAddress}</p>
+                {officeRegion && (
+                  <p className="text-xs text-[var(--color-muted)] mt-0.5">{officeRegion}</p>
+                )}
               </div>
             </div>
           </>

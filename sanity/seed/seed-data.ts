@@ -465,6 +465,8 @@ const siteSettings = {
     ru: "Воскресенье–Четверг, 9:00–18:00",
     el: "Κυριακή–Πέμπτη, 9:00–18:00",
   },
+  officeAddress: "Georg. Olimpiou 33-35, Patras, Greece 26222",
+  officeRegion: "Patras, Western Greece",
 };
 
 // ---------------------------------------------------------------------------
