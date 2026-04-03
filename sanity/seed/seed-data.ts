@@ -1056,7 +1056,7 @@ const contactPage = {
   // SEO
   seoTitle: { en: "Contact Us — Sea'cret Residences" },
   seoDescription: {
-    en: "Get in touch with The Sea'cret Residences team. Inquire about villa types, pricing, and availability. We respond within 24 hours.",
+    en: "Get in touch with The Sea'cret Residences team. Inquire about villa types, pricing, and availability.",
   },
 };
 

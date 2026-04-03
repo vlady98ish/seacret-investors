@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cinzel, Assistant } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const serif = Cinzel({
@@ -39,7 +40,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        {children}
+        <SpeedInsights />
+      </body>
     </html>
   );
 }

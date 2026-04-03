@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildPageMetadata(page, locale as Locale, "/contact", {
     title: "Contact Us",
     description:
-      "Get in touch with The Sea'cret Residences team. Inquire about villa types, pricing, and availability. We respond within 24 hours.",
+      "Get in touch with The Sea'cret Residences team. Inquire about villa types, pricing, and availability.",
   });
 }
 
