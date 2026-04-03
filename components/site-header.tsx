@@ -1,5 +1,7 @@
 "use client";
 
+import * as Dialog from "@radix-ui/react-dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Download, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -80,13 +82,14 @@ export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps)
             />
           </Link>
 
-          <nav className="hidden items-center gap-7 lg:flex">
+          <nav aria-label="Main navigation" className="hidden items-center gap-7 lg:flex">
             {navItems.map((item) => (
               <Link
                 key={item.key}
                 href={`/${locale}${item.href}`}
+                aria-current={isActive(item.href) ? "page" : undefined}
                 className={cn(
-                  "relative py-1 text-xs font-medium tracking-[0.2em] uppercase transition-colors",
+                  "relative py-1 text-xs font-medium tracking-[0.2em] uppercase transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-gold-sun)] rounded-sm",
                   isActive(item.href)
                     ? "text-white after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-[var(--color-gold-sun)]"
                     : "text-white/60 hover:text-white"
@@ -102,7 +105,7 @@ export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps)
               <a
                 href={siteSettings.brochurePdf[locale].asset.url}
                 download
-                className="flex h-9 w-9 items-center justify-center rounded-md text-white/60 transition hover:text-white"
+                className="flex h-9 w-9 items-center justify-center rounded-md text-white/60 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-gold-sun)]"
                 aria-label="Download brochure"
               >
                 <Download className="h-4 w-4" />
@@ -111,37 +114,45 @@ export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps)
             <LocaleSwitcher locale={locale} />
           </div>
 
-          <button
-            className="flex h-10 w-10 items-center justify-center lg:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-          >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          {/* Mobile menu */}
+          <Dialog.Root open={menuOpen} onOpenChange={setMenuOpen}>
+            <Dialog.Trigger asChild>
+              <button
+                className="flex h-10 w-10 items-center justify-center lg:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-gold-sun)]"
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+              >
+                {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            </Dialog.Trigger>
+
+            <Dialog.Portal>
+              <Dialog.Overlay className="fixed inset-0 z-40 bg-[var(--color-night)]/80" />
+              <Dialog.Content className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-[var(--color-night)] text-white lg:hidden">
+                <VisuallyHidden.Root>
+                  <Dialog.Title>Navigation menu</Dialog.Title>
+                </VisuallyHidden.Root>
+                {navItems.map((item) => (
+                  <Link
+                    key={item.key}
+                    href={`/${locale}${item.href}`}
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={isActive(item.href) ? "page" : undefined}
+                    className={cn(
+                      "text-2xl font-light tracking-[0.15em] uppercase focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-gold-sun)] rounded-sm",
+                      isActive(item.href) ? "text-[var(--color-gold-sun)]" : "text-white/70"
+                    )}
+                  >
+                    {navLabel(item.key)}
+                  </Link>
+                ))}
+                <div className="mt-4">
+                  <LocaleSwitcher locale={locale} />
+                </div>
+              </Dialog.Content>
+            </Dialog.Portal>
+          </Dialog.Root>
         </div>
       </header>
-
-      {/* Mobile menu overlay */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-[var(--color-night)] text-white lg:hidden">
-          {navItems.map((item) => (
-            <Link
-              key={item.key}
-              href={`/${locale}${item.href}`}
-              onClick={() => setMenuOpen(false)}
-              className={cn(
-                "text-2xl font-light tracking-[0.15em] uppercase",
-                isActive(item.href) ? "text-[var(--color-gold-sun)]" : "text-white/70"
-              )}
-            >
-              {navLabel(item.key)}
-            </Link>
-          ))}
-          <div className="mt-4">
-            <LocaleSwitcher locale={locale} />
-          </div>
-        </div>
-      )}
     </>
   );
 }
