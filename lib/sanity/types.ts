@@ -133,6 +133,7 @@ export interface UiStrings {
   ctaRequestInfo: LocalizedString;
   ctaDownloadBrochure: LocalizedString;
   ctaWhatsappUs: LocalizedString;
+  ctaViberUs: LocalizedString;
   ctaExploreResidences: LocalizedString;
   ctaViewAll: LocalizedString;
   ctaSendRequest: LocalizedString;
@@ -196,6 +197,7 @@ export interface UiStrings {
   miscSimilarOptions: LocalizedString;
   miscSelectPlot: LocalizedString;
   miscChatWhatsapp: LocalizedString;
+  miscChatViber: LocalizedString;
   miscFromChiliadou: LocalizedString;
   miscDestinations: LocalizedString;
   miscCountries: LocalizedString;
