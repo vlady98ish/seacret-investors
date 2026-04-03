@@ -29,7 +29,7 @@ export function SiteFooter({ locale, uiStrings, siteSettings: _siteSettings }: S
   };
 
   return (
-    <footer className="bg-[var(--color-night)] px-4 py-16 text-white/60 sm:px-6 lg:px-8">
+    <footer className="bg-[var(--color-night)] px-4 py-16 text-[#94a3ab] sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-3">
         <div>
           <Link href={`/${locale}`} className="inline-block">
@@ -48,18 +48,18 @@ export function SiteFooter({ locale, uiStrings, siteSettings: _siteSettings }: S
 
         <div className="grid grid-cols-2 gap-8 text-sm">
           <div>
-            <p className="eyebrow mb-4 text-white/40">{t(uiStrings?.footerNavigate) || "Navigate"}</p>
-            <nav className="flex flex-col gap-2">
-              <Link href={`/${locale}`} className="transition hover:text-white">{navLabel("home")}</Link>
-              <Link href={`/${locale}/residences`} className="transition hover:text-white">{navLabel("residences")}</Link>
-              <Link href={`/${locale}/masterplan`} className="transition hover:text-white">{navLabel("masterplan")}</Link>
-              <Link href={`/${locale}/location`} className="transition hover:text-white">{navLabel("location")}</Link>
-              <Link href={`/${locale}/contact`} className="transition hover:text-white">{navLabel("contact")}</Link>
+            <p className="eyebrow mb-4 text-[#7a8f96]">{t(uiStrings?.footerNavigate) || "Navigate"}</p>
+            <nav aria-label="Footer navigation" className="flex flex-col gap-2">
+              <Link href={`/${locale}`} className="transition hover:text-white focus-visible:text-white focus-visible:outline-none">{navLabel("home")}</Link>
+              <Link href={`/${locale}/residences`} className="transition hover:text-white focus-visible:text-white focus-visible:outline-none">{navLabel("residences")}</Link>
+              <Link href={`/${locale}/masterplan`} className="transition hover:text-white focus-visible:text-white focus-visible:outline-none">{navLabel("masterplan")}</Link>
+              <Link href={`/${locale}/location`} className="transition hover:text-white focus-visible:text-white focus-visible:outline-none">{navLabel("location")}</Link>
+              <Link href={`/${locale}/contact`} className="transition hover:text-white focus-visible:text-white focus-visible:outline-none">{navLabel("contact")}</Link>
             </nav>
           </div>
           <div>
-            <p className="eyebrow mb-4 text-white/40">{t(uiStrings?.footerLegal) || "Legal"}</p>
-            <nav className="flex flex-col gap-2">
+            <p className="eyebrow mb-4 text-[#7a8f96]">{t(uiStrings?.footerLegal) || "Legal"}</p>
+            <nav aria-label="Legal" className="flex flex-col gap-2">
               <span className="cursor-default">{t(uiStrings?.footerPrivacyPolicy) || "Privacy Policy"}</span>
               <span className="cursor-default">{t(uiStrings?.footerTerms) || "Terms & Conditions"}</span>
               <span className="cursor-default">{t(uiStrings?.footerCookiePolicy) || "Cookie Policy"}</span>
@@ -69,7 +69,7 @@ export function SiteFooter({ locale, uiStrings, siteSettings: _siteSettings }: S
 
         <div className="flex flex-col items-start gap-4 lg:items-end">
           <LocaleSwitcher locale={locale} className="text-white" />
-          <p className="text-xs text-white/30">
+          <p className="text-xs text-[#7a8f96]">
             &copy; {new Date().getFullYear()} Sea&apos;cret Residences. {t(uiStrings?.footerAllRights) || "All rights reserved."}
           </p>
         </div>
