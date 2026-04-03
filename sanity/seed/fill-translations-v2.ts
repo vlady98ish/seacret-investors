@@ -79,6 +79,8 @@ const newStrings: Record<string, { en: string; ru: string; he: string; el: strin
     el: "Επιλέξτε ένα οικόπεδο στον χάρτη για λεπτομέρειες",
   },
   miscChatWhatsapp: { en: "Chat on WhatsApp", ru: "Написать в WhatsApp", he: "שלחו הודעה בוואטסאפ", el: "Συνομιλία στο WhatsApp" },
+  miscChatViber: { en: "Chat on Viber", ru: "Написать в Viber", he: "שלחו הודעה בוייבר", el: "Συνομιλία στο Viber" },
+  ctaViberUs: { en: "Viber Us", ru: "Напишите в Viber", he: "שלחו לנו בוייבר", el: "Στείλτε μας στο Viber" },
 };
 
 async function main() {
