@@ -36,26 +36,27 @@ export function ComparisonTable({ villas, units, headers }: ComparisonTableProps
   const fromLabel = headers?.fromLabel || "From";
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto" role="region" aria-label="Villa comparison table" tabIndex={0}>
       <table className="tile w-full min-w-[720px] border-collapse text-sm">
+        <caption className="sr-only">Villa type comparison</caption>
         <thead>
           <tr className="border-b border-[rgba(13,103,119,0.12)]">
-            <th className="py-3 pr-6 text-left font-semibold tracking-wide text-[var(--color-ink)]">
+            <th scope="col" className="py-3 pr-6 text-left font-semibold tracking-wide text-[var(--color-ink)]">
               {villaTypeLabel}
             </th>
-            <th className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
+            <th scope="col" className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
               {bedroomsLabel}
             </th>
-            <th className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
+            <th scope="col" className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
               {bathroomsLabel}
             </th>
-            <th className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
+            <th scope="col" className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
               {areaRangeLabel}
             </th>
-            <th className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
+            <th scope="col" className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
               {priceFromLabel}
             </th>
-            <th className="pl-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
+            <th scope="col" className="pl-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
               {availabilityLabel}
             </th>
           </tr>

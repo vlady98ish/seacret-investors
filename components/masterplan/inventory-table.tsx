@@ -163,6 +163,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
               <button
                 key={opt}
                 onClick={() => setPlotFilter(opt)}
+                aria-pressed={plotFilter === opt}
                 className={cn(
                   "rounded-full border px-3.5 py-1 text-sm font-medium transition-colors",
                   plotFilter === opt
@@ -198,9 +199,13 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
         {/* Available only toggle */}
         <label className="flex cursor-pointer items-center gap-2 text-sm text-[var(--color-ink)]">
           <div
+            role="switch"
+            aria-checked={availableOnly}
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setAvailableOnly((prev) => !prev); } }}
             onClick={() => setAvailableOnly((prev) => !prev)}
             className={cn(
-              "relative h-5 w-9 rounded-full transition-colors",
+              "relative h-5 w-9 cursor-pointer rounded-full transition-colors",
               availableOnly
                 ? "bg-[var(--color-deep-teal)]"
                 : "bg-[rgba(13,103,119,0.2)]"
@@ -218,7 +223,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
       </div>
 
       {/* Results count */}
-      <p className="mb-4 text-xs text-[var(--color-muted)]">
+      <p className="mb-4 text-xs text-[var(--color-muted)]" aria-live="polite">
         {lbl.filterShowing} {sorted.length} {lbl.filterOf} {units.length} {lbl.miscUnits}
       </p>
 
@@ -229,32 +234,36 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
       ) : (
         <>
           {/* Desktop table */}
-          <div className="hidden overflow-x-auto rounded-xl border border-[rgba(13,103,119,0.08)] bg-white/80 md:block">
+          <div className="hidden overflow-x-auto rounded-xl border border-[rgba(13,103,119,0.08)] bg-white/80 md:block" role="region" aria-label="Unit inventory table" tabIndex={0}>
             <table className="w-full text-sm">
+              <caption className="sr-only">Unit inventory</caption>
               <thead>
                 <tr className="border-b border-[rgba(13,103,119,0.08)] text-left text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)]">
                   <th
+                    scope="col"
                     className="cursor-pointer px-4 py-3 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("plot")}
                   >
                     {lbl.tablePlot}{sortIndicator("plot")}
                   </th>
-                  <th className="px-4 py-3">{lbl.tableUnitNumber}</th>
-                  <th className="px-4 py-3">{lbl.tableVillaType}</th>
-                  <th className="px-4 py-3">{lbl.tableBeds}</th>
+                  <th scope="col" className="px-4 py-3">{lbl.tableUnitNumber}</th>
+                  <th scope="col" className="px-4 py-3">{lbl.tableVillaType}</th>
+                  <th scope="col" className="px-4 py-3">{lbl.tableBeds}</th>
                   <th
+                    scope="col"
                     className="cursor-pointer px-4 py-3 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("area")}
                   >
                     {lbl.tableTotalArea}{sortIndicator("area")}
                   </th>
                   <th
+                    scope="col"
                     className="cursor-pointer px-4 py-3 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("price")}
                   >
                     {lbl.tablePriceFrom}{sortIndicator("price")}
                   </th>
-                  <th className="px-4 py-3">{lbl.tableStatus}</th>
+                  <th scope="col" className="px-4 py-3">{lbl.tableStatus}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[rgba(13,103,119,0.05)]">
