@@ -226,7 +226,6 @@ export default async function ResidencesPage({ params }: Props) {
         locale={typedLocale}
         preferredOption="Residences Inquiry"
         whatsappUrl={siteSettings?.whatsappNumber ? `https://wa.me/${siteSettings.whatsappNumber.replace(/\D/g, "")}` : undefined}
-        viberUrl={siteSettings?.viberNumber ? `viber://chat?number=%2B${siteSettings.viberNumber.replace(/\D/g, "")}` : undefined}
       />
     </>
   );

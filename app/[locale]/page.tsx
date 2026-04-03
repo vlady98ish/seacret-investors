@@ -153,13 +153,11 @@ export default async function HomePageRoute({ params }: Props) {
       <InlineContactSection
         locale={typedLocale}
         whatsappUrl={siteSettings?.whatsappNumber ? `https://wa.me/${siteSettings.whatsappNumber.replace(/\D/g, "")}` : undefined}
-        viberUrl={siteSettings?.viberNumber ? `viber://chat?number=%2B${siteSettings.viberNumber.replace(/\D/g, "")}` : undefined}
         strings={{
           eyebrow: getLocalizedValue(data?.inlineContactEyebrow, typedLocale) || getLocalizedValue(uiStrings?.miscGetInTouch, typedLocale),
           title: getLocalizedValue(data?.inlineContactTitle, typedLocale) || getLocalizedValue(uiStrings?.miscReadyToDiscover, typedLocale),
           description: getLocalizedValue(data?.inlineContactDescription, typedLocale) || getLocalizedValue(uiStrings?.miscContactPromise, typedLocale),
           whatsappUs: getLocalizedValue(uiStrings?.ctaWhatsappUs, typedLocale),
-          viberUs: getLocalizedValue(uiStrings?.ctaViberUs, typedLocale),
           formFullName: getLocalizedValue(uiStrings?.formFullName, typedLocale),
           formEmail: getLocalizedValue(uiStrings?.formEmail, typedLocale),
           formPhone: getLocalizedValue(uiStrings?.formPhone, typedLocale),
