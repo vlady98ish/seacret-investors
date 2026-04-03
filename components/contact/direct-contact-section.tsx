@@ -12,7 +12,6 @@ interface DirectContactSectionProps {
   labelEmail?: string;
   labelPhone?: string;
   labelOfficeHours?: string;
-  responsePromise?: string;
   labelChatWhatsapp?: string;
   labelChatViber?: string;
 }
@@ -26,7 +25,6 @@ export function DirectContactSection({
   labelEmail,
   labelPhone,
   labelOfficeHours,
-  responsePromise,
   labelChatWhatsapp,
   labelChatViber,
 }: DirectContactSectionProps) {
@@ -163,15 +161,6 @@ export function DirectContactSection({
         )}
       </div>
 
-      {/* Response promise */}
-      {responsePromise && (
-        <div className="flex items-center gap-3 px-1">
-          <div className="w-2 h-2 rounded-full bg-[var(--color-gold-sun)] flex-shrink-0" />
-          <p className="text-sm text-[var(--color-muted)]">
-            {responsePromise}
-          </p>
-        </div>
-      )}
     </div>
   );
 }

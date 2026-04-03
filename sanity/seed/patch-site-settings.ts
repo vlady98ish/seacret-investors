@@ -113,6 +113,8 @@ async function patchContactPageDescription() {
         "directDescription.he": "מעדיפים שיחה ישירה? פנו אלינו בוואטסאפ, וייבר, באימייל או בטלפון.",
         "directDescription.el": "Προτιμάτε άμεση επικοινωνία; Επικοινωνήστε μαζί μας μέσω WhatsApp, Viber, email ή τηλεφώνου.",
       })
+      .unset(["responsePromise"])
+      })
       .commit();
 
     console.log(`✅ ${id} patched`);

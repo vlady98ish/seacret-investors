@@ -18,8 +18,6 @@ export const contactPageType = defineType({
     // Hero
     defineField({ name: "heroTitle", title: "Hero Title", type: "localeString", group: "hero", validation: requireAllTranslations }),
     defineField({ name: "heroSubtitle", title: "Hero Subtitle", type: "localeString", group: "hero" }),
-    defineField({ name: "responsePromise", title: "Response Promise", type: "localeString", group: "hero", description: "Text like 'We'll get back to you within 24 hours'." }),
-
     // Office
     defineField({ name: "officeInfo", title: "Office Info", type: "localeText", group: "office", description: "Office address and opening hours text." }),
     defineField({ name: "directEyebrow", title: "Direct Contact Eyebrow", type: "localeString", group: "office" }),

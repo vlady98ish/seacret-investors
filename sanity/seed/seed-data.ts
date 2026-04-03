@@ -1029,8 +1029,6 @@ const contactPage = {
 
   heroTitle: { en: "Get in Touch" },
   heroSubtitle: { en: "Our team is here to guide you through every step." },
-  responsePromise: { en: "We respond to all inquiries within 24 hours." },
-
   // Direct contact section
   directEyebrow: { en: "Direct Contact" },
   directTitle: { en: "Speak with our team" },

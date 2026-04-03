@@ -375,7 +375,6 @@ export interface MasterplanPage {
 export interface ContactPage {
   heroTitle: LocalizedString;
   heroSubtitle?: LocalizedString;
-  responsePromise?: LocalizedString;
   officeInfo?: LocalizedText;
   directEyebrow?: LocalizedString;
   directTitle?: LocalizedString;

@@ -76,8 +76,6 @@ export default async function CmsContactPageRoute({ params }: Props) {
   const labelEmail = t(contactPage?.labelEmail) || undefined;
   const labelPhone = t(contactPage?.labelPhone) || undefined;
   const labelOfficeHours = t(contactPage?.labelOfficeHours) || undefined;
-  const responsePromise = t(contactPage?.responsePromise) || undefined;
-
   /* ── Multi-step form strings (uiStrings + contactPage) ───── */
   const labelFullName = t(uiStrings?.formFullName) || undefined;
   const labelEmailForm = t(uiStrings?.formEmail) || undefined;
@@ -144,7 +142,6 @@ export default async function CmsContactPageRoute({ params }: Props) {
               labelEmail={labelEmail}
               labelPhone={labelPhone}
               labelOfficeHours={labelOfficeHours}
-              responsePromise={responsePromise}
               labelChatWhatsapp={t(uiStrings?.miscChatWhatsapp) || undefined}
               labelChatViber={t(uiStrings?.miscChatViber) || undefined}
             />
