@@ -221,11 +221,13 @@ export default async function MasterplanPage({ params }: Props) {
         locale={typedLocale}
         preferredOption="Masterplan Inquiry"
         whatsappUrl={siteSettings?.whatsappNumber ? `https://wa.me/${siteSettings.whatsappNumber.replace(/\D/g, "")}` : undefined}
+        viberUrl={siteSettings?.viberNumber ? `viber://chat?number=%2B${siteSettings.viberNumber.replace(/\D/g, "")}` : undefined}
         strings={{
           eyebrow: t(uiStrings?.miscGetInTouch),
           title: t(uiStrings?.miscReadyToDiscover),
           description: t(uiStrings?.miscContactPromise),
           whatsappUs: t(uiStrings?.ctaWhatsappUs),
+          viberUs: t(uiStrings?.ctaViberUs),
           formFullName: t(uiStrings?.formFullName),
           formEmail: t(uiStrings?.formEmail),
           formPhone: t(uiStrings?.formPhone),

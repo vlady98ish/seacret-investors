@@ -322,6 +322,7 @@ export default async function VillaDetailPage({ params }: Props) {
         locale={typedLocale}
         preferredOption={villaName}
         whatsappUrl={siteSettings?.whatsappNumber ? `https://wa.me/${siteSettings.whatsappNumber.replace(/\D/g, "")}` : undefined}
+        viberUrl={siteSettings?.viberNumber ? `viber://chat?number=%2B${siteSettings.viberNumber.replace(/\D/g, "")}` : undefined}
       />
     </>
   );
