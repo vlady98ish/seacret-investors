@@ -114,7 +114,6 @@ async function patchContactPageDescription() {
         "directDescription.el": "Προτιμάτε άμεση επικοινωνία; Επικοινωνήστε μαζί μας μέσω WhatsApp, Viber, email ή τηλεφώνου.",
       })
       .unset(["responsePromise"])
-      })
       .commit();
 
     console.log(`✅ ${id} patched`);
