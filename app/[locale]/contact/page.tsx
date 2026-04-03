@@ -76,8 +76,6 @@ export default async function CmsContactPageRoute({ params }: Props) {
   const labelEmail = t(contactPage?.labelEmail) || undefined;
   const labelPhone = t(contactPage?.labelPhone) || undefined;
   const labelOfficeHours = t(contactPage?.labelOfficeHours) || undefined;
-  const responsePromise = t(contactPage?.responsePromise) || undefined;
-
   /* ── Multi-step form strings (uiStrings + contactPage) ───── */
   const labelFullName = t(uiStrings?.formFullName) || undefined;
   const labelEmailForm = t(uiStrings?.formEmail) || undefined;
@@ -111,9 +109,9 @@ export default async function CmsContactPageRoute({ params }: Props) {
 
       {/* ── Split layout: form left, direct contact right ── */}
       <section className="section-shell py-20">
-        <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:gap-16 xl:grid-cols-[1fr_360px]">
+        <div className="grid gap-12 lg:grid-cols-[1fr_420px] lg:gap-16">
           {/* Multi-step form */}
-          <div>
+          <div className="flex flex-col">
             <MultiStepForm
               locale={typedLocale}
               villaNames={villaNames}
@@ -144,8 +142,8 @@ export default async function CmsContactPageRoute({ params }: Props) {
               labelEmail={labelEmail}
               labelPhone={labelPhone}
               labelOfficeHours={labelOfficeHours}
-              responsePromise={responsePromise}
               labelChatWhatsapp={t(uiStrings?.miscChatWhatsapp) || undefined}
+              labelViber={t(uiStrings?.miscChatViber) || undefined}
             />
           </div>
         </div>

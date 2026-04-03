@@ -217,7 +217,7 @@ export default async function PrivacyPolicyPage({ params }: Props) {
             Brand: Live Better Group / Sea&apos;cret Residences
           </p>
           <p>
-            Phone: <a href="tel:+306931843439">+30 6931 843 439</a>
+            Phone: <a href="tel:+306931843439">+30 693 1843439</a>
             <br />
             Email: <a href="mailto:lkholdingsike@gmail.com">lkholdingsike@gmail.com</a>
             <br />

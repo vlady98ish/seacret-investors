@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 import { z } from "zod";
 
 import { sanityWriteClient } from "@/lib/sanity/client";
@@ -76,6 +77,36 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Failed to write lead to Sanity:", error);
+  }
+
+  // Send email notification
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL || "Sea'cret Residences <onboarding@resend.dev>",
+        to: "office@livebettergr.com",
+        subject: `New inquiry from ${data.fullName}`,
+        html: `
+          <h2>New Lead Submission</h2>
+          <table style="border-collapse:collapse;width:100%;max-width:600px;">
+            <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Name</td><td style="padding:8px;border-bottom:1px solid #eee;">${data.fullName}</td></tr>
+            <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Email</td><td style="padding:8px;border-bottom:1px solid #eee;"><a href="mailto:${data.email}">${data.email}</a></td></tr>
+            ${data.phone ? `<tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Phone</td><td style="padding:8px;border-bottom:1px solid #eee;">${data.phone}</td></tr>` : ""}
+            <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Interest</td><td style="padding:8px;border-bottom:1px solid #eee;">${data.interest}</td></tr>
+            ${data.preferredVilla ? `<tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Preferred Villa</td><td style="padding:8px;border-bottom:1px solid #eee;">${data.preferredVilla}</td></tr>` : ""}
+            ${data.budget ? `<tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Budget</td><td style="padding:8px;border-bottom:1px solid #eee;">${data.budget}</td></tr>` : ""}
+            ${data.message ? `<tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Message</td><td style="padding:8px;border-bottom:1px solid #eee;">${data.message}</td></tr>` : ""}
+            <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Locale</td><td style="padding:8px;border-bottom:1px solid #eee;">${data.locale}</td></tr>
+            ${data.source ? `<tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Source</td><td style="padding:8px;border-bottom:1px solid #eee;">${data.source}</td></tr>` : ""}
+            ${data.utmSource ? `<tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">UTM</td><td style="padding:8px;border-bottom:1px solid #eee;">${data.utmSource} / ${data.utmMedium} / ${data.utmCampaign}</td></tr>` : ""}
+          </table>
+        `,
+      });
+    } catch (emailError) {
+      console.error("Failed to send email notification:", emailError);
+      // Don't fail the API response — Sanity write already succeeded
+    }
   }
 
   console.log("Lead received:", data.fullName, data.email, data.interest);

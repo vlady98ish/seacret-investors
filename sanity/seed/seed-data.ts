@@ -455,15 +455,18 @@ const siteSettings = {
   _id: "siteSettings",
   _type: "siteSettings",
   projectName: "The Sea'cret Residences Chiliadou",
-  salesEmail: "info@seacret-residences.com",
-  salesPhone: "+30 123 456 7890",
-  whatsappNumber: "+972501234567",
+  salesEmail: "office@livebettergr.com",
+  salesPhone: "+30 693 1843439",
+  whatsappNumber: "306931843439",
+  viberNumber: "306931843439",
   officeHours: {
     en: "Sunday–Thursday, 9:00–18:00",
     he: "ראשון–חמישי, 9:00–18:00",
     ru: "Воскресенье–Четверг, 9:00–18:00",
     el: "Κυριακή–Πέμπτη, 9:00–18:00",
   },
+  officeAddress: "Georg. Olimpiou 33-35, Patras, Greece 26222",
+  officeRegion: "Patras, Western Greece",
 };
 
 // ---------------------------------------------------------------------------
@@ -648,6 +651,7 @@ const uiStringsDoc = {
   ctaRequestInfo: { en: "Request Information" },
   ctaDownloadBrochure: { en: "Download Brochure" },
   ctaWhatsappUs: { en: "WhatsApp Us" },
+  ctaViberUs: { en: "Viber Us" },
   ctaExploreResidences: { en: "Explore Residences" },
   ctaViewAll: { en: "View All Residences" },
   ctaSendRequest: { en: "Send Request" },
@@ -712,6 +716,8 @@ const uiStringsDoc = {
   miscFloor: { en: "Floor" },
   miscVillaSpecs: { en: "Villa Specifications" },
   miscDetailsComing: { en: "Details coming soon" },
+  miscChatWhatsapp: { en: "Chat on WhatsApp" },
+  miscChatViber: { en: "Chat on Viber" },
 };
 
 // ---------------------------------------------------------------------------
@@ -1025,13 +1031,11 @@ const contactPage = {
 
   heroTitle: { en: "Get in Touch" },
   heroSubtitle: { en: "Our team is here to guide you through every step." },
-  responsePromise: { en: "We respond to all inquiries within 24 hours." },
-
   // Direct contact section
   directEyebrow: { en: "Direct Contact" },
   directTitle: { en: "Speak with our team" },
   directDescription: {
-    en: "Prefer a direct conversation? Reach us on WhatsApp, by email, or give us a call.",
+    en: "Prefer a direct conversation? Reach us on WhatsApp, Viber, by email, or give us a call.",
   },
   labelEmail: { en: "Email" },
   labelPhone: { en: "Phone" },

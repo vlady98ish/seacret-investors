@@ -18,7 +18,10 @@ export const siteSettingsType = defineType({
     defineField({ name: "salesEmail", title: "Sales Email", type: "string", group: "general", description: "Shown on the contact page and footer." }),
     defineField({ name: "salesPhone", title: "Sales Phone", type: "string", group: "general", description: "Include country code (e.g. +357 XXX XXXX)." }),
     defineField({ name: "whatsappNumber", title: "WhatsApp Number", type: "string", group: "general", description: "Full number with country code, no spaces (e.g. 35799123456)." }),
+    defineField({ name: "viberNumber", title: "Viber Number", type: "string", group: "general", description: "Full number with country code, no spaces (e.g. 306931843439)." }),
     defineField({ name: "officeHours", title: "Office Hours", type: "localeString", group: "general" }),
+    defineField({ name: "officeAddress", title: "Office Address", type: "string", group: "general", description: "Full office address shown on the contact page." }),
+    defineField({ name: "officeRegion", title: "Office Region", type: "string", group: "general", description: "City/region subtitle (e.g. Patras, Western Greece)." }),
 
     // Brochures
     defineField({

@@ -62,7 +62,10 @@ export interface SiteSettings {
   salesEmail: string;
   salesPhone: string;
   whatsappNumber: string;
+  viberNumber: string;
   officeHours: LocalizedString;
+  officeAddress?: string;
+  officeRegion?: string;
   brochurePdf: Record<Locale, { asset: { _ref: string; url: string } }>;
   legalLinks: {
     privacyPolicy?: string;
@@ -132,6 +135,7 @@ export interface UiStrings {
   ctaRequestInfo: LocalizedString;
   ctaDownloadBrochure: LocalizedString;
   ctaWhatsappUs: LocalizedString;
+  ctaViberUs: LocalizedString;
   ctaExploreResidences: LocalizedString;
   ctaViewAll: LocalizedString;
   ctaSendRequest: LocalizedString;
@@ -195,6 +199,7 @@ export interface UiStrings {
   miscSimilarOptions: LocalizedString;
   miscSelectPlot: LocalizedString;
   miscChatWhatsapp: LocalizedString;
+  miscChatViber: LocalizedString;
   miscFromChiliadou: LocalizedString;
   miscDestinations: LocalizedString;
   miscCountries: LocalizedString;
@@ -372,7 +377,6 @@ export interface MasterplanPage {
 export interface ContactPage {
   heroTitle: LocalizedString;
   heroSubtitle?: LocalizedString;
-  responsePromise?: LocalizedString;
   officeInfo?: LocalizedText;
   directEyebrow?: LocalizedString;
   directTitle?: LocalizedString;

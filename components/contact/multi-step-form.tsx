@@ -309,10 +309,10 @@ export function MultiStepForm({
   }
 
   return (
-    <div className="tile">
+    <div className="tile flex-1 flex flex-col">
       <StepDots current={step} total={3} />
 
-      <form onSubmit={handleSubmit} noValidate>
+      <form onSubmit={handleSubmit} noValidate className="flex-1 flex flex-col">
         {/* ── Step 1: Interest ────────────────────────── */}
         {step === 1 && (
           <div className="animate-fade-in">
@@ -518,7 +518,7 @@ export function MultiStepForm({
         )}
 
         {/* ── Navigation ──────────────────────────────── */}
-        <div className={cn("flex mt-8", step === 1 ? "justify-end" : "justify-between")}>
+        <div className={cn("flex mt-auto pt-8", step === 1 ? "justify-end" : "justify-between")}>
           {step > 1 && (
             <button
               type="button"
