@@ -62,6 +62,7 @@ export interface SiteSettings {
   salesEmail: string;
   salesPhone: string;
   whatsappNumber: string;
+  viberNumber: string;
   officeHours: LocalizedString;
   brochurePdf: Record<Locale, { asset: { _ref: string; url: string } }>;
   legalLinks: {
