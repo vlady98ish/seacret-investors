@@ -146,6 +146,7 @@ export default async function CmsContactPageRoute({ params }: Props) {
               labelOfficeHours={labelOfficeHours}
               responsePromise={responsePromise}
               labelChatWhatsapp={t(uiStrings?.miscChatWhatsapp) || undefined}
+              labelChatViber={t(uiStrings?.miscChatViber) || undefined}
             />
           </div>
         </div>
