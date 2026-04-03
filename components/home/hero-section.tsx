@@ -13,7 +13,7 @@ type HeroSectionProps = {
 export function HeroSection({ data, locale, ctaExplore, ctaBrochure }: HeroSectionProps) {
   const title = getLocalizedValue(data?.heroTagline, locale);
   const subtitle = getLocalizedValue(data?.heroSubtitle, locale);
-  const imageUrl = getSanityImageUrl(data?.heroImage, 1920);
+  const imageUrl = getSanityImageUrl(data?.heroImage);
 
   return (
     <PageHero backgroundImage={imageUrl} title={title} subtitle={subtitle}>
