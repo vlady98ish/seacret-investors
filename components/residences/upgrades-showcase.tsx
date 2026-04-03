@@ -1,5 +1,15 @@
 import Image from "next/image";
-import { Waves } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  Bath,
+  Flame,
+  Shield,
+  Sparkles,
+  TabletSmartphone,
+  ThermometerSun,
+  UtensilsCrossed,
+  Waves,
+} from "lucide-react";
 
 import { getLocalizedValue, type Locale } from "@/lib/i18n";
 import { getSanityImageUrl } from "@/lib/sanity/image";
@@ -10,6 +20,22 @@ type UpgradesShowcaseProps = {
   locale: Locale;
 };
 
+/** Совпадает с `category` в sanity/schemaTypes/upgrade.ts */
+const UPGRADE_ICON_BY_CATEGORY: Record<string, LucideIcon> = {
+  pool: Waves,
+  jacuzzi: Bath,
+  sauna: ThermometerSun,
+  bbq: UtensilsCrossed,
+  "smart-house": TabletSmartphone,
+  security: Shield,
+  fireplace: Flame,
+};
+
+function upgradeIconForCategory(category: string | undefined): LucideIcon {
+  if (!category) return Sparkles;
+  return UPGRADE_ICON_BY_CATEGORY[category] ?? Sparkles;
+}
+
 export function UpgradesShowcase({ upgrades, locale }: UpgradesShowcaseProps) {
   if (!upgrades?.length) return null;
 
@@ -19,6 +45,7 @@ export function UpgradesShowcase({ upgrades, locale }: UpgradesShowcaseProps) {
         const name = getLocalizedValue(upgrade.name, locale) ?? "";
         const description = getLocalizedValue(upgrade.description, locale) ?? "";
         const imageUrl = getSanityImageUrl(upgrade.image, 400);
+        const Icon = upgradeIconForCategory(upgrade.category);
 
         return (
           <div
@@ -37,7 +64,7 @@ export function UpgradesShowcase({ upgrades, locale }: UpgradesShowcaseProps) {
               </div>
             ) : (
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-deep-teal)]/10 text-[var(--color-deep-teal)]">
-                <Waves className="h-7 w-7" />
+                <Icon className="h-7 w-7" aria-hidden />
               </div>
             )}
             <div>

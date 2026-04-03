@@ -99,6 +99,8 @@ export interface UiStrings {
   footerTerms: LocalizedString;
   footerCookiePolicy: LocalizedString;
   footerAllRights: LocalizedString;
+  /** Agency / producer line below copyright (brand vs company). */
+  footerProducedBy?: LocalizedString;
 
   // Status
   statusAvailable: LocalizedString;
@@ -256,7 +258,8 @@ export interface HomePage {
     image: SanityImage;
   }>;
   featuredVillas: FeaturedVilla[];
-  masterplanImage: SanityImage;
+  masterplanImage?: SanityImage;
+  masterplanGallery?: SanityImage[];
   ctaTitle: LocalizedString;
   ctaSubtitle: LocalizedString;
   locationTitle?: LocalizedString;

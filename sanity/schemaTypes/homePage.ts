@@ -1,6 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { HomeIcon } from "@sanity/icons";
-import { requireAllTranslations } from "../lib/validation";
 
 export const homePageType = defineType({
   name: "homePage",
@@ -16,7 +15,13 @@ export const homePageType = defineType({
   ],
   fields: [
     // Hero
-    defineField({ name: "heroTagline", title: "Hero Tagline", type: "localeString", group: "hero", description: "Main headline displayed over the hero image.", validation: requireAllTranslations }),
+    defineField({
+      name: "heroTagline",
+      title: "Hero Tagline",
+      type: "localeString",
+      group: "hero",
+      description: "Main headline over the hero.",
+    }),
     defineField({ name: "heroSubtitle", title: "Hero Subtitle", type: "localeString", group: "hero", description: "Smaller text below the tagline." }),
     defineField({ name: "heroImage", title: "Hero Image", type: "image", options: { hotspot: true }, group: "hero", description: "Full-width background image for the homepage hero.", validation: (r) => r.required().error("Please add a hero image — it's the first thing visitors see.") }),
     defineField({ name: "heroVideoUrl", title: "Hero Video URL", type: "url", group: "hero", description: "YouTube or Vimeo link. Plays in background on the homepage hero." }),
@@ -54,7 +59,24 @@ export const homePageType = defineType({
       description: "Select villas to highlight on the homepage.",
       of: [defineArrayMember({ type: "reference", to: [{ type: "villa" }] })],
     }),
-    defineField({ name: "masterplanImage", title: "Masterplan Aerial Image", type: "image", options: { hotspot: true }, group: "sections" }),
+    defineField({
+      name: "masterplanImage",
+      title: "Masterplan Aerial Image",
+      type: "image",
+      options: { hotspot: true },
+      group: "sections",
+      description:
+        "Fallback single shot for the homepage masterplan block when **Masterplan Section Gallery** is empty or has fewer than 2 images. If the live site shows a carousel while this gallery is empty here, images are loading from the repo folder `public/images/home/masterplan/` — run `npm run cms:masterplan-gallery` (with SANITY_WRITE_TOKEN) to copy them into this field.",
+    }),
+    defineField({
+      name: "masterplanGallery",
+      title: "Masterplan Section Gallery",
+      type: "array",
+      group: "sections",
+      description:
+        "Homepage masterplan carousel — add **2 or more** images (order = order on the site). When filled, this replaces the single aerial image above. If this list is empty but the carousel still appears on the site, files in `public/images/home/masterplan/` are used until you sync: `npm run cms:masterplan-gallery`.",
+      of: [defineArrayMember({ type: "image", options: { hotspot: true } })],
+    }),
     defineField({ name: "ctaTitle", title: "CTA Title", type: "localeString", group: "sections" }),
     defineField({ name: "ctaSubtitle", title: "CTA Subtitle", type: "localeString", group: "sections" }),
     defineField({ name: "locationTitle", title: "Location Section Title", type: "localeString", group: "sections" }),
@@ -81,7 +103,24 @@ export const homePageType = defineType({
     defineField({ name: "inlineContactDescription", title: "Inline Contact Description", type: "localeText", group: "sections" }),
 
     // SEO
-    defineField({ name: "seoTitle", title: "SEO Title", type: "localeString", group: "seo", description: "Title shown in browser tabs and search results.", validation: requireAllTranslations }),
-    defineField({ name: "seoDescription", title: "SEO Description", type: "localeText", group: "seo", description: "Short description for search engines (150-160 characters recommended).", validation: requireAllTranslations }),
+    defineField({
+      name: "seoTitle",
+      title: "SEO Title",
+      type: "localeString",
+      group: "seo",
+      description: "Title shown in browser tabs and search results.",
+    }),
+    defineField({
+      name: "seoDescription",
+      title: "SEO Description",
+      type: "localeText",
+      group: "seo",
+      description: "Short description for search engines (150–160 characters per language recommended).",
+    }),
   ],
+  preview: {
+    prepare() {
+      return { title: "Home" };
+    },
+  },
 });

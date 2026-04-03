@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import { PlotDetailPanel } from "@/components/masterplan/plot-detail-panel";
 import { VisualExplorer } from "@/components/masterplan/visual-explorer";
@@ -38,13 +38,27 @@ export function MasterplanInteractive({
   aerialImageUrl,
 }: MasterplanInteractiveProps) {
   const [selectedPlotId, setSelectedPlotId] = useState<string | null>(null);
+  const explorerWrapRef = useRef<HTMLDivElement>(null);
+  const [explorerHeightPx, setExplorerHeightPx] = useState<number | null>(null);
 
   const selectedPlot = plots.find((p) => p._id === selectedPlotId) ?? null;
 
+  useLayoutEffect(() => {
+    const el = explorerWrapRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+
+    const update = () => setExplorerHeightPx(el.offsetHeight);
+    update();
+
+    const ro = new ResizeObserver(() => update());
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [aerialImageUrl, plots.length]);
+
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
-      {/* Visual explorer — 60% on desktop, full width on mobile */}
-      <div className="w-full lg:w-[60%]">
+      {/* Visual explorer — 60% on desktop; height drives the right column max-height */}
+      <div ref={explorerWrapRef} className="w-full shrink-0 lg:w-[60%]">
         <VisualExplorer
           plots={plots}
           selectedPlotId={selectedPlotId}
@@ -56,13 +70,14 @@ export function MasterplanInteractive({
         />
       </div>
 
-      {/* Detail panel — 40% on desktop (inline), bottom sheet on mobile (handled inside) */}
-      <div className="w-full lg:w-[40%]">
+      {/* Detail panel — capped to image height on desktop; scroll inside */}
+      <div className="w-full min-h-0 lg:w-[40%] lg:self-stretch">
         <PlotDetailPanel
           plot={selectedPlot}
           locale={locale}
           onClose={() => setSelectedPlotId(null)}
           labels={panelLabels}
+          desktopMaxHeightPx={explorerHeightPx}
         />
       </div>
     </div>

@@ -13,12 +13,15 @@ type ImageGalleryProps = {
   images: string[];
   villaName: string;
   emptyText?: string;
+  /** Softer layout for homepage masterplan (16∶9, larger radius). */
+  variant?: "default" | "masterplan";
 };
 
 export function ImageGallery({
   images,
   villaName,
   emptyText,
+  variant = "default",
 }: ImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -76,6 +79,16 @@ export function ImageGallery({
     );
   }
 
+  const radius = variant === "masterplan" ? "rounded-3xl" : "rounded-2xl";
+  const slideAspect =
+    variant === "masterplan"
+      ? "relative aspect-[16/9] w-full shrink-0"
+      : "relative aspect-[2/1] w-full shrink-0 sm:aspect-[21/9]";
+  const bottomGradient =
+    variant === "masterplan"
+      ? "from-[var(--color-night)]/35 via-transparent"
+      : "from-[var(--color-night)]/50 via-transparent";
+
   return (
     <>
       <div
@@ -88,13 +101,13 @@ export function ImageGallery({
         <div ref={liveRef} aria-live="polite" aria-atomic="true" className="sr-only" />
 
         {/* ── Main carousel ── */}
-        <div className="relative overflow-hidden rounded-2xl bg-[var(--color-night)]">
+        <div className={`relative overflow-hidden ${radius} bg-[var(--color-night)] shadow-[var(--shadow-card)]`}>
           <div ref={mainRef} className="overflow-hidden">
             <div className="flex">
               {images.map((src, i) => (
                 <div
-                  key={src}
-                  className="relative aspect-[2/1] w-full shrink-0 sm:aspect-[21/9]"
+                  key={`${src}-${i}`}
+                  className={slideAspect}
                   role="group"
                   aria-roledescription="slide"
                   aria-label={`Photo ${i + 1} of ${count}`}
@@ -113,9 +126,9 @@ export function ImageGallery({
             </div>
           </div>
 
-          {/* Cinematic gradient overlays */}
-          <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-t from-[var(--color-night)]/50 via-transparent to-[var(--color-night)]/10" aria-hidden="true" />
-          <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-r from-[var(--color-night)]/15 via-transparent to-[var(--color-night)]/15" aria-hidden="true" />
+          {/* Bottom weight for dots + full screen (lighter on masterplan for cream section) */}
+          <div className={`pointer-events-none absolute inset-0 ${radius} bg-gradient-to-t ${bottomGradient} to-[var(--color-night)]/10`} aria-hidden="true" />
+          <div className={`pointer-events-none absolute inset-0 ${radius} bg-gradient-to-r from-[var(--color-night)]/15 via-transparent to-[var(--color-night)]/15`} aria-hidden="true" />
 
           {/* Navigation arrows */}
           {count > 1 && (

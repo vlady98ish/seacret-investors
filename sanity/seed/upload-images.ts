@@ -79,6 +79,15 @@ const LIFESTYLE_IMAGES = [
   "/assets/pdf/page-02-hero.jpg", // evening
 ];
 
+/** Shown on the homepage masterplan teaser as a carousel (requires ≥2 successful downloads). */
+const HOME_MASTERPLAN_GALLERY = [
+  "/assets/pdf/masterplan-aerial.jpg",
+  "/assets/pdf/page-02-hero.jpg",
+  "/assets/pdf/page-04-location.jpg",
+  "/assets/pdf/lifestyle-morning.jpg",
+  "/assets/pdf/lifestyle-day.jpg",
+];
+
 const FOUNDER_IMAGES: Record<string, string> = {
   "Tom Linkovsky": "/assets/team/tom-linkovsky.webp",
   "Evgeny Kalika": "/assets/team/evgeny-kalika.webp",
@@ -172,6 +181,35 @@ async function uploadPageImages() {
   }
 }
 
+async function uploadHomeMasterplanGallery() {
+  console.log("\n═══ Home page — Masterplan gallery ═══");
+
+  const homePage = await client.fetch<{ _id: string } | null>('*[_type == "homePage"][0]{ _id }');
+  if (!homePage?._id) {
+    console.log("⚠ No homePage document found");
+    return;
+  }
+
+  const images: Array<{ _type: "image"; asset: { _type: "reference"; _ref: string } }> = [];
+  for (const urlPath of HOME_MASTERPLAN_GALLERY) {
+    try {
+      images.push(await uploadImage(urlPath));
+    } catch (e) {
+      console.warn(`  ⚠ Skipped ${urlPath}:`, e instanceof Error ? e.message : e);
+    }
+  }
+
+  if (images.length < 2) {
+    console.log(
+      `  ⚠ Need at least 2 images for a carousel; got ${images.length}. Add files under public/images/home/masterplan/ or fix paths in HOME_MASTERPLAN_GALLERY.`
+    );
+    return;
+  }
+
+  await client.patch(homePage._id).set({ masterplanGallery: images }).commit();
+  console.log(`  ✓ homePage.masterplanGallery set (${images.length} images)`);
+}
+
 async function uploadLifestyleImages() {
   console.log("\n═══ Lifestyle Moment Images ═══");
 
@@ -237,6 +275,7 @@ async function main() {
   console.log("Uploading to Sanity:", env.NEXT_PUBLIC_SANITY_PROJECT_ID, "/", env.NEXT_PUBLIC_SANITY_DATASET);
 
   await uploadPageImages();
+  await uploadHomeMasterplanGallery();
   await uploadVillaImages();
   await uploadLifestyleImages();
   await uploadFounderImages();

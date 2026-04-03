@@ -24,6 +24,8 @@ type PlotDetailPanelProps = {
   locale: Locale;
   onClose: () => void;
   labels?: PanelLabels;
+  /** Match masterplan image height on large screens; panel scrolls inside. */
+  desktopMaxHeightPx?: number | null;
 };
 
 function groupUnitsByType(units: PlotWithUnits["units"]) {
@@ -56,6 +58,7 @@ export function PlotDetailPanel({
   locale,
   onClose,
   labels,
+  desktopMaxHeightPx,
 }: PlotDetailPanelProps) {
   const resolved = {
     selectPlot: labels?.selectPlot || "Select a plot on the map to see details",
@@ -68,8 +71,15 @@ export function PlotDetailPanel({
 
   return (
     <>
-      {/* Desktop panel — inline in the grid */}
-      <div className="hidden lg:block">
+      {/* Desktop panel — inline; height ≤ image via parent max-height */}
+      <div
+        className="hidden min-h-0 flex-col lg:flex"
+        style={
+          desktopMaxHeightPx != null && desktopMaxHeightPx > 0
+            ? { maxHeight: desktopMaxHeightPx, height: desktopMaxHeightPx }
+            : undefined
+        }
+      >
         <AnimatePresence mode="wait">
           {!plot ? (
             <motion.div
@@ -77,7 +87,7 @@ export function PlotDetailPanel({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex min-h-[300px] items-center justify-center rounded-2xl border border-[rgba(13,103,119,0.08)] bg-white/60 p-6"
+              className="flex min-h-[240px] flex-1 items-center justify-center overflow-hidden rounded-2xl border border-[rgba(13,103,119,0.08)] bg-white/60 p-6"
             >
               <p className="text-center text-sm text-[var(--color-muted)]">
                 {resolved.selectPlot}
@@ -90,9 +100,16 @@ export function PlotDetailPanel({
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 24 }}
               transition={{ duration: 0.3, ease: [0.2, 1, 0.22, 1] }}
-              className="tile relative overflow-y-auto"
+              className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-[rgba(13,103,119,0.08)] bg-[rgba(255,250,241,0.92)] shadow-[var(--shadow-soft)]"
             >
-              <PanelContent plot={plot} locale={locale} onClose={onClose} labels={resolved} />
+              <div
+                className={cn(
+                  "masterplan-panel-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain",
+                  "py-7 pl-7 pr-2 sm:pl-8 sm:pr-3",
+                )}
+              >
+                <PanelContent plot={plot} locale={locale} onClose={onClose} labels={resolved} />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

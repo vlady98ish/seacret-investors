@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { ImageGallery } from "@/components/villa-detail/image-gallery";
+import { getPublicMasterplanGalleryUrls } from "@/lib/home-masterplan-gallery";
 import { type Locale } from "@/lib/i18n";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import type { HomePage } from "@/lib/sanity/types";
@@ -23,9 +25,26 @@ type MasterplanTeaserSectionProps = {
 };
 
 export function MasterplanTeaserSection({ data, stats, locale, title, description, statTotalLabel, statPlotsLabel, statAvailableLabel, eyebrowLabel, ctaLabel }: MasterplanTeaserSectionProps) {
-  const imageUrl = getSanityImageUrl(data?.masterplanImage, 1200);
+  const galleryUrls =
+    data?.masterplanGallery
+      ?.map((img) => getSanityImageUrl(img, 1920))
+      .filter((u): u is string => Boolean(u)) ?? [];
+  const fallbackSingle = getSanityImageUrl(data?.masterplanImage, 1200);
+  const publicGallery = getPublicMasterplanGalleryUrls();
+  /** CMS gallery first; then static folder (2+ files) so local/public assets can replace one bad CMS shot. */
+  const imageUrls =
+    galleryUrls.length > 0
+      ? galleryUrls
+      : publicGallery.length >= 2
+        ? publicGallery
+        : fallbackSingle
+          ? [fallbackSingle]
+          : publicGallery.length === 1
+            ? publicGallery
+            : [];
+  const galleryAltBase = title?.trim() || "Sea'cret Residences masterplan";
 
-  if (!imageUrl && !stats) return null;
+  if (!imageUrls.length && !stats) return null;
 
   return (
     <section className="bg-[var(--color-sand)] py-24 sm:py-32">
@@ -36,22 +55,27 @@ export function MasterplanTeaserSection({ data, stats, locale, title, descriptio
             title={title}
             description={description}
             align="center"
+            titleClassName="uppercase tracking-[0.08em]"
           />
         </ScrollReveal>
 
-        {imageUrl && (
+        {imageUrls.length > 1 ? (
+          <ScrollReveal className="mt-12" delay={0.1}>
+            <ImageGallery images={imageUrls} villaName={galleryAltBase} variant="masterplan" />
+          </ScrollReveal>
+        ) : imageUrls.length === 1 ? (
           <ScrollReveal className="mt-12" delay={0.1}>
             <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
               <Image
-                src={imageUrl}
-                alt="Masterplan aerial view"
+                src={imageUrls[3]}
+                alt={`${galleryAltBase} — aerial view`}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 80vw"
               />
             </div>
           </ScrollReveal>
-        )}
+        ) : null}
 
         {stats && (
           <ScrollReveal className="mt-12" delay={0.2}>

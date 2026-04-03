@@ -38,6 +38,10 @@ export const uiStringsType = defineType({
     { ...ls("footerTerms", "Footer: Terms"), group: "footer" },
     { ...ls("footerCookiePolicy", "Footer: Cookie Policy"), group: "footer" },
     { ...ls("footerAllRights", "Footer: All Rights"), group: "footer" },
+    {
+      ...ls("footerProducedBy", "Footer: Produced by (company credit, e.g. LiveBetter)"),
+      group: "footer",
+    },
 
     // Status
     { ...ls("statusAvailable", "Status: Available"), group: "status" },

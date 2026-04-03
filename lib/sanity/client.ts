@@ -6,7 +6,9 @@ export const sanityClient = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  // CDN кэширует API — после Publish в Studio изменения могут приходить с задержкой.
+  // В dev отключаем, чтобы сразу видеть актуальный контент (и совпадало со Studio).
+  useCdn: process.env.NODE_ENV === "production",
 });
 
 export const sanityWriteClient = createClient({

@@ -503,6 +503,11 @@ const uiStrings: TranslationMap = {
   footerTerms: { ru: "Условия использования", he: "תנאים והגבלות", el: "Όροι & Προϋποθέσεις" },
   footerCookiePolicy: { ru: "Политика cookie", he: "מדיניות עוגיות", el: "Πολιτική Cookies" },
   footerAllRights: { ru: "Все права защищены.", he: "כל הזכויות שמורות.", el: "Με επιφύλαξη παντός δικαιώματος." },
+  footerProducedBy: {
+    ru: "Производство: LiveBetter",
+    he: "הופק על ידי LiveBetter",
+    el: "Παραγωγή: LiveBetter",
+  },
   // Status
   statusAvailable: { ru: "Доступно", he: "זמין", el: "Διαθέσιμη" },
   statusReserved: { ru: "Зарезервировано", he: "שמור", el: "Κρατημένη" },

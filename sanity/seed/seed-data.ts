@@ -613,6 +613,7 @@ const uiStringsDoc = {
   footerTerms: { en: "Terms & Conditions" },
   footerCookiePolicy: { en: "Cookie Policy" },
   footerAllRights: { en: "All rights reserved." },
+  footerProducedBy: { en: "Produced by LiveBetter" },
 
   // Status
   statusAvailable: { en: "Available" },

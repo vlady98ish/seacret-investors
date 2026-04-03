@@ -6,6 +6,9 @@ import { getLocalizedValue } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n";
 import type { UiStrings, SiteSettings } from "@/lib/sanity/types";
 
+/** Official site of the producing company (Live Better Group). */
+const LIVEBETTER_URL = "https://livebettergr.com/";
+
 type SiteFooterProps = {
   locale: Locale;
   uiStrings?: UiStrings | null;
@@ -72,6 +75,14 @@ export function SiteFooter({ locale, uiStrings, siteSettings: _siteSettings }: S
           <p className="text-xs text-[#7a8f96]">
             &copy; {new Date().getFullYear()} Sea&apos;cret Residences. {t(uiStrings?.footerAllRights) || "All rights reserved."}
           </p>
+          <a
+            href={LIVEBETTER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-white/25 underline-offset-2 transition hover:text-white/45 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-gold-sun)]"
+          >
+            {t(uiStrings?.footerProducedBy) || "Produced by LiveBetter"}
+          </a>
         </div>
       </div>
     </footer>
