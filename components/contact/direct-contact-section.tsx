@@ -43,7 +43,7 @@ export function DirectContactSection({
   const phoneUrl = phone ? `tel:${phone.replace(/\s/g, "")}` : undefined;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="tile flex flex-col gap-6">
       {/* Heading */}
       <div>
         {eyebrow && (
@@ -79,8 +79,11 @@ export function DirectContactSection({
         </a>
       )}
 
+      {/* Divider */}
+      <div className="h-px bg-[var(--color-deep-teal)]/8" />
+
       {/* Contact details */}
-      <div className="tile flex flex-col gap-5">
+      <div className="flex flex-col gap-5">
         {/* Email */}
         {emailUrl && (
           <a
@@ -181,7 +184,6 @@ export function DirectContactSection({
           </>
         )}
       </div>
-
     </div>
   );
 }
