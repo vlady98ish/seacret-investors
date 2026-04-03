@@ -72,10 +72,12 @@ interface MultiStepFormProps {
 /* ── Progress indicator ──────────────────────────────────── */
 function StepDots({ current, total }: { current: number; total: number }) {
   return (
-    <div className="flex items-center justify-center gap-2 mb-8">
+    <div className="flex items-center justify-center gap-2 mb-8" role="group" aria-label={`Step ${current} of ${total}`}>
       {Array.from({ length: total }, (_, i) => (
         <div
           key={i}
+          aria-current={i + 1 === current ? "step" : undefined}
+          aria-label={`Step ${i + 1}`}
           className={cn(
             "rounded-full transition-all duration-300",
             i + 1 === current
@@ -99,9 +101,9 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function FieldError({ message }: { message?: string }) {
+function FieldError({ message, id }: { message?: string; id?: string }) {
   if (!message) return null;
-  return <span className="text-xs text-red-500 mt-1">{message}</span>;
+  return <span id={id} role="alert" className="text-xs text-red-500 mt-1">{message}</span>;
 }
 
 const inputClass =
@@ -318,11 +320,13 @@ export function MultiStepForm({
             <h2 className="text-h2 text-[var(--color-night)] mb-6">{dict.stepInterest}</h2>
             <p className="text-body-muted text-sm mb-6">{dict.selectInterest}</p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3" role="radiogroup" aria-label="Select a villa">
               {[...names, dict.generalInquiry].map((name) => (
                 <button
                   key={name}
                   type="button"
+                  role="radio"
+                  aria-checked={formData.interest === name}
                   onClick={() => update("interest", name)}
                   className={cn(
                     "rounded-[var(--radius-md)] border px-4 py-4 text-sm font-semibold tracking-wide transition-all duration-200 text-center",
@@ -358,8 +362,10 @@ export function MultiStepForm({
                 onChange={(e) => update("fullName", e.target.value)}
                 className={cn(inputClass, errors.fullName && "border-red-400")}
                 autoComplete="name"
+                aria-invalid={!!errors.fullName}
+                aria-describedby={errors.fullName ? "error-fullName" : undefined}
               />
-              <FieldError message={errors.fullName} />
+              <FieldError message={errors.fullName} id="error-fullName" />
             </label>
 
             <label className="grid gap-2">
@@ -370,8 +376,10 @@ export function MultiStepForm({
                 onChange={(e) => update("email", e.target.value)}
                 className={cn(inputClass, errors.email && "border-red-400")}
                 autoComplete="email"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "error-email" : undefined}
               />
-              <FieldError message={errors.email} />
+              <FieldError message={errors.email} id="error-email" />
             </label>
 
             <label className="grid gap-2">
@@ -469,6 +477,7 @@ export function MultiStepForm({
                   checked={formData.gdprConsent}
                   onChange={(e) => update("gdprConsent", e.target.checked)}
                   className="sr-only peer"
+                  aria-describedby={errors.gdprConsent ? "error-gdprConsent" : undefined}
                 />
                 <div
                   className={cn(
@@ -497,13 +506,13 @@ export function MultiStepForm({
               </span>
             </label>
             {errors.gdprConsent && (
-              <p className="text-xs text-red-500 -mt-3">{errors.gdprConsent}</p>
+              <p id="error-gdprConsent" role="alert" className="text-xs text-red-500 -mt-3">{errors.gdprConsent}</p>
             )}
 
             {status === "error" && (
-              <p className="text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
+              <div role="alert" className="text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
                 {dict.errorMessage}
-              </p>
+              </div>
             )}
           </div>
         )}
