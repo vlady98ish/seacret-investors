@@ -39,7 +39,6 @@ export function DirectContactSection({
   const whatsappUrl = whatsapp ? `https://wa.me/${whatsapp.replace(/\D/g, "")}` : undefined;
   const emailUrl = email ? `mailto:${email}` : undefined;
   const phoneUrl = phone ? `tel:${phone.replace(/\s/g, "")}` : undefined;
-  const viberDisplay = viber ? `+${viber.replace(/(\d{2})(\d{3})(\d{7})/, "$1 $2 $3")}` : undefined;
 
   return (
     <div className="flex flex-col gap-6">
@@ -123,7 +122,7 @@ export function DirectContactSection({
         )}
 
         {/* Viber */}
-        {viberDisplay && (
+        {viber && phone && (
           <>
             {(emailUrl || phoneUrl) && <div className="h-px bg-[var(--color-deep-teal)]/8" />}
             <div className="flex items-center gap-4">
@@ -136,7 +135,7 @@ export function DirectContactSection({
                 <p className="text-xs uppercase tracking-widest text-[var(--color-muted)] mb-0.5">
                   {labelViber || "Viber"}
                 </p>
-                <p className="text-sm font-medium text-[var(--color-ink)]">{viberDisplay}</p>
+                <p className="text-sm font-medium text-[var(--color-ink)]">{phone}</p>
               </div>
             </div>
           </>
