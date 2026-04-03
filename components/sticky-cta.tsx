@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { MessageCircle, X } from "lucide-react";
@@ -17,7 +18,34 @@ type StickyCTAProps = {
   labelSubmit?: string;
 };
 
-export function StickyCTA({ locale: _locale, context, labelTitle, labelFullName, labelEmail, labelPhone, labelSubmit }: StickyCTAProps) {
+export function StickyCTA({ locale, context, labelTitle, labelFullName, labelEmail, labelPhone, labelSubmit }: StickyCTAProps) {
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("loading");
+    const fd = new FormData(e.currentTarget);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: fd.get("fullName"),
+          email: fd.get("email"),
+          phone: fd.get("phone") || undefined,
+          interest: context || "Quick Inquiry",
+          locale,
+          source: typeof window !== "undefined" ? window.location.href : undefined,
+          gdprConsent: true,
+        }),
+      });
+      const json = (await res.json()) as { ok: boolean };
+      setStatus(json.ok ? "success" : "error");
+    } catch {
+      setStatus("error");
+    }
+  }
+
   return (
     <Dialog.Root>
       {/* Floating button */}
@@ -61,49 +89,55 @@ export function StickyCTA({ locale: _locale, context, labelTitle, labelFullName,
             <Dialog.Description>Quick contact form to request information</Dialog.Description>
           </VisuallyHidden.Root>
 
-          <form
-            className="mt-6 grid gap-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <label className="grid gap-1.5">
-              <span className="sr-only">{labelFullName}</span>
-              <input
-                type="text"
-                name="fullName"
-                placeholder={labelFullName ? `${labelFullName} *` : ""}
-                required
-                autoComplete="name"
-                className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
-              />
-            </label>
-            <label className="grid gap-1.5">
-              <span className="sr-only">{labelEmail}</span>
-              <input
-                type="email"
-                name="email"
-                placeholder={labelEmail ? `${labelEmail} *` : ""}
-                required
-                autoComplete="email"
-                className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
-              />
-            </label>
-            <label className="grid gap-1.5">
-              <span className="sr-only">{labelPhone}</span>
-              <input
-                type="tel"
-                name="phone"
-                placeholder={labelPhone}
-                autoComplete="tel"
-                className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
-              />
-            </label>
-            {context && <input type="hidden" name="interest" value={context} />}
-            <button type="submit" className="btn btn-primary mt-2 w-full">
-              {labelSubmit}
-            </button>
-          </form>
+          {status === "success" ? (
+            <div className="flex flex-col items-center justify-center text-center py-16 gap-4">
+              <div className="w-12 h-12 rounded-full bg-[var(--color-deep-teal)]/10 flex items-center justify-center">
+                <svg className="w-6 h-6 text-[var(--color-deep-teal)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p className="text-sm text-[var(--color-muted)]">Thank you! We&apos;ll be in touch soon.</p>
+            </div>
+          ) : (
+            <form className="mt-6 grid gap-4" onSubmit={handleSubmit}>
+              <label className="grid gap-1.5">
+                <span className="sr-only">{labelFullName}</span>
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder={labelFullName ? `${labelFullName} *` : ""}
+                  required
+                  autoComplete="name"
+                  className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
+                />
+              </label>
+              <label className="grid gap-1.5">
+                <span className="sr-only">{labelEmail}</span>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder={labelEmail ? `${labelEmail} *` : ""}
+                  required
+                  autoComplete="email"
+                  className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
+                />
+              </label>
+              <label className="grid gap-1.5">
+                <span className="sr-only">{labelPhone}</span>
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder={labelPhone}
+                  autoComplete="tel"
+                  className="rounded-md border border-[var(--color-deep-teal)]/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-deep-teal)]"
+                />
+              </label>
+              {context && <input type="hidden" name="interest" value={context} />}
+              <button type="submit" className="btn btn-primary mt-2 w-full" disabled={status === "loading"}>
+                {status === "loading" ? "Sending..." : labelSubmit}
+              </button>
+            </form>
+          )}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
