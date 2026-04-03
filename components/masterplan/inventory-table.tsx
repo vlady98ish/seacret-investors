@@ -234,6 +234,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
       ) : (
         <>
           {/* Desktop table */}
+          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
           <div className="hidden overflow-x-auto rounded-xl border border-[rgba(13,103,119,0.08)] bg-white/80 md:block" role="region" aria-label="Unit inventory table" tabIndex={0}>
             <table className="w-full text-sm">
               <caption className="sr-only">Unit inventory</caption>

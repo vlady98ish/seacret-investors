@@ -36,6 +36,7 @@ export function ComparisonTable({ villas, units, headers }: ComparisonTableProps
   const fromLabel = headers?.fromLabel || "From";
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
     <div className="overflow-x-auto" role="region" aria-label="Villa comparison table" tabIndex={0}>
       <table className="tile w-full min-w-[720px] border-collapse text-sm">
         <caption className="sr-only">Villa type comparison</caption>

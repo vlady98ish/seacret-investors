@@ -32,6 +32,7 @@ export function UnitsTable({ units, headerUnit, headerPlot, headerArea, headerBe
   return (
     <div className="tile overflow-hidden p-0">
       {/* Desktop table */}
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
       <div className="hidden overflow-x-auto sm:block" role="region" aria-label="Units table" tabIndex={0}>
         <table className="w-full text-sm">
           <caption className="sr-only">Available units</caption>
