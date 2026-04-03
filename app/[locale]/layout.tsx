@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { AccessibilityWidget } from "@/components/accessibility-widget";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { StickyCTA } from "@/components/sticky-cta";
@@ -39,6 +40,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         <SiteHeader locale={typedLocale} uiStrings={uiStrings} siteSettings={siteSettings} />
         <main id="main-content" className="min-h-screen">{children}</main>
         <SiteFooter locale={typedLocale} uiStrings={uiStrings} siteSettings={siteSettings} />
+        <AccessibilityWidget locale={typedLocale} />
         <StickyCTA
           locale={typedLocale}
           labelTitle={getLocalizedValue(uiStrings?.ctaRequestInfo, typedLocale)}
