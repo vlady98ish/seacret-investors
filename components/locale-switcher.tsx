@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/cn";
-import { type Locale, localeLabels, locales } from "@/lib/i18n";
+import { type Locale, localeLabels, localeNames, locales } from "@/lib/i18n";
 
 type LocaleSwitcherProps = {
   locale: Locale;
@@ -23,11 +23,13 @@ export function LocaleSwitcher({ locale, className }: LocaleSwitcherProps) {
   }
 
   return (
-    <div className={cn("flex items-center gap-1", className)}>
+    <div className={cn("flex items-center gap-1", className)} role="group" aria-label="Choose language">
       {locales.map((loc) => (
         <Link
           key={loc}
           href={getLocalizedPath(loc)}
+          aria-label={localeNames[loc]}
+          aria-current={loc === locale ? "true" : undefined}
           className={cn(
             "rounded-sm px-2.5 py-1.5 text-xs font-semibold tracking-widest transition-colors",
             loc === locale
