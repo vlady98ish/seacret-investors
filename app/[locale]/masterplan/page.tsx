@@ -27,7 +27,10 @@ import type {
   UnitFlat,
 } from "@/lib/sanity/types";
 
-type Props = { params: Promise<{ locale: string }> };
+type Props = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ type?: string }>;
+};
 
 export function generateStaticParams() {
   return ["en", "he", "ru", "el"].map((locale) => ({ locale }));
@@ -51,8 +54,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function MasterplanPage({ params }: Props) {
+export default async function MasterplanPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const { type: initialTypeFilter } = await searchParams;
   if (!isValidLocale(locale)) notFound();
 
   const typedLocale = locale as Locale;
@@ -163,6 +167,7 @@ export default async function MasterplanPage({ params }: Props) {
     tableTotalArea: t(uiStrings?.tableTotalArea) ?? "",
     tablePriceFrom: t(uiStrings?.tablePriceFrom) ?? "",
     tableStatus: t(uiStrings?.tableStatus) ?? "",
+    tableBuiltArea: t(uiStrings?.specBuiltArea) ?? "",
   };
 
   return (
@@ -207,7 +212,7 @@ export default async function MasterplanPage({ params }: Props) {
             description={t(page?.inventoryDescription) ?? ""}
           />
           <div className="mt-12">
-            <InventoryTable units={units} locale={typedLocale} labels={inventoryLabels} />
+            <InventoryTable units={units} locale={typedLocale} labels={inventoryLabels} initialTypeFilter={initialTypeFilter} />
           </div>
         </div>
       </section>

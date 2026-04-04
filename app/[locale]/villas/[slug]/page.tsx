@@ -160,6 +160,7 @@ export default async function VillaDetailPage({ params }: Props) {
   const labelStatusAvailable = t(uiStrings?.statusAvailable) ?? "";
   const labelStatusReserved = t(uiStrings?.statusReserved) ?? "";
   const labelStatusSold = t(uiStrings?.statusSold) ?? "";
+  const labelViewInventory = t(uiStrings?.ctaViewAll) ?? "View full inventory";
 
   const labelGroundFloor = t(uiStrings?.miscGroundFloor) ?? "";
   const labelUpperFloor = t(uiStrings?.miscUpperFloor) ?? "";
@@ -297,6 +298,8 @@ export default async function VillaDetailPage({ params }: Props) {
             labelStatusAvailable={labelStatusAvailable}
             labelStatusReserved={labelStatusReserved}
             labelStatusSold={labelStatusSold}
+            villaSlug={slug}
+            labelViewInventory={labelViewInventory}
           />
         </ScrollReveal>
       </section>

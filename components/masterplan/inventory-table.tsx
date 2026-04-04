@@ -30,12 +30,14 @@ type InventoryTableLabels = {
   tableTotalArea: string;
   tablePriceFrom: string;
   tableStatus: string;
+  tableBuiltArea?: string;
 };
 
 type InventoryTableProps = {
   units: UnitFlat[];
   locale: Locale;
   labels?: InventoryTableLabels;
+  initialTypeFilter?: string;
 };
 
 type SortKey = "plot" | "price" | "area";
@@ -56,7 +58,7 @@ function getBuiltArea(unit: UnitFlat): number {
   return sum > 0 ? sum : unit.totalArea;
 }
 
-export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
+export function InventoryTable({ units, locale, labels, initialTypeFilter }: InventoryTableProps) {
   const statusAvailable = useT("statusAvailable", "Available");
   const statusReserved = useT("statusReserved", "Reserved");
   const statusSold = useT("statusSold", "Sold");
@@ -81,9 +83,10 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
     tableTotalArea: labels?.tableTotalArea || "Total Area",
     tablePriceFrom: labels?.tablePriceFrom || "Price From",
     tableStatus: labels?.tableStatus || "Status",
+    tableBuiltArea: labels?.tableBuiltArea || "Built Area",
   };
   const [plotFilter, setPlotFilter] = useState<string>("All");
-  const [villaTypeFilter, setVillaTypeFilter] = useState<string>("All");
+  const [villaTypeFilter, setVillaTypeFilter] = useState<string>(initialTypeFilter || "All");
   const [availableOnly, setAvailableOnly] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>("plot");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
@@ -291,7 +294,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
                     className="cursor-pointer pb-3 px-4 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("area")}
                   >
-                    {builtAreaLabel}{sortIndicator("area")}
+                    {lbl.tableBuiltArea}{sortIndicator("area")}
                   </th>
                   <th
                     scope="col"

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Check, Minus } from "lucide-react";
 
 import type { Locale } from "@/lib/i18n";
@@ -16,9 +17,11 @@ type UnitsTableProps = {
   labelStatusAvailable?: string;
   labelStatusReserved?: string;
   labelStatusSold?: string;
+  villaSlug?: string;
+  labelViewInventory?: string;
 };
 
-export function UnitsTable({ units, headerUnit, headerPlot, headerArea, headerBeds, headerPool, headerStatus, labelStatusAvailable, labelStatusReserved, labelStatusSold }: UnitsTableProps) {
+export function UnitsTable({ units, locale, headerUnit, headerPlot, headerArea, headerBeds, headerPool, headerStatus, labelStatusAvailable, labelStatusReserved, labelStatusSold, villaSlug, labelViewInventory }: UnitsTableProps) {
   if (units.length === 0) {
     return (
       <div className="tile py-10 text-center text-[var(--color-muted)]">
@@ -110,6 +113,17 @@ export function UnitsTable({ units, headerUnit, headerPlot, headerArea, headerBe
           </div>
         ))}
       </div>
+
+      {villaSlug && (
+        <div className="mt-6 text-center">
+          <Link
+            href={`/${locale}/masterplan?type=${villaSlug}`}
+            className="text-sm font-medium text-[var(--color-deep-teal)] underline decoration-[var(--color-deep-teal)]/30 underline-offset-4 transition-colors hover:text-[var(--color-ink)]"
+          >
+            {labelViewInventory || "View full inventory"} →
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
