@@ -10,7 +10,7 @@ type SpecsPanelProps = {
   labelEyebrow?: string;
   labelBedrooms?: string;
   labelBathrooms?: string;
-  labelTotalArea?: string;
+  labelBuiltArea?: string;
   labelOutdoorArea?: string;
   labelPool?: string;
   labelParking?: string;
@@ -25,7 +25,7 @@ type SpecItem = {
   value: string | number;
 };
 
-export function SpecsPanel({ villa, units, labelEyebrow, labelBedrooms, labelBathrooms, labelTotalArea, labelOutdoorArea, labelPool, labelParking, labelYes, labelNo, labelDetailsComing }: SpecsPanelProps) {
+export function SpecsPanel({ villa, units, labelEyebrow, labelBedrooms, labelBathrooms, labelBuiltArea, labelOutdoorArea, labelPool, labelParking, labelYes, labelNo, labelDetailsComing }: SpecsPanelProps) {
   if (!villa) {
     return (
       <div className="tile py-10 text-center text-[var(--color-muted)]">
@@ -34,10 +34,16 @@ export function SpecsPanel({ villa, units, labelEyebrow, labelBedrooms, labelBat
     );
   }
 
-  // Compute area range from units if available, else fall back to villa.areaRange
+  // Compute built area range from units (ground + upper + attic), fall back to villa.areaRange
   let areaDisplay = villa.areaRange ? `${villa.areaRange} m²` : "—";
   if (units.length > 0) {
-    const areas = units.map((u) => u.totalArea).filter(Boolean);
+    const areas = units.map((u) => {
+      const g = u.groundFloor ?? 0;
+      const up = u.upperFloor ?? 0;
+      const a = u.attic ?? 0;
+      const sum = g + up + a;
+      return sum > 0 ? Math.round(sum * 100) / 100 : u.totalArea;
+    }).filter(Boolean);
     if (areas.length > 0) {
       const min = Math.min(...areas);
       const max = Math.max(...areas);
@@ -76,7 +82,7 @@ export function SpecsPanel({ villa, units, labelEyebrow, labelBedrooms, labelBat
     },
     {
       icon: <Maximize className="h-5 w-5" />,
-      label: labelTotalArea || "Total Area",
+      label: labelBuiltArea || "Built Area",
       value: areaDisplay,
     },
     {

@@ -18,7 +18,7 @@ export function FAQAccordion({ items }: FAQAccordionProps) {
   if (!items?.length) return null;
 
   return (
-    <Accordion.Root type="single" collapsible className="mx-auto max-w-3xl divide-y divide-[var(--color-stone)]">
+    <Accordion.Root type="single" collapsible className="divide-y divide-[var(--color-stone)]">
       {items.map((faq, index) => (
         <Accordion.Item key={index} value={`faq-${index}`}>
           <Accordion.Header asChild>

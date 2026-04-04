@@ -144,7 +144,7 @@ export default async function VillaDetailPage({ params }: Props) {
   const labelDetailsComing = t(uiStrings?.miscDetailsComing) ?? "";
   const labelBedrooms = t(uiStrings?.specBedrooms) ?? "";
   const labelBathrooms = t(uiStrings?.specBathrooms) ?? "";
-  const labelTotalArea = t(uiStrings?.specTotalArea) ?? "";
+  const labelBuiltArea = t(uiStrings?.specBuiltArea) ?? "";
   const labelOutdoorArea = t(uiStrings?.specOutdoorArea) ?? "";
   const labelPool = t(uiStrings?.specPool) ?? "";
   const labelParking = t(uiStrings?.specParking) ?? "";
@@ -161,6 +161,21 @@ export default async function VillaDetailPage({ params }: Props) {
   const labelStatusReserved = t(uiStrings?.statusReserved) ?? "";
   const labelStatusSold = t(uiStrings?.statusSold) ?? "";
   const labelViewInventory = t(uiStrings?.ctaViewAll) ?? "View full inventory";
+
+  const unitDetailLabels = {
+    groundFloor: t(uiStrings?.specGroundFloor) ?? "Ground Floor",
+    upperFloor: t(uiStrings?.specUpperFloor) ?? "Upper Floor",
+    attic: t(uiStrings?.specAttic) ?? "Attic",
+    balcony: t(uiStrings?.specBalcony) ?? "Balcony",
+    roofTerrace: t(uiStrings?.specRoofTerrace) ?? "Roof Terrace",
+    outdoorArea: t(uiStrings?.specOutdoorArea) ?? "Outdoor Area",
+    propertySize: t(uiStrings?.specPropertySize) ?? "Property Size",
+    bathrooms: t(uiStrings?.specBathrooms) ?? "Bathrooms",
+    pool: t(uiStrings?.specPool) ?? "Pool",
+    parking: t(uiStrings?.specParking) ?? "Parking",
+    yes: t(uiStrings?.specYes) ?? "Yes",
+    no: t(uiStrings?.specNo) ?? "No",
+  };
 
   const labelGroundFloor = t(uiStrings?.miscGroundFloor) ?? "";
   const labelUpperFloor = t(uiStrings?.miscUpperFloor) ?? "";
@@ -222,7 +237,7 @@ export default async function VillaDetailPage({ params }: Props) {
             labelEyebrow={labelVillaSpecs}
             labelBedrooms={labelBedrooms}
             labelBathrooms={labelBathrooms}
-            labelTotalArea={labelTotalArea}
+            labelBuiltArea={labelBuiltArea}
             labelOutdoorArea={labelOutdoorArea}
             labelPool={labelPool}
             labelParking={labelParking}
@@ -300,6 +315,7 @@ export default async function VillaDetailPage({ params }: Props) {
             labelStatusSold={labelStatusSold}
             villaSlug={slug}
             labelViewInventory={labelViewInventory}
+            detailLabels={unitDetailLabels}
           />
         </ScrollReveal>
       </section>

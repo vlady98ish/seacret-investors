@@ -55,7 +55,7 @@ function getBuiltArea(unit: UnitFlat): number {
   const u = unit.upperFloor ?? 0;
   const a = unit.attic ?? 0;
   const sum = g + u + a;
-  return sum > 0 ? sum : unit.totalArea;
+  return sum > 0 ? Math.round(sum * 100) / 100 : unit.totalArea;
 }
 
 export function InventoryTable({ units, locale, labels, initialTypeFilter }: InventoryTableProps) {
