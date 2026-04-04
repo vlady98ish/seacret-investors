@@ -96,10 +96,10 @@ const villas = [
     },
   },
   {
-    _id: "villa-mikka",
+    _id: "villa-mika",
     _type: "villa",
-    name: "Mikka",
-    slug: { _type: "slug", current: "mikka" },
+    name: "Mika",
+    slug: { _type: "slug", current: "mika" },
     typicalBedrooms: 1,
     typicalBathrooms: 1,
     areaRange: "59-63",
@@ -321,8 +321,8 @@ const units: UnitInput[] = [
   { _id: "unit-d1", _type: "unit", unitNumber: "D1", plot: ref("plot-d"), villaType: ref("villa-michal"), status: "available", totalArea: 217.03, outdoorArea: 154.71, bedrooms: 3, bathrooms: 2, hasPool: true,  hasParking: true },
   { _id: "unit-d2", _type: "unit", unitNumber: "D2", plot: ref("plot-d"), villaType: ref("villa-michal"), status: "available", totalArea: 115.38, outdoorArea: 56.77,  bedrooms: 3, bathrooms: 2, hasPool: true,  hasParking: true },
   { _id: "unit-d3", _type: "unit", unitNumber: "D3", plot: ref("plot-d"), villaType: ref("villa-michal"), status: "available", totalArea: 144.51, outdoorArea: 81.70,  bedrooms: 3, bathrooms: 2, hasPool: true,  hasParking: true },
-  { _id: "unit-d4", _type: "unit", unitNumber: "D4", plot: ref("plot-d"), villaType: ref("villa-michal"), status: "available", totalArea: 133.00, outdoorArea: 70.69,  bedrooms: 2, bathrooms: 2, hasPool: true,  hasParking: true },
-  { _id: "unit-d5", _type: "unit", unitNumber: "D5", plot: ref("plot-d"), villaType: ref("villa-michal"), status: "available", totalArea: 160.05, outdoorArea: 97.74,  bedrooms: 2, bathrooms: 2, hasPool: true,  hasParking: true },
+  { _id: "unit-d4", _type: "unit", unitNumber: "D4", plot: ref("plot-d"), villaType: ref("villa-michal"), status: "available", totalArea: 133.00, outdoorArea: 70.69,  bedrooms: 3, bathrooms: 2, hasPool: true,  hasParking: true },
+  { _id: "unit-d5", _type: "unit", unitNumber: "D5", plot: ref("plot-d"), villaType: ref("villa-michal"), status: "available", totalArea: 160.05, outdoorArea: 97.74,  bedrooms: 3, bathrooms: 2, hasPool: true,  hasParking: true },
 
   // --- Plot E (ground = Lola, upper = Mikka) ---
   { _id: "unit-e1",  _type: "unit", unitNumber: "E1",  plot: ref("plot-e"), villaType: ref("villa-lola"),  status: "available", totalArea: 112.19, outdoorArea: 60.71, bedrooms: 1, bathrooms: 1, hasPool: true,  hasParking: true, floorLevel: "ground" },
@@ -330,11 +330,11 @@ const units: UnitInput[] = [
   { _id: "unit-e3",  _type: "unit", unitNumber: "E3",  plot: ref("plot-e"), villaType: ref("villa-lola"),  status: "sold",      totalArea: 99.91,  outdoorArea: 48.43, bedrooms: 1, bathrooms: 1, hasPool: true,  hasParking: true, floorLevel: "ground" },
   { _id: "unit-e4",  _type: "unit", unitNumber: "E4",  plot: ref("plot-e"), villaType: ref("villa-lola"),  status: "available", totalArea: 78.85,  outdoorArea: 30.34, bedrooms: 1, bathrooms: 1, hasPool: true,  hasParking: true, floorLevel: "ground" },
   { _id: "unit-e5",  _type: "unit", unitNumber: "E5",  plot: ref("plot-e"), villaType: ref("villa-lola"),  status: "available", totalArea: 81.76,  outdoorArea: 30.28, bedrooms: 1, bathrooms: 1, hasPool: true,  hasParking: true, floorLevel: "ground" },
-  { _id: "unit-e6",  _type: "unit", unitNumber: "E6",  plot: ref("plot-e"), villaType: ref("villa-mikka"), status: "available", totalArea: 62.26,                      bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
-  { _id: "unit-e7",  _type: "unit", unitNumber: "E7",  plot: ref("plot-e"), villaType: ref("villa-mikka"), status: "available", totalArea: 62.26,                      bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
-  { _id: "unit-e8",  _type: "unit", unitNumber: "E8",  plot: ref("plot-e"), villaType: ref("villa-mikka"), status: "available", totalArea: 61.94,                      bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
-  { _id: "unit-e9",  _type: "unit", unitNumber: "E9",  plot: ref("plot-e"), villaType: ref("villa-mikka"), status: "available", totalArea: 59.21,                      bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
-  { _id: "unit-e10", _type: "unit", unitNumber: "E10", plot: ref("plot-e"), villaType: ref("villa-mikka"), status: "available", totalArea: 62.84,                      bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
+  { _id: "unit-e6",  _type: "unit", unitNumber: "E6",  plot: ref("plot-e"), villaType: ref("villa-mika"), status: "available", totalArea: 62.26,                      bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
+  { _id: "unit-e7",  _type: "unit", unitNumber: "E7",  plot: ref("plot-e"), villaType: ref("villa-mika"), status: "available", totalArea: 62.26,                      bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
+  { _id: "unit-e8",  _type: "unit", unitNumber: "E8",  plot: ref("plot-e"), villaType: ref("villa-mika"), status: "available", totalArea: 61.94,                      bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
+  { _id: "unit-e9",  _type: "unit", unitNumber: "E9",  plot: ref("plot-e"), villaType: ref("villa-mika"), status: "available", totalArea: 59.21,                      bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
+  { _id: "unit-e10", _type: "unit", unitNumber: "E10", plot: ref("plot-e"), villaType: ref("villa-mika"), status: "available", totalArea: 62.84,                      bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
 
   // --- Plot F (ground = Lola, upper = Mikka) ---
   { _id: "unit-f1",  _type: "unit", unitNumber: "F1",  plot: ref("plot-f"), villaType: ref("villa-lola"),  status: "sold",      totalArea: 162.11, outdoorArea: 110.63, bedrooms: 1, bathrooms: 1, hasPool: true,  hasParking: true, floorLevel: "ground" },
@@ -342,11 +342,11 @@ const units: UnitInput[] = [
   { _id: "unit-f3",  _type: "unit", unitNumber: "F3",  plot: ref("plot-f"), villaType: ref("villa-lola"),  status: "available", totalArea: 122.08, outdoorArea: 70.60,  bedrooms: 1, bathrooms: 1, hasPool: true,  hasParking: true, floorLevel: "ground" },
   { _id: "unit-f4",  _type: "unit", unitNumber: "F4",  plot: ref("plot-f"), villaType: ref("villa-lola"),  status: "available", totalArea: 89.79,  outdoorArea: 38.31,  bedrooms: 1, bathrooms: 1, hasPool: true,  hasParking: true, floorLevel: "ground" },
   { _id: "unit-f5",  _type: "unit", unitNumber: "F5",  plot: ref("plot-f"), villaType: ref("villa-lola"),  status: "available", totalArea: 87.84,  outdoorArea: 36.36,  bedrooms: 1, bathrooms: 1, hasPool: true,  hasParking: true, floorLevel: "ground" },
-  { _id: "unit-f6",  _type: "unit", unitNumber: "F6",  plot: ref("plot-f"), villaType: ref("villa-mikka"), status: "available", totalArea: 61.94,                       bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
-  { _id: "unit-f7",  _type: "unit", unitNumber: "F7",  plot: ref("plot-f"), villaType: ref("villa-mikka"), status: "available", totalArea: 59.21,                       bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
-  { _id: "unit-f8",  _type: "unit", unitNumber: "F8",  plot: ref("plot-f"), villaType: ref("villa-mikka"), status: "available", totalArea: 62.84,                       bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
-  { _id: "unit-f9",  _type: "unit", unitNumber: "F9",  plot: ref("plot-f"), villaType: ref("villa-mikka"), status: "available", totalArea: 62.26,                       bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
-  { _id: "unit-f10", _type: "unit", unitNumber: "F10", plot: ref("plot-f"), villaType: ref("villa-mikka"), status: "available", totalArea: 62.26,                       bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
+  { _id: "unit-f6",  _type: "unit", unitNumber: "F6",  plot: ref("plot-f"), villaType: ref("villa-mika"), status: "available", totalArea: 61.94,                       bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
+  { _id: "unit-f7",  _type: "unit", unitNumber: "F7",  plot: ref("plot-f"), villaType: ref("villa-mika"), status: "available", totalArea: 59.21,                       bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
+  { _id: "unit-f8",  _type: "unit", unitNumber: "F8",  plot: ref("plot-f"), villaType: ref("villa-mika"), status: "available", totalArea: 62.84,                       bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
+  { _id: "unit-f9",  _type: "unit", unitNumber: "F9",  plot: ref("plot-f"), villaType: ref("villa-mika"), status: "available", totalArea: 62.26,                       bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
+  { _id: "unit-f10", _type: "unit", unitNumber: "F10", plot: ref("plot-f"), villaType: ref("villa-mika"), status: "available", totalArea: 62.26,                       bedrooms: 1, bathrooms: 1, hasPool: false, hasParking: true, floorLevel: "upper"  },
 ];
 
 // ---------------------------------------------------------------------------
