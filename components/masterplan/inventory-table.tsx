@@ -1,9 +1,12 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 import { StatusBadge } from "@/components/sections/status-badge";
+import { UnitDetailPanel } from "@/components/shared/unit-detail-panel";
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
 import { computePriceFrom, formatPriceFrom } from "@/lib/pricing";
@@ -45,6 +48,14 @@ function getPlotLetter(plotName: string): string {
   return match ? match[0].toUpperCase() : plotName;
 }
 
+function getBuiltArea(unit: UnitFlat): number {
+  const g = unit.groundFloor ?? 0;
+  const u = unit.upperFloor ?? 0;
+  const a = unit.attic ?? 0;
+  const sum = g + u + a;
+  return sum > 0 ? sum : unit.totalArea;
+}
+
 export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
   const statusAvailable = useT("statusAvailable", "Available");
   const statusReserved = useT("statusReserved", "Reserved");
@@ -76,6 +87,24 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
   const [availableOnly, setAvailableOnly] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>("plot");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const detailLabels = {
+    groundFloor: useT("specGroundFloor", "Ground Floor"),
+    upperFloor: useT("specUpperFloor", "Upper Floor"),
+    attic: useT("specAttic", "Attic"),
+    balcony: useT("specBalcony", "Balcony"),
+    roofTerrace: useT("specRoofTerrace", "Roof Terrace"),
+    outdoorArea: useT("specOutdoorArea", "Outdoor Area"),
+    propertySize: useT("specPropertySize", "Property Size"),
+    bathrooms: useT("specBathrooms", "Bathrooms"),
+    pool: useT("specPool", "Pool"),
+    parking: useT("specParking", "Parking"),
+    yes: useT("specYes", "Yes"),
+    no: useT("specNo", "No"),
+  };
+
+  const builtAreaLabel = useT("specBuiltArea", "Built Area");
 
   // Get unique villa types for dropdown
   const villaTypes = useMemo(() => {
@@ -119,7 +148,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
       } else if (sortKey === "price") {
         cmp = computePriceFrom(a.totalArea) - computePriceFrom(b.totalArea);
       } else if (sortKey === "area") {
-        cmp = a.totalArea - b.totalArea;
+        cmp = getBuiltArea(a) - getBuiltArea(b);
       }
       return sortDir === "asc" ? cmp : -cmp;
     });
@@ -262,7 +291,7 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
                     className="cursor-pointer pb-3 px-4 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("area")}
                   >
-                    {lbl.tableTotalArea}{sortIndicator("area")}
+                    {builtAreaLabel}{sortIndicator("area")}
                   </th>
                   <th
                     scope="col"
@@ -275,68 +304,138 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
                 </tr>
               </thead>
               <tbody>
-                {sorted.map((unit, index) => (
-                  <tr
-                    key={unit._id}
-                    className="transition-colors hover:bg-[rgba(13,103,119,0.03)]"
-                    style={{ borderBottom: index === sorted.length - 1 ? "none" : "1px solid rgba(13,103,119,0.08)" }}
-                  >
-                    <td className="py-4 pr-4 font-medium">
-                      {getPlotLetter(unit.plotName)}
-                    </td>
-                    <td className="px-4 py-4">{unit.unitNumber}</td>
-                    <td className="px-4 py-4">
-                      <Link
-                        href={`/${locale}/villas/${unit.villaTypeSlug}`}
-                        className="text-[var(--color-deep-teal)] underline decoration-[var(--color-deep-teal)]/30 underline-offset-2 transition-colors hover:text-[var(--color-ink)]"
+                {sorted.map((unit, index) => {
+                  const isExpanded = expandedId === unit._id;
+                  const builtArea = getBuiltArea(unit);
+                  return (
+                    <React.Fragment key={unit._id}>
+                      <tr
+                        className={cn(
+                          "cursor-pointer transition-colors hover:bg-[rgba(13,103,119,0.03)]",
+                          isExpanded && "bg-[rgba(13,103,119,0.03)]"
+                        )}
+                        style={{ borderBottom: isExpanded ? "none" : index === sorted.length - 1 ? "none" : "1px solid rgba(13,103,119,0.08)" }}
+                        onClick={() => setExpandedId(isExpanded ? null : unit._id)}
                       >
-                        {unit.villaTypeName}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-4">{unit.bedrooms}</td>
-                    <td className="px-4 py-4">{unit.totalArea} m&sup2;</td>
-                    <td className="px-4 py-4 font-semibold text-[var(--color-deep-teal)]">
-                      {formatPriceFrom(unit.totalArea, fromLabel)}
-                    </td>
-                    <td className="pl-4 py-4 text-right">
-                      <StatusBadge status={unit.status} labelAvailable={statusAvailable} labelReserved={statusReserved} labelSold={statusSold} />
-                    </td>
-                  </tr>
-                ))}
+                        <td className="py-4 pr-4 font-medium">
+                          {getPlotLetter(unit.plotName)}
+                        </td>
+                        <td className="px-4 py-4">{unit.unitNumber}</td>
+                        <td className="px-4 py-4">
+                          <Link
+                            href={`/${locale}/villas/${unit.villaTypeSlug}`}
+                            className="text-[var(--color-deep-teal)] underline decoration-[var(--color-deep-teal)]/30 underline-offset-2 transition-colors hover:text-[var(--color-ink)]"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {unit.villaTypeName}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-4">{unit.bedrooms}</td>
+                        <td className="px-4 py-4">{builtArea} m&sup2;</td>
+                        <td className="px-4 py-4 font-semibold text-[var(--color-deep-teal)]">
+                          {formatPriceFrom(unit.totalArea, fromLabel)}
+                        </td>
+                        <td className="pl-4 py-4 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <StatusBadge status={unit.status} labelAvailable={statusAvailable} labelReserved={statusReserved} labelSold={statusSold} />
+                            <ChevronDown
+                              className={cn(
+                                "h-4 w-4 text-[var(--color-muted)] transition-transform duration-200",
+                                isExpanded && "rotate-180"
+                              )}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                      {isExpanded && (
+                        <tr>
+                          <td colSpan={7} className="bg-[var(--color-sand)]/30" style={{ borderBottom: index === sorted.length - 1 ? "none" : "1px solid rgba(13,103,119,0.08)" }}>
+                            <UnitDetailPanel
+                              groundFloor={unit.groundFloor}
+                              upperFloor={unit.upperFloor}
+                              attic={unit.attic}
+                              balcony={unit.balcony}
+                              roofTerrace={unit.roofTerrace}
+                              outdoorArea={unit.outdoorArea}
+                              propertySize={unit.totalArea}
+                              bathrooms={unit.bathrooms}
+                              hasPool={unit.hasPool}
+                              hasParking={unit.hasParking}
+                              labels={detailLabels}
+                            />
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
               </tbody>
             </table>
           </div>
 
           {/* Mobile card list */}
           <div className="grid gap-3 md:hidden">
-            {sorted.map((unit) => (
-              <div
-                key={unit._id}
-                className="rounded-xl border border-[rgba(13,103,119,0.08)] bg-white/80 p-4"
-              >
-                <div className="mb-2 flex items-start justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-[var(--color-ink)]">
-                      {lbl.tablePlot} {getPlotLetter(unit.plotName)} &middot; #{unit.unitNumber}
-                    </p>
-                    <Link
-                      href={`/${locale}/villas/${unit.villaTypeSlug}`}
-                      className="text-xs text-[var(--color-deep-teal)] underline decoration-[var(--color-deep-teal)]/30 underline-offset-2"
-                    >
-                      {unit.villaTypeName}
-                    </Link>
+            {sorted.map((unit) => {
+              const isExpanded = expandedId === unit._id;
+              const builtArea = getBuiltArea(unit);
+              return (
+                <div
+                  key={unit._id}
+                  className="rounded-xl border border-[rgba(13,103,119,0.08)] bg-white/80 overflow-hidden"
+                >
+                  <div
+                    className="flex items-start justify-between p-4 cursor-pointer"
+                    onClick={() => setExpandedId(isExpanded ? null : unit._id)}
+                  >
+                    <div>
+                      <p className="text-sm font-semibold text-[var(--color-ink)]">
+                        {lbl.tablePlot} {getPlotLetter(unit.plotName)} &middot; #{unit.unitNumber}
+                      </p>
+                      <Link
+                        href={`/${locale}/villas/${unit.villaTypeSlug}`}
+                        className="text-xs text-[var(--color-deep-teal)] underline decoration-[var(--color-deep-teal)]/30 underline-offset-2"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {unit.villaTypeName}
+                      </Link>
+                      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-muted)]">
+                        <span>{unit.bedrooms} {unit.bedrooms !== 1 ? bedsLabel : bedLabel}</span>
+                        <span>{builtArea} m&sup2;</span>
+                        <span className="font-medium text-[var(--color-deep-teal)]">
+                          {formatPriceFrom(unit.totalArea, fromLabel)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <StatusBadge status={unit.status} labelAvailable={statusAvailable} labelReserved={statusReserved} labelSold={statusSold} />
+                      <ChevronDown
+                        className={cn(
+                          "h-4 w-4 text-[var(--color-muted)] transition-transform duration-200",
+                          isExpanded && "rotate-180"
+                        )}
+                      />
+                    </div>
                   </div>
-                  <StatusBadge status={unit.status} labelAvailable={statusAvailable} labelReserved={statusReserved} labelSold={statusSold} />
+                  {isExpanded && (
+                    <div className="border-t border-[rgba(13,103,119,0.08)] bg-[var(--color-sand)]/30">
+                      <UnitDetailPanel
+                        groundFloor={unit.groundFloor}
+                        upperFloor={unit.upperFloor}
+                        attic={unit.attic}
+                        balcony={unit.balcony}
+                        roofTerrace={unit.roofTerrace}
+                        outdoorArea={unit.outdoorArea}
+                        propertySize={unit.totalArea}
+                        bathrooms={unit.bathrooms}
+                        hasPool={unit.hasPool}
+                        hasParking={unit.hasParking}
+                        labels={detailLabels}
+                      />
+                    </div>
+                  )}
                 </div>
-                <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-muted)]">
-                  <span>{unit.bedrooms} {unit.bedrooms !== 1 ? bedsLabel : bedLabel}</span>
-                  <span>{unit.totalArea} m&sup2;</span>
-                  <span className="font-medium text-[var(--color-deep-teal)]">
-                    {formatPriceFrom(unit.totalArea, fromLabel)}
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </>
       )}
