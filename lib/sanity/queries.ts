@@ -14,7 +14,7 @@ export const allVillasQuery = groq`*[_type == "villa"] | order(sortOrder asc){
 export const villaBySlugQuery = groq`*[_type == "villa" && slug.current == $slug][0]{
   ...,
   "units": *[_type == "unit" && villaType._ref == ^._id]{
-    _id, unitNumber, status, totalArea, outdoorArea, bedrooms, bathrooms, hasPool, hasParking,
+    _id, unitNumber, status, totalArea, outdoorArea, groundFloor, upperFloor, attic, balcony, roofTerrace, bedrooms, bathrooms, hasPool, hasParking,
     "plotName": plot->name
   } | order(unitNumber asc)
 }`;
@@ -22,14 +22,14 @@ export const villaBySlugQuery = groq`*[_type == "villa" && slug.current == $slug
 export const allPlotsQuery = groq`*[_type == "plot"] | order(sortOrder asc){
   _id, name, summary, aerialImage, positionData, sortOrder,
   "units": *[_type == "unit" && plot._ref == ^._id]{
-    _id, unitNumber, status, totalArea, bedrooms, hasPool,
+    _id, unitNumber, status, totalArea, outdoorArea, groundFloor, upperFloor, attic, balcony, roofTerrace, bedrooms, bathrooms, hasPool, hasParking,
     "villaTypeName": villaType->name,
     "villaTypeSlug": villaType->slug.current
   } | order(unitNumber asc)
 }`;
 
 export const allUnitsQuery = groq`*[_type == "unit"] | order(unitNumber asc){
-  _id, unitNumber, status, totalArea, bedrooms, bathrooms, hasPool,
+  _id, unitNumber, status, totalArea, outdoorArea, groundFloor, upperFloor, attic, balcony, roofTerrace, bedrooms, bathrooms, hasPool, hasParking,
   "plotName": plot->name,
   "villaTypeName": villaType->name,
   "villaTypeSlug": villaType->slug.current

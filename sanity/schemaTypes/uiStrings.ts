@@ -58,6 +58,13 @@ export const uiStringsType = defineType({
     { ...ls("specParking", "Spec: Parking"), group: "specs" },
     { ...ls("specYes", "Spec: Yes"), group: "specs" },
     { ...ls("specNo", "Spec: No"), group: "specs" },
+    { ...ls("specGroundFloor", "Spec: Ground Floor"), group: "specs" },
+    { ...ls("specUpperFloor", "Spec: Upper Floor"), group: "specs" },
+    { ...ls("specAttic", "Spec: Attic"), group: "specs" },
+    { ...ls("specBalcony", "Spec: Balcony"), group: "specs" },
+    { ...ls("specRoofTerrace", "Spec: Roof Terrace"), group: "specs" },
+    { ...ls("specPropertySize", "Spec: Property Size"), group: "specs" },
+    { ...ls("specBuiltArea", "Spec: Built Area"), group: "specs" },
 
     // Form
     { ...ls("formFullName", "Form: Full Name"), group: "form" },

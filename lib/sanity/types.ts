@@ -117,6 +117,13 @@ export interface UiStrings {
   specParking: LocalizedString;
   specYes: LocalizedString;
   specNo: LocalizedString;
+  specGroundFloor: LocalizedString;
+  specUpperFloor: LocalizedString;
+  specAttic: LocalizedString;
+  specBalcony: LocalizedString;
+  specRoofTerrace: LocalizedString;
+  specPropertySize: LocalizedString;
+  specBuiltArea: LocalizedString;
 
   // Form
   formFullName: LocalizedString;
@@ -457,6 +464,11 @@ export interface UnitWithRefs {
   status: UnitStatus;
   totalArea: number;
   outdoorArea: number;
+  groundFloor?: number;
+  upperFloor?: number;
+  attic?: number;
+  balcony?: number;
+  roofTerrace?: number;
   bedrooms: number;
   bathrooms: number;
   hasPool: boolean;
@@ -476,8 +488,16 @@ export interface PlotWithUnits {
     unitNumber: string;
     status: UnitStatus;
     totalArea: number;
+    outdoorArea?: number;
+    groundFloor?: number;
+    upperFloor?: number;
+    attic?: number;
+    balcony?: number;
+    roofTerrace?: number;
     bedrooms: number;
+    bathrooms: number;
     hasPool: boolean;
+    hasParking: boolean;
     villaTypeName: string;
     villaTypeSlug: string;
   }>;
@@ -488,9 +508,16 @@ export interface UnitFlat {
   unitNumber: string;
   status: UnitStatus;
   totalArea: number;
+  outdoorArea?: number;
+  groundFloor?: number;
+  upperFloor?: number;
+  attic?: number;
+  balcony?: number;
+  roofTerrace?: number;
   bedrooms: number;
   bathrooms: number;
   hasPool: boolean;
+  hasParking: boolean;
   plotName: string;
   villaTypeName: string;
   villaTypeSlug: string;
