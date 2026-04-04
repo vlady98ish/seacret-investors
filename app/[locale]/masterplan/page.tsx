@@ -6,7 +6,7 @@ import { InventoryTable } from "@/components/masterplan/inventory-table";
 import { MasterplanInteractive } from "@/components/masterplan/masterplan-interactive";
 import { PageHero } from "@/components/sections/page-hero";
 import { SectionHeading } from "@/components/sections/section-heading";
-import { StatsBar } from "@/components/sections/stats-bar";
+import { StatsBar } from "@/components/about/stats-bar";
 import { getLocalizedValue, isValidLocale, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { sanityClient } from "@/lib/sanity/client";
@@ -124,10 +124,10 @@ export default async function MasterplanPage({ params }: Props) {
 
   const statsItems = stats
     ? [
-        { label: statTotalLabel, value: stats.total },
-        { label: statAvailableLabel, value: stats.available },
-        { label: statReservedLabel, value: stats.reserved },
-        { label: statSoldLabel, value: stats.sold },
+        { label: statTotalLabel, value: String(stats.total) },
+        { label: statAvailableLabel, value: String(stats.available) },
+        { label: statReservedLabel, value: String(stats.reserved) },
+        { label: statSoldLabel, value: String(stats.sold) },
       ]
     : [];
 
@@ -176,11 +176,7 @@ export default async function MasterplanPage({ params }: Props) {
       />
 
       {/* Stats bar */}
-      <section className="bg-[var(--color-cream)] py-10">
-        <div className="section-shell">
-          <StatsBar stats={statsItems} />
-        </div>
-      </section>
+      <StatsBar stats={statsItems} />
 
       {/* Interactive masterplan */}
       <section className="py-20 lg:py-28">

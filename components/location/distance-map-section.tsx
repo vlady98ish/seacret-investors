@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Car, Clock } from "lucide-react";
 
 import { ScrollReveal } from "@/components/scroll-reveal";
@@ -15,6 +16,7 @@ interface DistanceMapSectionProps {
   description?: string;
   markers?: MarkerProp[];
   locationLabel?: string;
+  mapImageUrl?: string | null;
 }
 
 export function DistanceMapSection({
@@ -23,6 +25,7 @@ export function DistanceMapSection({
   description,
   markers,
   locationLabel,
+  mapImageUrl,
 }: DistanceMapSectionProps = {}) {
   if (!markers?.length) return null;
 
@@ -46,68 +49,25 @@ export function DistanceMapSection({
           }}
           className="lg:grid-cols-2"
         >
-          {/* Styled map placeholder */}
+          {/* Location map image */}
           <ScrollReveal direction="left">
             <div
-              className="tile flex items-center justify-center"
+              className="relative overflow-hidden"
               style={{
                 minHeight: "360px",
-                background:
-                  "linear-gradient(135deg, rgba(13,103,119,0.08) 0%, rgba(13,103,119,0.18) 100%)",
-                position: "relative",
-                overflow: "hidden",
+                borderRadius: "var(--radius-xl)",
+                border: "1px solid rgba(13,103,119,0.08)",
               }}
             >
-              {/* Decorative grid lines suggesting a map */}
-              <svg
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  opacity: 0.18,
-                }}
-                viewBox="0 0 400 360"
-                preserveAspectRatio="xMidYMid slice"
-              >
-                {/* Horizontal lines */}
-                {[60, 120, 180, 240, 300].map((y) => (
-                  <line key={y} x1="0" y1={y} x2="400" y2={y} stroke="#0d6777" strokeWidth="1" />
-                ))}
-                {/* Vertical lines */}
-                {[80, 160, 240, 320].map((x) => (
-                  <line key={x} x1={x} y1="0" x2={x} y2="360" stroke="#0d6777" strokeWidth="1" />
-                ))}
-                {/* Coastline hint */}
-                <path
-                  d="M 20 200 Q 80 180 140 195 Q 200 210 260 190 Q 320 170 390 185"
-                  fill="none"
-                  stroke="#0d6777"
-                  strokeWidth="2.5"
-                  strokeDasharray="6 3"
-                />
-                {/* Location dot */}
-                <circle cx="200" cy="195" r="8" fill="#efc676" opacity="0.9" />
-                <circle cx="200" cy="195" r="14" fill="#efc676" opacity="0.3" />
-              </svg>
-
-              <div className="relative z-10 flex flex-col items-center gap-2 text-center">
-                <span
-                  className="eyebrow"
-                  style={{ color: "var(--color-deep-teal)" }}
-                >
-                  CHILIADOU
-                </span>
-                {locationLabel && (
-                  <p
-                    className="text-body-muted text-sm"
-                    style={{ maxWidth: "200px" }}
-                  >
-                    {locationLabel}
-                  </p>
-                )}
-              </div>
+              <Image
+                src={mapImageUrl || "/images/location/chiliadou-map.png"}
+                alt="Sea'cret Residences location — Chiliadou, Dorida, Fokida, Corinthian Gulf"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                quality={95}
+                unoptimized={!!mapImageUrl}
+              />
             </div>
           </ScrollReveal>
 

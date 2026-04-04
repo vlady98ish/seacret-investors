@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
 import { formatPriceFrom } from "@/lib/pricing";
@@ -23,51 +24,45 @@ type ComparisonTableProps = {
   headers?: TableHeaders;
 };
 
-export function ComparisonTable({ villas, units, headers }: ComparisonTableProps) {
+export function ComparisonTable({ villas, units, locale, headers }: ComparisonTableProps) {
   const villaTypeLabel = headers?.villaType || "Villa Type";
   const bedroomsLabel = headers?.bedrooms || "Bedrooms";
   const bathroomsLabel = headers?.bathrooms || "Bathrooms";
-  const areaRangeLabel = headers?.areaRange || "Area Range";
+  const areaRangeLabel = headers?.areaRange || "Area m²";
   const priceFromLabel = headers?.priceFrom || "Price From";
-  const availabilityLabel = headers?.availability || "Availability";
+  const availabilityLabel = headers?.availability || "Status";
   const contactUsLabel = headers?.contactUs || "Contact us";
   const soldOutLabel = headers?.soldOut || "Sold Out";
   const availableLabel = headers?.available || "Available";
   const fromLabel = headers?.fromLabel || "From";
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-    <div className="overflow-x-auto" role="region" aria-label="Villa comparison table" tabIndex={0}>
-      <table className="tile w-full min-w-[720px] border-collapse text-sm">
+    <div className="tile overflow-x-auto" role="region" aria-label="Villa comparison table" tabIndex={0} style={{ padding: "1.5rem 2rem" }}>
+      <table className="w-full min-w-[720px] border-collapse">
         <caption className="sr-only">Villa type comparison</caption>
         <thead>
-          <tr className="border-b border-[rgba(13,103,119,0.12)]">
-            <th scope="col" className="py-3 pr-6 text-left font-semibold tracking-wide text-[var(--color-ink)]">
-              {villaTypeLabel}
-            </th>
-            <th scope="col" className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
-              {bedroomsLabel}
-            </th>
-            <th scope="col" className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
-              {bathroomsLabel}
-            </th>
-            <th scope="col" className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
-              {areaRangeLabel}
-            </th>
-            <th scope="col" className="px-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
-              {priceFromLabel}
-            </th>
-            <th scope="col" className="pl-4 py-3 text-center font-semibold tracking-wide text-[var(--color-ink)]">
-              {availabilityLabel}
-            </th>
+          <tr>
+            {[villaTypeLabel, bedroomsLabel, bathroomsLabel, areaRangeLabel, priceFromLabel, availabilityLabel].map(
+              (label, i) => (
+                <th
+                  key={label}
+                  scope="col"
+                  className={cn(
+                    "pb-3 text-xs font-semibold uppercase tracking-[0.15em]",
+                    i === 0 ? "text-left pr-6" : i === 5 ? "text-right pl-4" : "px-4 text-center"
+                  )}
+                  style={{ color: "var(--color-muted)", borderBottom: "2px solid var(--color-deep-teal)" }}
+                >
+                  {label}
+                </th>
+              )
+            )}
           </tr>
         </thead>
         <tbody>
           {villas.map((villa, index) => {
             const villaUnits = units.filter(
-              (u) =>
-                u.villaTypeName === villa.name ||
-                u.villaTypeSlug === villa.slug.current
+              (u) => u.villaTypeName === villa.name || u.villaTypeSlug === villa.slug.current
             );
             const availableUnits = villaUnits.filter((u) => u.status === "available");
             const isSoldOut = villaUnits.length > 0 && availableUnits.length === 0;
@@ -77,38 +72,66 @@ export function ComparisonTable({ villas, units, headers }: ComparisonTableProps
                 ? Math.min(...availableUnits.map((u) => u.totalArea))
                 : null;
 
+            const isLast = index === villas.length - 1;
+
             return (
               <tr
                 key={villa._id}
-                className={cn(
-                  "border-b border-[rgba(13,103,119,0.08)] transition-colors hover:bg-[rgba(13,103,119,0.03)]",
-                  index === villas.length - 1 && "border-b-0"
-                )}
+                className="group transition-colors hover:bg-[rgba(13,103,119,0.03)]"
+                style={{
+                  borderBottom: isLast ? "none" : "1px solid rgba(13,103,119,0.08)",
+                }}
               >
-                <td className="py-4 pr-6 font-medium text-[var(--color-ink)]">
-                  {villa.name}
+                {/* Villa name — link to detail */}
+                <td className="py-5 pr-6">
+                  <Link
+                    href={`/${locale}/villas/${villa.slug.current}`}
+                    className="flex flex-col gap-0.5 group-hover:text-[var(--color-deep-teal)] transition-colors"
+                  >
+                    <span
+                      className="font-serif font-semibold text-base"
+                      style={{ letterSpacing: "0.02em", color: "var(--color-ink)" }}
+                    >
+                      {villa.name}
+                    </span>
+                    {villa.label?.[locale] && (
+                      <span className="text-xs" style={{ color: "var(--color-muted)" }}>
+                        {villa.label[locale]}
+                      </span>
+                    )}
+                  </Link>
                 </td>
-                <td className="px-4 py-4 text-center text-[var(--color-muted)]">
+
+                {/* Bedrooms */}
+                <td className="px-4 py-5 text-center" style={{ color: "var(--color-ink)" }}>
                   {villa.typicalBedrooms ?? "—"}
                 </td>
-                <td className="px-4 py-4 text-center text-[var(--color-muted)]">
+
+                {/* Bathrooms */}
+                <td className="px-4 py-5 text-center" style={{ color: "var(--color-ink)" }}>
                   {villa.typicalBathrooms ?? "—"}
                 </td>
-                <td className="px-4 py-4 text-center text-[var(--color-muted)]">
+
+                {/* Area */}
+                <td className="px-4 py-5 text-center" style={{ color: "var(--color-ink)" }}>
                   {villa.areaRange ? `${villa.areaRange} m²` : "—"}
                 </td>
-                <td className="px-4 py-4 text-center">
+
+                {/* Price */}
+                <td className="px-4 py-5 text-center">
                   {isSoldOut ? (
-                    <span className="text-[var(--color-muted)]">—</span>
+                    <span style={{ color: "var(--color-muted)" }}>—</span>
                   ) : minAvailableArea ? (
-                    <span className="font-semibold text-[var(--color-deep-teal)]">
+                    <span className="font-semibold" style={{ color: "var(--color-deep-teal)" }}>
                       {formatPriceFrom(minAvailableArea, fromLabel)}
                     </span>
                   ) : (
-                    <span className="text-[var(--color-muted)]">{contactUsLabel}</span>
+                    <span style={{ color: "var(--color-muted)" }}>{contactUsLabel}</span>
                   )}
                 </td>
-                <td className="pl-4 py-4 text-center">
+
+                {/* Status */}
+                <td className="pl-4 py-5 text-right">
                   {isSoldOut ? (
                     <span className="badge badge-sold">{soldOutLabel}</span>
                   ) : availableUnits.length > 0 ? (

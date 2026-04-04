@@ -124,6 +124,7 @@ export default async function LocationPage({ params }: Props) {
         title={t(page?.distanceTitle) || undefined}
         description={t(page?.distanceDescription) || undefined}
         locationLabel={t(uiStrings?.miscCorinthianGulf)}
+        mapImageUrl={getSanityImageUrl((page as any)?.mapImage, 2110)}
         markers={
           page?.distanceMarkers?.map((m) => ({
             place: t(m.place) || "",

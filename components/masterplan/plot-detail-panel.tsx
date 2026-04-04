@@ -9,6 +9,7 @@ import { cn } from "@/lib/cn";
 import { getLocalizedValue, type Locale } from "@/lib/i18n";
 import { formatPriceFrom } from "@/lib/pricing";
 import type { PlotWithUnits } from "@/lib/sanity/types";
+import { useT } from "@/lib/ui-strings-context";
 
 type PanelLabels = {
   selectPlot: string;
@@ -187,6 +188,13 @@ function PanelContent({
   const available = plot.units.filter((u) => u.status === "available").length;
   const total = plot.units.length;
 
+  const statusAvailable = useT("statusAvailable", "Available");
+  const statusReserved = useT("statusReserved", "Reserved");
+  const statusSold = useT("statusSold", "Sold");
+  const specBedrooms = useT("specBedrooms", "BR");
+  const specPool = useT("specPool", "Pool");
+  const fromLabel = useT("pricingFrom", "From");
+
   return (
     <>
       {/* Header */}
@@ -246,11 +254,16 @@ function PanelContent({
                     <span className="text-[var(--color-ink)]">
                       #{unit.unitNumber}
                       <span className="ml-2 text-xs text-[var(--color-muted)]">
-                        {unit.totalArea}m&sup2; &middot; {unit.bedrooms}BR
-                        {unit.hasPool && " \u00B7 Pool"}
+                        {unit.totalArea}m&sup2; &middot; {unit.bedrooms} {specBedrooms}
+                        {unit.hasPool && ` \u00B7 ${specPool}`}
                       </span>
                     </span>
-                    <StatusBadge status={unit.status} />
+                    <StatusBadge
+                      status={unit.status}
+                      labelAvailable={statusAvailable}
+                      labelReserved={statusReserved}
+                      labelSold={statusSold}
+                    />
                   </div>
                 ))}
               </div>
@@ -263,7 +276,8 @@ function PanelContent({
                       ...group.units
                         .filter((u) => u.status === "available")
                         .map((u) => u.totalArea)
-                    )
+                    ),
+                    fromLabel
                   )}
                 </p>
               )}

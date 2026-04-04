@@ -40,7 +40,7 @@ export function UpgradesShowcase({ upgrades, locale }: UpgradesShowcaseProps) {
   if (!upgrades?.length) return null;
 
   return (
-    <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+    <div className="flex flex-wrap justify-center gap-6 [&>*]:w-[calc(50%-0.75rem)] [&>*]:md:w-[calc(33.333%-1rem)] [&>*]:lg:w-[calc(25%-1.125rem)]">
       {upgrades.map((upgrade) => {
         const name = getLocalizedValue(upgrade.name, locale) ?? "";
         const description = getLocalizedValue(upgrade.description, locale) ?? "";

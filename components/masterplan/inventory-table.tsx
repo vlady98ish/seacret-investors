@@ -152,23 +152,23 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
   return (
     <div>
       {/* Filters */}
-      <div className="mb-6 flex flex-wrap items-center gap-4">
+      <div className="tile mb-8 flex flex-wrap items-center gap-6" style={{ padding: "1.25rem 1.5rem" }}>
         {/* Plot pills */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[var(--color-muted)]">
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-muted)]">
             {lbl.filterPlot}
           </span>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex gap-1">
             {PLOT_OPTIONS.map((opt) => (
               <button
                 key={opt}
                 onClick={() => setPlotFilter(opt)}
                 aria-pressed={plotFilter === opt}
                 className={cn(
-                  "rounded-full border px-3.5 py-1 text-sm font-medium transition-colors",
+                  "min-w-[2.25rem] rounded-md px-2.5 py-1.5 text-sm font-medium transition-all duration-200 cursor-pointer",
                   plotFilter === opt
-                    ? "border-[var(--color-deep-teal)] bg-[var(--color-deep-teal)] text-white"
-                    : "border-[rgba(13,103,119,0.2)] bg-transparent text-[var(--color-ink)] hover:border-[var(--color-deep-teal)]"
+                    ? "bg-[var(--color-deep-teal)] text-white shadow-sm"
+                    : "bg-transparent text-[var(--color-ink)] hover:bg-[rgba(13,103,119,0.06)]"
                 )}
               >
                 {opt === "All" ? useT("filterAll", "All") : opt}
@@ -177,15 +177,18 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
           </div>
         </div>
 
+        {/* Divider */}
+        <div style={{ width: "1px", height: "1.5rem", background: "rgba(13,103,119,0.12)" }} />
+
         {/* Villa type dropdown */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[var(--color-muted)]">
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-muted)]">
             {lbl.filterType}
           </span>
           <select
             value={villaTypeFilter}
             onChange={(e) => setVillaTypeFilter(e.target.value)}
-            className="rounded-md border border-[rgba(13,103,119,0.2)] bg-white px-3 py-1.5 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-deep-teal)]"
+            className="rounded-md border border-[rgba(13,103,119,0.12)] bg-transparent px-3 py-1.5 text-sm text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-deep-teal)]"
           >
             <option value="All">{lbl.filterAllTypes}</option>
             {villaTypes.map((vt) => (
@@ -196,8 +199,11 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
           </select>
         </div>
 
+        {/* Divider */}
+        <div style={{ width: "1px", height: "1.5rem", background: "rgba(13,103,119,0.12)" }} />
+
         {/* Available only toggle */}
-        <label className="flex cursor-pointer items-center gap-2 text-sm text-[var(--color-ink)]">
+        <label className="flex cursor-pointer items-center gap-2.5 text-sm text-[var(--color-ink)]">
           <div
             role="switch"
             aria-checked={availableOnly}
@@ -205,16 +211,16 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setAvailableOnly((prev) => !prev); } }}
             onClick={() => setAvailableOnly((prev) => !prev)}
             className={cn(
-              "relative h-5 w-9 cursor-pointer rounded-full transition-colors",
+              "relative h-[1.375rem] w-10 cursor-pointer rounded-full transition-colors duration-200",
               availableOnly
                 ? "bg-[var(--color-deep-teal)]"
-                : "bg-[rgba(13,103,119,0.2)]"
+                : "bg-[rgba(13,103,119,0.15)]"
             )}
           >
             <span
               className={cn(
-                "absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform",
-                availableOnly ? "translate-x-4" : "translate-x-0.5"
+                "absolute top-[3px] h-4 w-4 rounded-full bg-white shadow-sm transition-transform duration-200",
+                availableOnly ? "translate-x-[1.125rem]" : "translate-x-[3px]"
               )}
             />
           </div>
@@ -235,49 +241,51 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
         <>
           {/* Desktop table */}
           {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-          <div className="hidden overflow-x-auto rounded-xl border border-[rgba(13,103,119,0.08)] bg-white/80 md:block" role="region" aria-label="Unit inventory table" tabIndex={0}>
-            <table className="w-full text-sm">
+          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+          <div className="tile hidden overflow-x-auto md:block" role="region" aria-label="Unit inventory table" tabIndex={0} style={{ padding: "1.5rem 2rem" }}>
+            <table className="w-full border-collapse text-sm">
               <caption className="sr-only">Unit inventory</caption>
               <thead>
-                <tr className="border-b border-[rgba(13,103,119,0.08)] text-left text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)]">
+                <tr className="text-left text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-muted)]" style={{ borderBottom: "2px solid var(--color-deep-teal)" }}>
                   <th
                     scope="col"
-                    className="cursor-pointer px-4 py-3 transition-colors hover:text-[var(--color-deep-teal)]"
+                    className="cursor-pointer pb-3 pr-4 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("plot")}
                   >
                     {lbl.tablePlot}{sortIndicator("plot")}
                   </th>
-                  <th scope="col" className="px-4 py-3">{lbl.tableUnitNumber}</th>
-                  <th scope="col" className="px-4 py-3">{lbl.tableVillaType}</th>
-                  <th scope="col" className="px-4 py-3">{lbl.tableBeds}</th>
+                  <th scope="col" className="pb-3 px-4">{lbl.tableUnitNumber}</th>
+                  <th scope="col" className="pb-3 px-4">{lbl.tableVillaType}</th>
+                  <th scope="col" className="pb-3 px-4">{lbl.tableBeds}</th>
                   <th
                     scope="col"
-                    className="cursor-pointer px-4 py-3 transition-colors hover:text-[var(--color-deep-teal)]"
+                    className="cursor-pointer pb-3 px-4 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("area")}
                   >
                     {lbl.tableTotalArea}{sortIndicator("area")}
                   </th>
                   <th
                     scope="col"
-                    className="cursor-pointer px-4 py-3 transition-colors hover:text-[var(--color-deep-teal)]"
+                    className="cursor-pointer pb-3 px-4 transition-colors hover:text-[var(--color-deep-teal)]"
                     onClick={() => handleSort("price")}
                   >
                     {lbl.tablePriceFrom}{sortIndicator("price")}
                   </th>
-                  <th scope="col" className="px-4 py-3">{lbl.tableStatus}</th>
+                  <th scope="col" className="pb-3 pl-4 text-right">{lbl.tableStatus}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[rgba(13,103,119,0.05)]">
-                {sorted.map((unit) => (
+              <tbody>
+                {sorted.map((unit, index) => (
                   <tr
                     key={unit._id}
-                    className="transition-colors hover:bg-[var(--color-cream)]/50"
+                    className="transition-colors hover:bg-[rgba(13,103,119,0.03)]"
+                    style={{ borderBottom: index === sorted.length - 1 ? "none" : "1px solid rgba(13,103,119,0.08)" }}
                   >
-                    <td className="px-4 py-3 font-medium">
+                    <td className="py-4 pr-4 font-medium">
                       {getPlotLetter(unit.plotName)}
                     </td>
-                    <td className="px-4 py-3">{unit.unitNumber}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-4">{unit.unitNumber}</td>
+                    <td className="px-4 py-4">
                       <Link
                         href={`/${locale}/villas/${unit.villaTypeSlug}`}
                         className="text-[var(--color-deep-teal)] underline decoration-[var(--color-deep-teal)]/30 underline-offset-2 transition-colors hover:text-[var(--color-ink)]"
@@ -285,12 +293,12 @@ export function InventoryTable({ units, locale, labels }: InventoryTableProps) {
                         {unit.villaTypeName}
                       </Link>
                     </td>
-                    <td className="px-4 py-3">{unit.bedrooms}</td>
-                    <td className="px-4 py-3">{unit.totalArea} m&sup2;</td>
-                    <td className="px-4 py-3 font-medium text-[var(--color-deep-teal)]">
+                    <td className="px-4 py-4">{unit.bedrooms}</td>
+                    <td className="px-4 py-4">{unit.totalArea} m&sup2;</td>
+                    <td className="px-4 py-4 font-semibold text-[var(--color-deep-teal)]">
                       {formatPriceFrom(unit.totalArea, fromLabel)}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="pl-4 py-4 text-right">
                       <StatusBadge status={unit.status} labelAvailable={statusAvailable} labelReserved={statusReserved} labelSold={statusSold} />
                     </td>
                   </tr>

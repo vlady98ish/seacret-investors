@@ -214,7 +214,6 @@ export default async function ResidencesPage({ params }: Props) {
         <SectionHeading
           eyebrow={t(page?.faqEyebrow) ?? ""}
           title={t(page?.faqTitle) ?? ""}
-          align="center"
         />
         <div className="mt-12">
           <FAQAccordion items={faqItems} />

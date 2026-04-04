@@ -37,7 +37,7 @@ export function MasterplanInteractive({
   panelLabels,
   aerialImageUrl,
 }: MasterplanInteractiveProps) {
-  const [selectedPlotId, setSelectedPlotId] = useState<string | null>(null);
+  const [selectedPlotId, setSelectedPlotId] = useState<string | null>(plots[0]?._id ?? null);
   const explorerWrapRef = useRef<HTMLDivElement>(null);
   const [explorerHeightPx, setExplorerHeightPx] = useState<number | null>(null);
 

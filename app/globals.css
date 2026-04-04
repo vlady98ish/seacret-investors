@@ -218,9 +218,9 @@ button, input, select, textarea { font: inherit; }
   text-transform: uppercase;
 }
 
-.badge-available { background: #dcfce7; color: #166534; }
-.badge-reserved { background: #fef3c7; color: #92400e; }
-.badge-sold { background: #fee2e2; color: #991b1b; }
+.badge-available { background: var(--color-deep-teal); color: #fff; }
+.badge-reserved { background: var(--color-gold-sun); color: var(--color-night); }
+.badge-sold { background: transparent; color: var(--color-muted); border: 1px solid rgba(9,34,42,0.12); }
 
 /* ── Legal / prose content ───────────────────────────────── */
 .legal-content h2 {
