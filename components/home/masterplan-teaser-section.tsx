@@ -65,7 +65,7 @@ export function MasterplanTeaserSection({ data, stats, locale, title, descriptio
           </ScrollReveal>
         ) : imageUrls.length === 1 ? (
           <ScrollReveal className="mt-12" delay={0.1}>
-            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
+            <div className="relative aspect-[16/9] overflow-hidden rounded-xl">
               <Image
                 src={imageUrls[0]}
                 alt={`${galleryAltBase} — aerial view`}

@@ -79,7 +79,7 @@ export function ImageGallery({
     );
   }
 
-  const radius = variant === "masterplan" ? "rounded-3xl" : "rounded-2xl";
+  const radius = variant === "masterplan" ? "rounded-xl" : "rounded-xl";
   const slideAspect =
     variant === "masterplan"
       ? "relative aspect-[16/9] w-full shrink-0"

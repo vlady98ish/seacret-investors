@@ -55,7 +55,7 @@ export function DistanceMapSection({
               className="relative overflow-hidden"
               style={{
                 minHeight: "360px",
-                borderRadius: "var(--radius-xl)",
+                borderRadius: "var(--radius-lg)",
                 border: "1px solid rgba(13,103,119,0.08)",
               }}
             >
