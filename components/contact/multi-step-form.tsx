@@ -510,7 +510,7 @@ export function MultiStepForm({
             )}
 
             {status === "error" && (
-              <div role="alert" className="text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
+              <div role="alert" className="text-sm text-red-600 bg-red-50 rounded-md px-4 py-3">
                 {dict.errorMessage}
               </div>
             )}

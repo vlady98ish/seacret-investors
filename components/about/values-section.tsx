@@ -45,7 +45,7 @@ export function ValuesSection({ eyebrow, title, values }: ValuesSectionProps) {
             const IconComponent = ICON_MAP[item.icon] ?? Shield;
             return (
               <ScrollReveal key={item.title} delay={i * 0.08}>
-                <div className="rounded-xl bg-white p-6 shadow-[var(--shadow-card)]">
+                <div className="rounded-md bg-white p-6 shadow-[var(--shadow-card)]">
                   <IconComponent className="h-7 w-7 text-[var(--color-deep-teal)]" />
                   <h3 className="text-h3 mt-4">{item.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">{item.description}</p>

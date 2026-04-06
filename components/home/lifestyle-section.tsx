@@ -39,7 +39,7 @@ export function LifestyleSection({ data, locale, title, eyebrowLabel, periodLabe
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {resolvedMoments.map((moment, i) => (
             <ScrollReveal key={moment.period} delay={i * 0.1}>
-              <div className="group relative aspect-[4/3] sm:aspect-[3/4] overflow-hidden rounded-xl">
+              <div className="group relative aspect-[4/3] sm:aspect-[3/4] overflow-hidden rounded-md">
                 {moment.imageUrl && (
                   <Image
                     src={moment.imageUrl}

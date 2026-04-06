@@ -73,13 +73,13 @@ export function ImageGallery({
 
   if (count === 0) {
     return (
-      <div className="flex items-center justify-center rounded-2xl bg-[var(--color-stone)] py-24 text-[var(--color-muted)]">
+      <div className="flex items-center justify-center rounded-md bg-[var(--color-stone)] py-24 text-[var(--color-muted)]">
         <p className="text-sm tracking-wide">{emptyText}</p>
       </div>
     );
   }
 
-  const radius = variant === "masterplan" ? "rounded-xl" : "rounded-xl";
+  const radius = variant === "masterplan" ? "rounded-md" : "rounded-md";
   const slideAspect =
     variant === "masterplan"
       ? "relative aspect-[16/9] w-full shrink-0"
@@ -250,7 +250,7 @@ export function ImageGallery({
                   src={images[selectedIndex]}
                   alt={`${villaName} — photo ${selectedIndex + 1}`}
                   fill
-                  className="rounded-xl object-contain"
+                  className="rounded-md object-contain"
                   sizes="88vw"
                   priority
                 />

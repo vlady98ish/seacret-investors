@@ -175,7 +175,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
 
   if (units.length === 0) {
     return (
-      <div className="flex min-h-[200px] items-center justify-center rounded-2xl border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
+      <div className="flex min-h-[200px] items-center justify-center rounded-md border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
         {lbl.dataComing}
       </div>
     );
@@ -266,7 +266,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
       </p>
 
       {sorted.length === 0 ? (
-        <div className="flex min-h-[160px] items-center justify-center rounded-2xl border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
+        <div className="flex min-h-[160px] items-center justify-center rounded-md border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
           {lbl.filterNoResults}
         </div>
       ) : (
@@ -384,7 +384,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
               return (
                 <div
                   key={unit._id}
-                  className="rounded-xl border border-[rgba(13,103,119,0.08)] bg-white/80 overflow-hidden"
+                  className="rounded-md border border-[rgba(13,103,119,0.08)] bg-white/80 overflow-hidden"
                 >
                   <div
                     className="flex items-start justify-between p-4 cursor-pointer"

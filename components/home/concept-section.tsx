@@ -58,7 +58,7 @@ export function ConceptSection({ data, locale }: ConceptSectionProps) {
 
           {imageUrl && (
             <ScrollReveal delay={0.15}>
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-[var(--shadow-card)] ring-1 ring-[rgba(13,103,119,0.06)]">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-md shadow-[var(--shadow-card)] ring-1 ring-[rgba(13,103,119,0.06)]">
                 <Image
                   src={imageUrl}
                   alt="The concept — Sea'cret Residences"

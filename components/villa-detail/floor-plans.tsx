@@ -16,7 +16,7 @@ export function FloorPlans({ images, labels, comingSoonText }: FloorPlansProps) 
 
   if (images.length === 0) {
     return (
-      <div className="flex items-center justify-center rounded-xl border border-[var(--color-deep-teal)]/10 bg-white/60 py-16 text-[var(--color-muted)]">
+      <div className="flex items-center justify-center rounded-md border border-[var(--color-deep-teal)]/10 bg-white/60 py-16 text-[var(--color-muted)]">
         <p>{comingSoonText}</p>
       </div>
     );
@@ -45,7 +45,7 @@ export function FloorPlans({ images, labels, comingSoonText }: FloorPlansProps) 
       )}
 
       {/* Active floor plan */}
-      <div className="relative w-full overflow-hidden rounded-xl bg-white/80 shadow-sm">
+      <div className="relative w-full overflow-hidden rounded-md bg-white/80 shadow-sm">
         <Image
           src={images[activeIndex]}
           alt={resolvedLabels[activeIndex] ?? `Floor plan ${activeIndex + 1}`}

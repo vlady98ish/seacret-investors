@@ -192,7 +192,7 @@ export function VisualExplorer({
   };
 
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-[var(--color-night)]">
+    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md bg-[var(--color-night)]">
       {aerialImageUrl && (
         <Image
           src={aerialImageUrl}
