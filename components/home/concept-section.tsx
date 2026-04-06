@@ -22,7 +22,7 @@ export function ConceptSection({ data, locale }: ConceptSectionProps) {
   if (!heading && !copy) return null;
 
   return (
-    <section className="relative overflow-hidden bg-[var(--color-sand)] py-24 sm:py-32">
+    <section className="relative overflow-hidden bg-[var(--color-sand)] py-16 sm:py-20 lg:py-24">
       <div
         className="pointer-events-none absolute inset-y-0 z-0 w-[min(86%,33rem)] sm:w-[min(84%,40rem)] lg:w-[min(80%,44rem)] xl:w-[min(76%,48rem)] left-[max(1.25rem,calc((100vw-1440px)/2+1.25rem))] sm:left-[max(2rem,calc((100vw-1440px)/2+2rem))] lg:left-[max(3rem,calc((100vw-1440px)/2+3rem))]"
         aria-hidden

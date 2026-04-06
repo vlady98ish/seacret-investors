@@ -59,14 +59,7 @@ export function ExperiencesSection({
           />
         </ScrollReveal>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(1, 1fr)",
-            gap: "1.5rem",
-          }}
-          className="sm:grid-cols-3"
-        >
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {(Object.keys(categoryIcons) as CategoryKey[]).map((key, i) => {
             const items = grouped[key];
             if (!items.length) return null;
@@ -77,23 +70,8 @@ export function ExperiencesSection({
                 <div className="tile flex flex-col gap-5 h-full">
                   {/* Category header */}
                   <div className="flex items-center gap-3">
-                    <div
-                      style={{
-                        width: "2.75rem",
-                        height: "2.75rem",
-                        borderRadius: "var(--radius-full)",
-                        background: "rgba(13,103,119,0.10)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <Icon
-                        size={18}
-                        style={{ color: "var(--color-deep-teal)" }}
-                        strokeWidth={1.5}
-                      />
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[rgba(13,103,119,0.10)]">
+                      <Icon size={18} className="text-[var(--color-deep-teal)]" strokeWidth={1.5} />
                     </div>
                     <h3 className="text-h3">{catLabels?.[key] ?? key}</h3>
                   </div>

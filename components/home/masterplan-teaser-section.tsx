@@ -47,7 +47,7 @@ export function MasterplanTeaserSection({ data, stats, locale, title, descriptio
   if (!imageUrls.length && !stats) return null;
 
   return (
-    <section className="bg-[var(--color-sand)] py-24 sm:py-32">
+    <section className="bg-[var(--color-sand)] py-16 sm:py-20 lg:py-24">
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
@@ -67,7 +67,7 @@ export function MasterplanTeaserSection({ data, stats, locale, title, descriptio
           <ScrollReveal className="mt-12" delay={0.1}>
             <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
               <Image
-                src={imageUrls[3]}
+                src={imageUrls[0]}
                 alt={`${galleryAltBase} — aerial view`}
                 fill
                 className="object-cover"

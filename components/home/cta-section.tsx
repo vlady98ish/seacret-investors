@@ -17,7 +17,7 @@ export function CtaSection({ data, locale, ctaLabel }: CtaSectionProps) {
   if (!title) return null;
 
   return (
-    <section className="bg-[var(--color-night)] py-24 sm:py-32">
+    <section className="bg-[var(--color-night)] py-16 sm:py-20 lg:py-24">
       <div className="section-shell text-center">
         <ScrollReveal>
           <h2 className="text-display text-white">{title}</h2>

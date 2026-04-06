@@ -50,14 +50,7 @@ export function AirportConnectivitySection({
           />
         </ScrollReveal>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(1, 1fr)",
-            gap: "1.5rem",
-          }}
-          className="sm:grid-cols-3"
-        >
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {airports.map((airport, i) => (
             <ScrollReveal key={airport.code || i} delay={i * 0.1}>
               <div
@@ -73,19 +66,7 @@ export function AirportConnectivitySection({
                 }
               >
                 {airport.isNearest && labelNearest && (
-                  <div
-                    style={{
-                      alignSelf: "flex-start",
-                      background: "var(--color-gold-sun)",
-                      color: "var(--color-night)",
-                      borderRadius: "var(--radius-full)",
-                      padding: "0.2rem 0.75rem",
-                      fontSize: "0.65rem",
-                      fontWeight: 700,
-                      letterSpacing: "0.15em",
-                      textTransform: "uppercase",
-                    }}
-                  >
+                  <div className="self-start rounded-full bg-[var(--color-gold-sun)] px-3 py-0.5 text-[0.6875rem] font-bold uppercase tracking-widest text-[var(--color-night)]">
                     {labelNearest}
                   </div>
                 )}
@@ -93,110 +74,37 @@ export function AirportConnectivitySection({
                 {/* Airport code */}
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-serif), Cinzel, serif",
-                        fontSize: "2.5rem",
-                        fontWeight: 700,
-                        lineHeight: 1,
-                        color: "var(--color-deep-teal)",
-                        letterSpacing: "0.05em",
-                      }}
-                    >
+                    <span className="font-serif text-4xl font-bold leading-none tracking-wide text-[var(--color-deep-teal)]">
                       {airport.code}
                     </span>
-                    <p
-                      style={{
-                        fontSize: "0.8rem",
-                        fontWeight: 600,
-                        color: "var(--color-muted)",
-                        marginTop: "0.25rem",
-                        letterSpacing: "0.05em",
-                        textTransform: "uppercase",
-                      }}
-                    >
+                    <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-[var(--color-muted)]">
                       {airport.city}
                     </p>
                   </div>
-                  <div
-                    style={{
-                      width: "2.5rem",
-                      height: "2.5rem",
-                      borderRadius: "var(--radius-full)",
-                      background: "rgba(13,103,119,0.10)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <Plane
-                      size={18}
-                      style={{ color: "var(--color-deep-teal)" }}
-                      strokeWidth={1.5}
-                    />
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[rgba(13,103,119,0.10)]">
+                    <Plane size={18} className="text-[var(--color-deep-teal)]" strokeWidth={1.5} />
                   </div>
                 </div>
 
                 {/* Airport name */}
-                <p
-                  style={{
-                    fontSize: "0.875rem",
-                    fontWeight: 400,
-                    color: "var(--color-ink)",
-                    lineHeight: 1.5,
-                  }}
-                >
+                <p className="text-sm text-[var(--color-ink)] leading-normal">
                   {airport.name}
                 </p>
 
                 {/* Stats */}
-                <div className="flex flex-col gap-2 mt-auto">
+                <div className="mt-auto flex flex-col gap-2">
                   {labelFromChiliadou && (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                        paddingTop: "0.75rem",
-                        borderTop: "1px solid rgba(13,103,119,0.08)",
-                      }}
-                    >
-                      <Clock
-                        size={14}
-                        style={{ color: "var(--color-deep-teal)", flexShrink: 0 }}
-                        strokeWidth={1.5}
-                      />
-                      <span
-                        style={{
-                          fontSize: "0.85rem",
-                          fontWeight: 600,
-                          color: "var(--color-ink)",
-                        }}
-                      >
+                    <div className="flex items-center gap-2 border-t border-[rgba(13,103,119,0.08)] pt-3">
+                      <Clock size={14} className="shrink-0 text-[var(--color-deep-teal)]" strokeWidth={1.5} />
+                      <span className="text-sm font-semibold text-[var(--color-ink)]">
                         {airport.travelTime} {labelFromChiliadou}
                       </span>
                     </div>
                   )}
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                    }}
-                  >
-                    <Globe
-                      size={14}
-                      style={{ color: "var(--color-deep-teal)", flexShrink: 0 }}
-                      strokeWidth={1.5}
-                    />
-                    <span
-                      style={{
-                        fontSize: "0.85rem",
-                        color: "var(--color-muted)",
-                      }}
-                    >
+                  <div className="flex items-center gap-2">
+                    <Globe size={14} className="shrink-0 text-[var(--color-deep-teal)]" strokeWidth={1.5} />
+                    <span className="text-sm text-[var(--color-muted)]">
                       {airport.destinations}
                       {airport.destinations === 160 ? "+" : ""}{labelDestinations ? ` ${labelDestinations}` : ""}
                       {airport.countries
@@ -207,14 +115,7 @@ export function AirportConnectivitySection({
                 </div>
 
                 {/* Note */}
-                <p
-                  style={{
-                    fontSize: "0.8rem",
-                    color: "var(--color-muted)",
-                    fontStyle: "italic",
-                    lineHeight: 1.5,
-                  }}
-                >
+                <p className="text-xs italic leading-normal text-[var(--color-muted)]">
                   {airport.note}
                 </p>
               </div>

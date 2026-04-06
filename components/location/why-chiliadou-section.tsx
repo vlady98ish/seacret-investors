@@ -50,31 +50,15 @@ export function WhyChiliadouSection({
         </ScrollReveal>
 
         {features && features.length > 0 && (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(1, 1fr)",
-              gap: "1.5rem",
-            }}
-            className="sm:grid-cols-3"
-          >
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {features.map((feature, i) => {
               const Icon = feature.icon ? iconMap[feature.icon.toLowerCase()] : undefined;
               return (
                 <ScrollReveal key={feature.heading || i} delay={i * 0.1}>
                   <div className="tile flex flex-col gap-5 h-full">
                     {Icon && (
-                      <div
-                        className="flex items-center justify-center w-12 h-12 rounded-full"
-                        style={{
-                          background: "rgba(13, 103, 119, 0.10)",
-                        }}
-                      >
-                        <Icon
-                          size={22}
-                          style={{ color: "var(--color-deep-teal)" }}
-                          strokeWidth={1.5}
-                        />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(13,103,119,0.10)]">
+                        <Icon size={18} className="text-[var(--color-deep-teal)]" strokeWidth={1.5} />
                       </div>
                     )}
                     <div className="flex flex-col gap-2">
