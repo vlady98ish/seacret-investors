@@ -8,6 +8,9 @@ import { StatsBar } from "@/components/about/stats-bar";
 import { ValuesSection } from "@/components/about/values-section";
 import { InlineContactSection } from "@/components/inline-contact-section";
 import { PageHero } from "@/components/sections/page-hero";
+import { SectionHeading } from "@/components/sections/section-heading";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { ImageGallery } from "@/components/villa-detail/image-gallery";
 import { getLocalizedValue, isValidLocale, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { sanityClient } from "@/lib/sanity/client";
@@ -112,6 +115,44 @@ export default async function AboutPage({ params }: Props) {
         eyebrow={foundersEyebrow}
         founders={founders}
       />
+
+      {/* Work Process Gallery */}
+      <section className="bg-[var(--color-cream)] py-16 sm:py-20 lg:py-24">
+        <div className="section-shell">
+          <ScrollReveal>
+            <SectionHeading
+              eyebrow={{
+                en: "Behind the Scenes",
+                he: "מאחורי הקלעים",
+                ru: "За кулисами",
+                el: "Πίσω από τις Σκηνές",
+              }[typedLocale]}
+              title={{
+                en: "How We Work",
+                he: "איך אנחנו עובדים",
+                ru: "Как мы работаем",
+                el: "Πώς Εργαζόμαστε",
+              }[typedLocale]}
+            />
+          </ScrollReveal>
+          <div className="mt-10">
+            <ScrollReveal>
+              <ImageGallery
+                images={[
+                  "/images/about/team-planning.jpg",
+                  "/images/about/site-inspection.jpg",
+                  "/images/about/construction-site.jpg",
+                  "/images/about/board-meeting.jpg",
+                  "/images/about/design-review.jpg",
+                  "/images/about/presentation.jpg",
+                ]}
+                villaName="Live Better Group"
+              />
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
       <ValuesSection
         eyebrow={valuesEyebrow}
         title={valuesTitle}
