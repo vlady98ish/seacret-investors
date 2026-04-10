@@ -210,7 +210,7 @@ export function VisualExplorer({
       <div
         ref={containerRef}
         className={cn(
-          "relative aspect-[16/9] w-full overflow-hidden rounded-md bg-[var(--color-night)]",
+          "relative aspect-[16/11] w-full overflow-hidden rounded-md bg-[var(--color-night)]",
           editMode && "ring-2 ring-amber-500/50",
         )}
         onPointerMove={editMode ? handlePointerMove : undefined}
