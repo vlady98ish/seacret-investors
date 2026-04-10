@@ -55,7 +55,7 @@ export function DistanceMapSection({
               className="relative overflow-hidden"
               style={{
                 minHeight: "360px",
-                borderRadius: "var(--radius-xl)",
+                borderRadius: "var(--radius-lg)",
                 border: "1px solid rgba(13,103,119,0.08)",
               }}
             >
@@ -80,37 +80,15 @@ export function DistanceMapSection({
                     className="tile flex items-center gap-4"
                     style={{ padding: "1rem 1.25rem" }}
                   >
-                    <div
-                      style={{
-                        flexShrink: 0,
-                        width: "2.5rem",
-                        height: "2.5rem",
-                        borderRadius: "var(--radius-full)",
-                        background: "rgba(13,103,119,0.10)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Car
-                        size={16}
-                        style={{ color: "var(--color-deep-teal)" }}
-                        strokeWidth={1.5}
-                      />
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[rgba(13,103,119,0.10)]">
+                      <Car size={18} className="text-[var(--color-deep-teal)]" strokeWidth={1.5} />
                     </div>
 
                     <div className="flex flex-col flex-1 min-w-0">
-                      <span
-                        style={{
-                          fontFamily: "var(--font-serif), Cinzel, serif",
-                          fontWeight: 600,
-                          fontSize: "0.95rem",
-                          color: "var(--color-ink)",
-                        }}
-                      >
+                      <span className="font-serif text-sm font-semibold text-[var(--color-ink)]">
                         {d.place}
                       </span>
-                      <span className="text-body-muted" style={{ fontSize: "0.8rem" }}>
+                      <span className="text-xs leading-relaxed text-[var(--color-muted)]">
                         {d.detail}
                       </span>
                     </div>
@@ -128,14 +106,7 @@ export function DistanceMapSection({
                         style={{ color: "var(--color-deep-teal)" }}
                         strokeWidth={1.5}
                       />
-                      <span
-                        style={{
-                          fontSize: "0.85rem",
-                          fontWeight: 600,
-                          color: "var(--color-deep-teal)",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
+                      <span className="text-sm font-semibold text-[var(--color-deep-teal)] whitespace-nowrap">
                         {d.time}
                       </span>
                     </div>

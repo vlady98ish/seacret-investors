@@ -105,7 +105,7 @@ export function VillaCard({ villa, locale, units, staticImageSrc, labelSoldOut, 
       href={`/${locale}/villas/${villa.slug.current}`}
       className="tile group block overflow-hidden transition-transform hover:-translate-y-1"
     >
-      <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-[var(--color-stone)]">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-[var(--color-stone)]">
         {imageSrc ? (
           <Image
             src={imageSrc}

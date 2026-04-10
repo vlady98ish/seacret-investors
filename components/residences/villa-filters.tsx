@@ -172,7 +172,7 @@ export function VillaFilters({ villas, units, locale, labels }: VillaFiltersProp
 
       {/* Villa grid */}
       {filtered.length === 0 ? (
-        <div className="flex min-h-[200px] items-center justify-center rounded-2xl border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
+        <div className="flex min-h-[200px] items-center justify-center rounded-md border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
           {noResultsLabel}
         </div>
       ) : (

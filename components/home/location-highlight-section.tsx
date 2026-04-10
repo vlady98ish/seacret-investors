@@ -25,7 +25,7 @@ export function LocationHighlightSection({ locale, title, description, highlight
   if (!highlights?.length) return null;
 
   return (
-    <section className="bg-[var(--color-cream)] py-24 sm:py-32">
+    <section className="bg-[var(--color-cream)] py-16 sm:py-20 lg:py-24">
       <div className="section-shell">
         <ScrollReveal>
           <SectionHeading
@@ -46,7 +46,7 @@ export function LocationHighlightSection({ locale, title, description, highlight
                   <Icon className="h-6 w-6 text-[var(--color-deep-teal)]" />
                 </div>
                 <h3 className="text-h3 mt-5">{item.title}</h3>
-                <p className="text-body-muted mt-2 text-sm">{item.description}</p>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">{item.description}</p>
               </div>
             </ScrollReveal>
             );

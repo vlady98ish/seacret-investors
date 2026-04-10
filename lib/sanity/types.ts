@@ -186,6 +186,7 @@ export interface UiStrings {
   miscUnits: LocalizedString;
   miscAvailable: LocalizedString;
   miscBed: LocalizedString;
+  miscBedsFew: LocalizedString;
   miscBeds: LocalizedString;
   miscOf: LocalizedString;
   miscGetInTouch: LocalizedString;

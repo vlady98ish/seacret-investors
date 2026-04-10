@@ -13,7 +13,7 @@ export function OurStorySection({ eyebrow, title, content }: OurStorySectionProp
   const paragraphs = content.split(/\n\n+/).filter(Boolean);
 
   return (
-    <section className="bg-[var(--color-cream)] py-24 sm:py-32">
+    <section className="bg-[var(--color-cream)] py-16 sm:py-20 lg:py-24">
       <div className="section-shell">
         {(eyebrow || title) && (
           <ScrollReveal>

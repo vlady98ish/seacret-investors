@@ -203,7 +203,7 @@ export function AccessibilityWidget({ locale }: AccessibilityWidgetProps) {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" />
 
-        <Dialog.Content className="fixed bottom-24 z-50 w-[calc(100vw-2rem)] max-w-xs rounded-2xl border border-[var(--color-deep-teal)]/10 bg-[var(--color-cream)] p-5 shadow-2xl ltr:left-4 rtl:right-4 sm:ltr:left-6 sm:rtl:right-6 focus-visible:outline-none">
+        <Dialog.Content className="fixed bottom-24 z-50 w-[calc(100vw-2rem)] max-w-xs rounded-md border border-[var(--color-deep-teal)]/10 bg-[var(--color-cream)] p-5 shadow-2xl ltr:left-4 rtl:right-4 sm:ltr:left-6 sm:rtl:right-6 focus-visible:outline-none">
           <div className="flex items-center justify-between mb-4">
             <Dialog.Title className="text-base font-semibold text-[var(--color-ink)]">
               {t.title}

@@ -20,7 +20,7 @@ export function FoundersSection({ eyebrow, founders }: FoundersSectionProps) {
   if (!founders?.length) return null;
 
   return (
-    <section className="bg-white py-24 sm:py-32">
+    <section className="bg-[var(--color-cream)] py-16 sm:py-20 lg:py-24">
       <div className="section-shell">
         {eyebrow && (
           <ScrollReveal>
@@ -37,7 +37,7 @@ export function FoundersSection({ eyebrow, founders }: FoundersSectionProps) {
             >
               <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
                 {founder.photo && getSanityImageUrl(founder.photo, 320) && (
-                  <div className="relative h-[200px] w-[160px] flex-shrink-0 overflow-hidden rounded-xl">
+                  <div className="relative h-[200px] w-[160px] flex-shrink-0 overflow-hidden rounded-md">
                     <Image
                       src={getSanityImageUrl(founder.photo, 320)!}
                       alt={`${founder.name} — ${founder.role}`}

@@ -29,7 +29,7 @@ export function ValuesSection({ eyebrow, title, values }: ValuesSectionProps) {
   if (!values?.length) return null;
 
   return (
-    <section className="bg-[var(--color-sand)] py-24 sm:py-32">
+    <section className="bg-[var(--color-sand)] py-16 sm:py-20 lg:py-24">
       <div className="section-shell">
         {(eyebrow || title) && (
           <ScrollReveal>
@@ -44,11 +44,11 @@ export function ValuesSection({ eyebrow, title, values }: ValuesSectionProps) {
           {values.map((item, i) => {
             const IconComponent = ICON_MAP[item.icon] ?? Shield;
             return (
-              <ScrollReveal key={item.title} delay={i * 0.08}>
-                <div className="rounded-xl bg-white p-6 shadow-[var(--shadow-card)]">
+              <ScrollReveal key={item.title} delay={i * 0.08} className="h-full">
+                <div className="h-full rounded-md bg-white p-6 shadow-[var(--shadow-card)]">
                   <IconComponent className="h-7 w-7 text-[var(--color-deep-teal)]" />
                   <h3 className="text-h3 mt-4">{item.title}</h3>
-                  <p className="text-body-muted mt-2 text-sm">{item.description}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">{item.description}</p>
                 </div>
               </ScrollReveal>
             );

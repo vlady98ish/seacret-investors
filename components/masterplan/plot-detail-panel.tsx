@@ -88,7 +88,7 @@ export function PlotDetailPanel({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex min-h-[240px] flex-1 items-center justify-center overflow-hidden rounded-2xl border border-[rgba(13,103,119,0.08)] bg-white/60 p-6"
+              className="flex min-h-[240px] flex-1 items-center justify-center overflow-hidden rounded-md border border-[rgba(13,103,119,0.08)] bg-white/60 p-6"
             >
               <p className="text-center text-sm text-[var(--color-muted)]">
                 {resolved.selectPlot}
@@ -101,7 +101,7 @@ export function PlotDetailPanel({
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 24 }}
               transition={{ duration: 0.3, ease: [0.2, 1, 0.22, 1] }}
-              className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-[rgba(13,103,119,0.08)] bg-[rgba(255,250,241,0.92)] shadow-[var(--shadow-soft)]"
+              className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-md border border-[rgba(13,103,119,0.08)] bg-[rgba(255,250,241,0.92)] shadow-[var(--shadow-soft)]"
             >
               <div
                 className={cn(
@@ -231,7 +231,7 @@ function PanelContent({
           {villaGroups.map((group) => (
             <div
               key={group.villaTypeSlug}
-              className="rounded-xl border border-[rgba(13,103,119,0.08)] bg-white/50 p-4"
+              className="rounded-md border border-[rgba(13,103,119,0.08)] bg-white/50 p-4"
             >
               <div className="mb-2 flex items-center justify-between">
                 <Link

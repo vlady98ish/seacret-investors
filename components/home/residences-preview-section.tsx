@@ -21,7 +21,7 @@ export function ResidencesPreviewSection({ villas, locale, title, description, e
   if (!villas?.length) return null;
 
   return (
-    <section className="bg-[var(--color-cream)] py-24 sm:py-32">
+    <section className="bg-[var(--color-cream)] py-16 sm:py-20 lg:py-24">
       <div className="section-shell">
         {/* Editorial header */}
         <ScrollReveal>
@@ -53,7 +53,7 @@ export function ResidencesPreviewSection({ villas, locale, title, description, e
                   style={{ borderRadius: "var(--radius-lg)" }}
                 >
                   {/* Portrait image */}
-                  <div className="relative overflow-hidden" style={{ aspectRatio: "3/4" }}>
+                  <div className="relative overflow-hidden aspect-[4/3] sm:aspect-[3/4]">
                     {imageUrl ? (
                       <Image
                         src={imageUrl}

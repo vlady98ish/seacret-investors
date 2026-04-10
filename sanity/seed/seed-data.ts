@@ -192,7 +192,7 @@ const plots = [
     _type: "plot",
     name: "Plot A",
     sortOrder: 1,
-    positionData: { x: 18, y: 45 },
+    positionData: { x: 24, y: 56 },
     summary: {
       en: "Beachfront plot with 2 Yehonatan + 2 Tai villas",
       he: "מגרש חזית ים",
@@ -205,7 +205,7 @@ const plots = [
     _type: "plot",
     name: "Plot B",
     sortOrder: 2,
-    positionData: { x: 30, y: 55 },
+    positionData: { x: 29, y: 60 },
     summary: {
       en: "Sea-view plot with 3 Yair + 2 Tai villas",
       he: "מגרש עם נוף לים",
@@ -218,7 +218,7 @@ const plots = [
     _type: "plot",
     name: "Plot C",
     sortOrder: 3,
-    positionData: { x: 45, y: 45 },
+    positionData: { x: 37, y: 52 },
     summary: {
       en: "Central plot with 3 Michal + 2 Tai villas",
       he: "מגרש מרכזי",
@@ -231,7 +231,7 @@ const plots = [
     _type: "plot",
     name: "Plot D",
     sortOrder: 4,
-    positionData: { x: 58, y: 35 },
+    positionData: { x: 44, y: 32 },
     summary: {
       en: "Garden-view plot with 5 Michal villas",
       he: "מגרש עם נוף לגינה",
@@ -244,7 +244,7 @@ const plots = [
     _type: "plot",
     name: "Plot E",
     sortOrder: 5,
-    positionData: { x: 72, y: 28 },
+    positionData: { x: 62, y: 42 },
     summary: {
       en: "Apartment complex: 5 Lola ground + 5 Mikka upper",
       he: "מתחם דירות",
@@ -257,7 +257,7 @@ const plots = [
     _type: "plot",
     name: "Plot F",
     sortOrder: 6,
-    positionData: { x: 84, y: 25 },
+    positionData: { x: 76, y: 25 },
     summary: {
       en: "Apartment complex: 5 Lola ground + 5 Mikka upper",
       he: "מתחם דירות",
@@ -485,7 +485,7 @@ const homePage = {
   heroSubtitle: {
     en: "perfect for few",
     he: "מושלם למעטים",
-    ru: "идеальный для немногих",
+    ru: "идеальный для избранных",
     el: "τέλειο για λίγους",
   },
   conceptEyebrow: {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Assistant } from "next/font/google";
+import { Cinzel, Cormorant_SC, Frank_Ruhl_Libre, Assistant } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
@@ -8,6 +8,20 @@ const serif = Cinzel({
   subsets: ["latin"],
   variable: "--font-serif",
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const serifCyrillic = Cormorant_SC({
+  subsets: ["cyrillic"],
+  variable: "--font-serif-cyrillic",
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const serifHebrew = Frank_Ruhl_Libre({
+  subsets: ["hebrew"],
+  variable: "--font-serif-hebrew",
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -40,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${serif.variable} ${serifCyrillic.variable} ${serifHebrew.variable} ${sans.variable}`} suppressHydrationWarning>
       <body>
         {children}
         <SpeedInsights />

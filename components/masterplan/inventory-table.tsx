@@ -8,7 +8,7 @@ import { ChevronDown } from "lucide-react";
 import { StatusBadge } from "@/components/sections/status-badge";
 import { UnitDetailPanel } from "@/components/shared/unit-detail-panel";
 import { cn } from "@/lib/cn";
-import type { Locale } from "@/lib/i18n";
+import { pluralize, type Locale } from "@/lib/i18n";
 import { computePriceFrom, formatPriceFrom } from "@/lib/pricing";
 import type { UnitFlat } from "@/lib/sanity/types";
 import { useT } from "@/lib/ui-strings-context";
@@ -62,8 +62,10 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
   const statusAvailable = useT("statusAvailable", "Available");
   const statusReserved = useT("statusReserved", "Reserved");
   const statusSold = useT("statusSold", "Sold");
-  const bedLabel = useT("miscBed", "Bed");
-  const bedsLabel = useT("miscBeds", "Beds");
+  const bedOne = useT("miscBed", "Bed");
+  const bedFew = useT("miscBedsFew", bedOne);
+  const bedMany = useT("miscBeds", "Beds");
+  const bedText = (n: number) => pluralize(n, locale, bedOne, bedFew, bedMany);
   const fromLabel = useT("pricingFrom", "From");
 
   const lbl = {
@@ -175,7 +177,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
 
   if (units.length === 0) {
     return (
-      <div className="flex min-h-[200px] items-center justify-center rounded-2xl border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
+      <div className="flex min-h-[200px] items-center justify-center rounded-md border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
         {lbl.dataComing}
       </div>
     );
@@ -266,7 +268,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
       </p>
 
       {sorted.length === 0 ? (
-        <div className="flex min-h-[160px] items-center justify-center rounded-2xl border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
+        <div className="flex min-h-[160px] items-center justify-center rounded-md border border-[rgba(13,103,119,0.12)] bg-white/60 text-[var(--color-muted)]">
           {lbl.filterNoResults}
         </div>
       ) : (
@@ -384,7 +386,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
               return (
                 <div
                   key={unit._id}
-                  className="rounded-xl border border-[rgba(13,103,119,0.08)] bg-white/80 overflow-hidden"
+                  className="rounded-md border border-[rgba(13,103,119,0.08)] bg-white/80 overflow-hidden"
                 >
                   <div
                     className="flex items-start justify-between p-4 cursor-pointer"
@@ -402,7 +404,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
                         {unit.villaTypeName}
                       </Link>
                       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-muted)]">
-                        <span>{unit.bedrooms} {unit.bedrooms !== 1 ? bedsLabel : bedLabel}</span>
+                        <span>{bedText(unit.bedrooms)}</span>
                         <span>{builtArea} m&sup2;</span>
                         <span className="font-medium text-[var(--color-deep-teal)]">
                           {formatPriceFrom(unit.totalArea, fromLabel)}

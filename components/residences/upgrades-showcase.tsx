@@ -53,7 +53,7 @@ export function UpgradesShowcase({ upgrades, locale }: UpgradesShowcaseProps) {
             className="tile flex flex-col gap-4"
           >
             {imageUrl ? (
-              <div className="relative aspect-video overflow-hidden rounded-lg bg-[var(--color-stone)]">
+              <div className="relative aspect-video overflow-hidden rounded-md bg-[var(--color-stone)]">
                 <Image
                   src={imageUrl}
                   alt={name}
