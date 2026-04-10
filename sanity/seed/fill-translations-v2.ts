@@ -67,10 +67,10 @@ const newStrings: Record<string, { en: string; ru: string; he: string; el: strin
   },
   formThankYou: { en: "Thank you!", ru: "Спасибо!", he: "!תודה", el: "Ευχαριστούμε!" },
   formThankYouMessage: {
-    en: "We have received your enquiry and will get back to you within 24 hours.",
-    ru: "Мы получили ваш запрос и свяжемся с вами в течение 24 часов.",
-    he: "קיבלנו את פנייתכם וניצור קשר תוך 24 שעות.",
-    el: "Λάβαμε το αίτημά σας και θα επικοινωνήσουμε εντός 24 ωρών.",
+    en: "We have received your enquiry and will be in touch shortly.",
+    ru: "Мы получили ваш запрос и свяжемся с вами в ближайшее время.",
+    he: "קיבלנו את פנייתכם וניצור קשר בהקדם.",
+    el: "Λάβαμε το αίτημά σας και θα επικοινωνήσουμε σύντομα.",
   },
   miscSelectPlot: {
     en: "Select a plot on the map to see details",
