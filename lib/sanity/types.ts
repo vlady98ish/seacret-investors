@@ -247,6 +247,13 @@ export interface UiStrings {
   formMessagePlaceholder: LocalizedString;
   formThankYou: LocalizedString;
   formThankYouMessage: LocalizedText;
+  formThankYouNextSteps: LocalizedString;
+  formThankYouStep1Title: LocalizedString;
+  formThankYouStep1Desc: LocalizedString;
+  formThankYouStep2Title: LocalizedString;
+  formThankYouStep2Desc: LocalizedString;
+  formThankYouStep3Title: LocalizedString;
+  formThankYouStep3Desc: LocalizedString;
 }
 
 // === Page Document Types ===
