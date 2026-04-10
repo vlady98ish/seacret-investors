@@ -54,7 +54,7 @@ export function AirportConnectivitySection({
           {airports.map((airport, i) => (
             <ScrollReveal key={airport.code || i} delay={i * 0.1}>
               <div
-                className="tile flex flex-col gap-5 h-full"
+                className="tile relative flex flex-col gap-5 h-full"
                 style={
                   airport.isNearest
                     ? {
@@ -66,12 +66,10 @@ export function AirportConnectivitySection({
                 }
               >
                 {airport.isNearest && labelNearest && (
-                  <div className="self-start rounded-full bg-[var(--color-gold-sun)] px-3 py-0.5 text-[0.6875rem] font-bold uppercase tracking-widest text-[var(--color-night)]">
+                  <span className="absolute top-4 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[var(--color-gold-sun)] px-3 py-0.5 text-[0.6875rem] font-bold uppercase tracking-widest text-[var(--color-night)]">
                     {labelNearest}
-                  </div>
+                  </span>
                 )}
-
-                {/* Airport code */}
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <span className="font-serif text-4xl font-bold leading-none tracking-wide text-[var(--color-deep-teal)]">
