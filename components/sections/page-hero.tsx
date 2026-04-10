@@ -8,9 +8,10 @@ type PageHeroProps = {
   subtitle?: string;
   children?: React.ReactNode;
   compact?: boolean;
+  largeSubtitle?: boolean;
 };
 
-export function PageHero({ backgroundImage, title, subtitle, children, compact }: PageHeroProps) {
+export function PageHero({ backgroundImage, title, subtitle, children, compact, largeSubtitle }: PageHeroProps) {
   return (
     <section
       className={cn(
@@ -23,17 +24,17 @@ export function PageHero({ backgroundImage, title, subtitle, children, compact }
           src={backgroundImage}
           alt=""
           fill
-          className="object-cover opacity-60"
+          className="object-cover"
           priority
           sizes="100vw"
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-night)] via-[var(--color-night)]/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-night)] via-[var(--color-night)]/60 via-30% to-transparent to-70%" />
 
       <div className="section-shell relative z-10 pb-16 pt-32 sm:pb-24">
         {title && <h1 className="text-display text-white animate-rise">{title}</h1>}
         {subtitle && (
-          <p className="mt-3 text-lg font-light tracking-wide text-white/70 animate-rise" style={{ animationDelay: "100ms" }}>
+          <p className={`mt-3 font-light animate-rise ${largeSubtitle ? "text-display text-white" : "text-lg tracking-wide text-white/70"}`} style={{ animationDelay: "100ms" }}>
             {subtitle}
           </p>
         )}

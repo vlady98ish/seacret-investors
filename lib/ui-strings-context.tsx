@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext } from "react";
-import { getLocalizedValue, type Locale } from "@/lib/i18n";
+import { getLocalizedValue, pluralize, type Locale } from "@/lib/i18n";
 import type { UiStrings } from "@/lib/sanity/types";
 
 type UiStringsContextValue = {
@@ -49,4 +49,16 @@ export function useT(key: keyof UiStrings, fallback: string = ""): string {
  */
 export function useUiStrings() {
   return useContext(UiStringsContext);
+}
+
+/**
+ * Returns "N спальня / спальни / спален" with correct Russian declension.
+ * For other locales: "N Bed / Beds".
+ */
+export function useBedLabel(n: number): string {
+  const { uiStrings, locale } = useContext(UiStringsContext);
+  const one = (getLocalizedValue(uiStrings?.miscBed as Record<string, string>, locale) as string) || "Bed";
+  const few = (getLocalizedValue(uiStrings?.miscBedsFew as Record<string, string>, locale) as string) || one;
+  const many = (getLocalizedValue(uiStrings?.miscBeds as Record<string, string>, locale) as string) || "Beds";
+  return pluralize(n, locale, one, few, many);
 }

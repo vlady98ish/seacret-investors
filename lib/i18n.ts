@@ -30,3 +30,25 @@ export function getLocalizedValue<T>(obj: Record<Locale, T> | undefined | null, 
   if (!obj) return undefined;
   return obj[locale] ?? obj[defaultLocale];
 }
+
+/**
+ * Russian plural form: 1 спальня, 2 спальни, 5 спален.
+ * For other locales falls back to simple singular/plural.
+ */
+export function pluralize(
+  n: number,
+  locale: Locale,
+  one: string,
+  few: string,
+  many: string,
+): string {
+  if (locale !== "ru") {
+    return `${n} ${n === 1 ? one : many}`;
+  }
+  const abs = Math.abs(n) % 100;
+  const lastDigit = abs % 10;
+  if (abs >= 11 && abs <= 19) return `${n} ${many}`;
+  if (lastDigit === 1) return `${n} ${one}`;
+  if (lastDigit >= 2 && lastDigit <= 4) return `${n} ${few}`;
+  return `${n} ${many}`;
+}

@@ -55,6 +55,25 @@ button, input, select, textarea { font: inherit; }
 .font-serif { font-family: var(--font-serif), "Cinzel", serif; }
 .font-sans { font-family: var(--font-sans), "Assistant", sans-serif; }
 
+/* Per-locale serif overrides */
+[lang="ru"] .font-serif,
+[lang="ru"] .text-display,
+[lang="ru"] .text-h1,
+[lang="ru"] .text-h2,
+[lang="ru"] .text-h3,
+[lang="ru"] .legal-content h2 {
+  font-family: var(--font-serif-cyrillic), "Cormorant SC", serif;
+}
+
+[lang="he"] .font-serif,
+[lang="he"] .text-display,
+[lang="he"] .text-h1,
+[lang="he"] .text-h2,
+[lang="he"] .text-h3,
+[lang="he"] .legal-content h2 {
+  font-family: var(--font-serif-hebrew), "Frank Ruhl Libre", serif;
+}
+
 .text-display {
   font-family: var(--font-serif), "Cinzel", serif;
   font-size: clamp(2.5rem, 6vw, 4.5rem);

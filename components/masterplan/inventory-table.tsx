@@ -8,7 +8,7 @@ import { ChevronDown } from "lucide-react";
 import { StatusBadge } from "@/components/sections/status-badge";
 import { UnitDetailPanel } from "@/components/shared/unit-detail-panel";
 import { cn } from "@/lib/cn";
-import type { Locale } from "@/lib/i18n";
+import { pluralize, type Locale } from "@/lib/i18n";
 import { computePriceFrom, formatPriceFrom } from "@/lib/pricing";
 import type { UnitFlat } from "@/lib/sanity/types";
 import { useT } from "@/lib/ui-strings-context";
@@ -62,8 +62,10 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
   const statusAvailable = useT("statusAvailable", "Available");
   const statusReserved = useT("statusReserved", "Reserved");
   const statusSold = useT("statusSold", "Sold");
-  const bedLabel = useT("miscBed", "Bed");
-  const bedsLabel = useT("miscBeds", "Beds");
+  const bedOne = useT("miscBed", "Bed");
+  const bedFew = useT("miscBedsFew", bedOne);
+  const bedMany = useT("miscBeds", "Beds");
+  const bedText = (n: number) => pluralize(n, locale, bedOne, bedFew, bedMany);
   const fromLabel = useT("pricingFrom", "From");
 
   const lbl = {
@@ -402,7 +404,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
                         {unit.villaTypeName}
                       </Link>
                       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-muted)]">
-                        <span>{unit.bedrooms} {unit.bedrooms !== 1 ? bedsLabel : bedLabel}</span>
+                        <span>{bedText(unit.bedrooms)}</span>
                         <span>{builtArea} m&sup2;</span>
                         <span className="font-medium text-[var(--color-deep-teal)]">
                           {formatPriceFrom(unit.totalArea, fromLabel)}

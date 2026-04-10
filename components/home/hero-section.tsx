@@ -16,7 +16,7 @@ export function HeroSection({ data, locale, ctaExplore, ctaBrochure }: HeroSecti
   const imageUrl = getSanityImageUrl(data?.heroImage);
 
   return (
-    <PageHero backgroundImage={imageUrl} title={title} subtitle={subtitle}>
+    <PageHero backgroundImage={imageUrl} title={title} subtitle={subtitle} largeSubtitle={true}>
       {ctaExplore && (
         <a href={`/${locale}/residences`} className="btn btn-primary">
           {ctaExplore}
