@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 import { cn } from "@/lib/cn";
@@ -164,6 +165,7 @@ export function MultiStepForm({
   const resolvedBudgetOptions = budgetOptions ?? [];
   const resolvedTimelineOptions = timelineOptions ?? [];
   const names = villaNames ?? [];
+  const router = useRouter();
 
   const [step, setStep] = useState(1);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -276,36 +278,14 @@ export function MultiStepForm({
       });
       const json = (await res.json()) as { ok: boolean; message: string };
       if (json.ok) {
-        setStatus("success");
+        router.push(`/${locale}/contact/thank-you`);
+        return;
       } else {
         setStatus("error");
       }
     } catch {
       setStatus("error");
     }
-  }
-
-  /* ── Success state ─────────────────────────────────────── */
-  if (status === "success") {
-    return (
-      <div className="tile flex flex-col items-center justify-center text-center py-16 gap-6 animate-fade-in">
-        <div className="w-16 h-16 rounded-full bg-[var(--color-deep-teal)]/10 flex items-center justify-center">
-          <svg
-            className="w-8 h-8 text-[var(--color-deep-teal)]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2.5}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <div>
-          <h3 className="text-h3 text-[var(--color-night)] mb-2">{dict.successTitle}</h3>
-          <p className="text-body-muted">{dict.successMessage}</p>
-        </div>
-      </div>
-    );
   }
 
   return (
