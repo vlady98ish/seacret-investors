@@ -101,7 +101,7 @@ export default async function LocationPage({ params }: Props) {
       <PageHero
         title={heroTitle}
         subtitle={heroSubtitle}
-        backgroundImage={page?.heroImage ? getSanityImageUrl(page.heroImage) : undefined}
+        backgroundImage={(page as any)?.mapImage ? getSanityImageUrl((page as any).mapImage) : page?.heroImage ? getSanityImageUrl(page.heroImage) : undefined}
         compact
       />
 
@@ -123,8 +123,6 @@ export default async function LocationPage({ params }: Props) {
         eyebrow={t(page?.distanceEyebrow) || undefined}
         title={t(page?.distanceTitle) || undefined}
         description={t(page?.distanceDescription) || undefined}
-        locationLabel={t(uiStrings?.miscCorinthianGulf)}
-        mapImageUrl={getSanityImageUrl((page as any)?.mapImage, 2110)}
         markers={
           page?.distanceMarkers?.map((m) => ({
             place: t(m.place) || "",
