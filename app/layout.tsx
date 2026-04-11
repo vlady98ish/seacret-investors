@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cinzel, Cormorant_SC, Frank_Ruhl_Libre, Assistant } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { GoogleTagManagerNoscript } from "@/components/analytics/google-tag-manager";
 import "./globals.css";
 
 const serif = Cinzel({
@@ -56,6 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${serif.variable} ${serifCyrillic.variable} ${serifHebrew.variable} ${sans.variable}`} suppressHydrationWarning>
       <body>
+        <GoogleTagManagerNoscript />
         {children}
         <SpeedInsights />
         <Analytics />
