@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
 import { useT } from "@/lib/ui-strings-context";
+import { trackEvent } from "@/lib/analytics";
 import { captureUTM } from "@/lib/utm";
 
 /* ── Zod schemas ─────────────────────────────────────────── */
@@ -181,6 +182,27 @@ export function MultiStepForm({
     gdprConsent: false,
   });
 
+  const abandonRef = useRef(false);
+  const stepRef = useRef(1);
+
+  useEffect(() => {
+    trackEvent("form_step", { step: 1, page_path: window.location.pathname });
+    abandonRef.current = true;
+
+    function handleBeforeUnload() {
+      if (abandonRef.current) {
+        trackEvent("form_abandon", {
+          form_name: "multi_step",
+          last_step: stepRef.current,
+          page_path: window.location.pathname,
+        });
+      }
+    }
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
+
   function update(field: keyof FormData, value: string | boolean) {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -241,7 +263,10 @@ export function MultiStepForm({
     setErrors({});
     if (step === 1 && !validateStep1()) return;
     if (step === 2 && !validateStep2()) return;
-    setStep((s) => s + 1);
+    const nextStep = step + 1;
+    trackEvent("form_step", { step: nextStep, page_path: window.location.pathname });
+    stepRef.current = nextStep;
+    setStep(nextStep);
   }
 
   function handleBack() {
@@ -278,6 +303,12 @@ export function MultiStepForm({
       });
       const json = (await res.json()) as { ok: boolean; message: string };
       if (json.ok) {
+        abandonRef.current = false;
+        trackEvent("form_submit", {
+          form_name: "multi_step",
+          page_path: window.location.pathname,
+          locale,
+        });
         router.push(`/${locale}/contact/thank-you`);
         return;
       } else {

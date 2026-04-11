@@ -7,6 +7,7 @@ import { BlueprintView } from "@/components/masterplan/blueprint-view";
 import { getFallbackLayout } from "@/components/masterplan/layout-fallback-data";
 import { PlotDetailPanel } from "@/components/masterplan/plot-detail-panel";
 import { VisualExplorer } from "@/components/masterplan/visual-explorer";
+import { trackEvent } from "@/lib/analytics";
 import type { Locale } from "@/lib/i18n";
 import type { PlotWithUnits } from "@/lib/sanity/types";
 
@@ -84,12 +85,17 @@ export function MasterplanInteractive({
   }, [aerialImageUrl, plots.length]);
 
   const handlePlotSelect = (id: string) => {
+    const plot = plots.find((p) => p._id === id);
+    trackEvent("masterplan_click", {
+      plot_id: id,
+      plot_name: plot?.name ?? id,
+    });
+
     const isNewSelection = selectedPlotId !== id;
     setSelectedPlotId((prev) => (prev === id ? null : id));
 
     // If re-clicking the same plot that has layout data, enter blueprint
     if (!isNewSelection) {
-      const plot = plots.find((p) => p._id === id);
       if (plot && ((plot.layoutImages?.length ?? 0) > 0 || getFallbackLayout(plot.name) != null)) {
         setViewMode("blueprint");
       }

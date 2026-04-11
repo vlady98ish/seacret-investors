@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 import type { Locale } from "@/lib/i18n";
 import { useT } from "@/lib/ui-strings-context";
 
@@ -58,6 +59,13 @@ export function InlineContactSection({ locale, preferredOption, strings, whatsap
         }),
       });
       const json = (await res.json()) as { ok: boolean };
+      if (json.ok) {
+        trackEvent("form_submit", {
+          form_name: "inline_contact",
+          page_path: window.location.pathname,
+          locale,
+        });
+      }
       setFormStatus(json.ok ? "success" : "error");
     } catch {
       setFormStatus("error");

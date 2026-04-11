@@ -2,6 +2,7 @@
 
 import { type FormEvent, useState } from "react";
 
+import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 
 type FormDictionary = {
@@ -61,6 +62,11 @@ export function ContactForm({ locale, dict, preferredOption }: ContactFormProps)
     if (result.ok) {
       setStatus("success");
       setFeedback(dict.success);
+      trackEvent("form_submit", {
+        form_name: "contact",
+        page_path: window.location.pathname,
+        locale,
+      });
       form.reset();
       return;
     }

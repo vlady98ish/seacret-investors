@@ -12,6 +12,7 @@ import { allVillasQuery, uiStringsQuery, villaBySlugQuery } from "@/lib/sanity/q
 import { getSiteSettings } from "@/lib/sanity/ui-strings";
 import type { SiteSettings, UiStrings, UnitWithRefs, Villa } from "@/lib/sanity/types";
 
+import { VillaViewTracker } from "@/components/analytics/villa-view-tracker";
 import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/sections/page-hero";
 import { InlineContactSection } from "@/components/inline-contact-section";
@@ -189,6 +190,7 @@ export default async function VillaDetailPage({ params }: Props) {
 
   return (
     <>
+      <VillaViewTracker villaName={villaName} villaSlug={slug} />
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "Apartment",
