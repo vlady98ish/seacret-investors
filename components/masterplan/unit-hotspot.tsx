@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { cn } from "@/lib/cn";
 import type { UnitStatus } from "@/lib/sanity/types";
@@ -23,12 +23,11 @@ type UnitData = {
 
 type UnitHotspotProps = {
   unit: UnitData;
-  /** x/y are percentage positions for the pin center */
   position: { x: number; y: number };
   index: number;
   locale: string;
   editMode?: boolean;
-  onDragEnd?: (unitId: string, x: number, y: number) => void;
+  onPointerDown?: (e: React.PointerEvent, unitId: string) => void;
   labels: {
     available: string;
     reserved: string;
@@ -67,12 +66,11 @@ export function UnitHotspot({
   index,
   locale,
   editMode,
-  onDragEnd,
+  onPointerDown,
   labels,
 }: UnitHotspotProps) {
   const [hovered, setHovered] = useState(false);
   const [tapped, setTapped] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
   const colors = statusColors[unit.status];
   const isSold = unit.status === "sold";
@@ -83,12 +81,10 @@ export function UnitHotspot({
     if (!editMode) setTapped((v) => !v);
   }, [editMode]);
 
-  // Extract just the number from unitNumber (e.g. "A1" -> "1")
   const displayNum = unit.unitNumber.replace(/^[A-F]/i, "");
 
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{
@@ -97,30 +93,22 @@ export function UnitHotspot({
         stiffness: 350,
         damping: 20,
       }}
-      className={cn("absolute z-10 -translate-x-1/2 -translate-y-1/2", editMode && "cursor-grab active:cursor-grabbing")}
+      className={cn(
+        "absolute z-10 -translate-x-1/2 -translate-y-1/2",
+        editMode && "cursor-grab active:cursor-grabbing",
+      )}
       style={{ left: `${position.x}%`, top: `${position.y}%` }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => { setHovered(false); setTapped(false); }}
       onClick={handleTap}
-      drag={editMode}
-      dragMomentum={false}
-      onDragEnd={(_e, info) => {
-        if (!editMode || !ref.current || !onDragEnd) return;
-        const parent = ref.current.parentElement;
-        if (!parent) return;
-        const rect = parent.getBoundingClientRect();
-        const newX = position.x + (info.offset.x / rect.width) * 100;
-        const newY = position.y + (info.offset.y / rect.height) * 100;
-        onDragEnd(unit._id, Math.round(newX * 10) / 10, Math.round(newY * 10) / 10);
-      }}
+      onPointerDown={(e) => editMode && onPointerDown?.(e, unit._id)}
     >
       {/* Pulse ring for available units */}
-      {!isSold && (
-        <span className={cn(
-          "absolute inset-0 -m-1 rounded-full opacity-40",
-          colors.pulse,
-          "animate-ping",
-        )} style={{ animationDuration: "2.5s" }} />
+      {!isSold && !editMode && (
+        <span
+          className={cn("absolute inset-0 -m-1 rounded-full opacity-40", colors.pulse, "animate-ping")}
+          style={{ animationDuration: "2.5s" }}
+        />
       )}
 
       {/* Pin circle */}
@@ -134,11 +122,19 @@ export function UnitHotspot({
           colors.border,
           colors.glow,
           showTooltip && "scale-125 z-20 ring-2 ring-white/40",
+          editMode && "hover:ring-2 hover:ring-amber-400/60",
         )}
         aria-label={`Unit ${unit.unitNumber} — ${unit.villaTypeName} — ${statusLabel}`}
       >
         {displayNum}
       </button>
+
+      {/* Edit mode coordinate label */}
+      {editMode && (
+        <div className="pointer-events-none absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-black/80 px-1.5 py-0.5 text-[9px] font-mono text-amber-300">
+          {position.x.toFixed(1)}, {position.y.toFixed(1)}
+        </div>
+      )}
 
       {/* Tooltip */}
       <AnimatePresence>
@@ -155,7 +151,6 @@ export function UnitHotspot({
             )}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Unit header */}
             <div className="flex items-center justify-between">
               <h4 className="text-sm font-bold text-[var(--color-ink)]">
                 {unit.villaTypeName}
@@ -173,7 +168,6 @@ export function UnitHotspot({
               Unit #{unit.unitNumber}
             </p>
 
-            {/* Specs grid */}
             <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
               <SpecRow label="Total" value={`${unit.totalArea} m²`} />
               <SpecRow label={labels.bedrooms} value={String(unit.bedrooms)} />
@@ -181,7 +175,6 @@ export function UnitHotspot({
               {unit.hasPool && <SpecRow label={labels.pool} value="Yes" highlight />}
             </div>
 
-            {/* CTA */}
             {!isSold && (
               <Link
                 href={`/${locale}/villas/${unit.villaTypeSlug}`}
@@ -195,7 +188,6 @@ export function UnitHotspot({
               </Link>
             )}
 
-            {/* Arrow */}
             <div className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.05)]" />
           </motion.div>
         )}

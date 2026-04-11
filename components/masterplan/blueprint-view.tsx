@@ -3,11 +3,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { FloorTabs } from "@/components/masterplan/floor-tabs";
 import { getFallbackLayout } from "@/components/masterplan/layout-fallback-data";
 import { UnitHotspot } from "@/components/masterplan/unit-hotspot";
+import { cn } from "@/lib/cn";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import type { Locale } from "@/lib/i18n";
 import type { PlotWithUnits } from "@/lib/sanity/types";
@@ -35,9 +36,60 @@ type BlueprintViewProps = {
 export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewProps) {
   const [activeFloor, setActiveFloor] = useState(0);
   const [editMode, setEditMode] = useState(false);
-  const [posOverrides, setPosOverrides] = useState<Record<string, { x: number; y: number }>>({});
+  const [dragOverrides, setDragOverrides] = useState<Record<string, { x: number; y: number }>>({});
+  const [draggingId, setDraggingId] = useState<string | null>(null);
   const isDev = process.env.NODE_ENV !== "production";
   const planRef = useRef<HTMLDivElement>(null);
+
+  const toPercent = useCallback((clientX: number, clientY: number) => {
+    const rect = planRef.current?.getBoundingClientRect();
+    if (!rect) return null;
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    const y = ((clientY - rect.top) / rect.height) * 100;
+    return { x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) };
+  }, []);
+
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent, unitId: string) => {
+      if (!editMode) return;
+      e.preventDefault();
+      e.stopPropagation();
+      (e.target as HTMLElement).setPointerCapture(e.pointerId);
+      setDraggingId(unitId);
+    },
+    [editMode],
+  );
+
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent) => {
+      if (!draggingId) return;
+      const pos = toPercent(e.clientX, e.clientY);
+      if (!pos) return;
+      setDragOverrides((prev) => ({ ...prev, [draggingId]: pos }));
+    },
+    [draggingId, toPercent],
+  );
+
+  const handlePointerUp = useCallback(() => {
+    if (!draggingId) return;
+    const pos = dragOverrides[draggingId];
+    if (pos) {
+      fetch("/api/plots/unit-positions", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          plotId: plot._id,
+          unitId: draggingId,
+          x: Math.round(pos.x * 10) / 10,
+          y: Math.round(pos.y * 10) / 10,
+          width: 10,
+          height: 10,
+          floorIndex: activeFloor,
+        }),
+      });
+    }
+    setDraggingId(null);
+  }, [draggingId, dragOverrides, plot._id, activeFloor]);
 
   // Sanity data or hardcoded fallback
   const fallback = useMemo(() => getFallbackLayout(plot.name), [plot.name]);
@@ -68,7 +120,7 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
     if (hasSanityLayout) {
       for (const pos of plot.unitPositions ?? []) {
         if ((pos.floorIndex ?? 0) === activeFloor) {
-          map.set(pos.unit._ref, posOverrides[pos.unit._ref] ?? { x: pos.x, y: pos.y });
+          map.set(pos.unit._ref, dragOverrides[pos.unit._ref] ?? { x: pos.x, y: pos.y });
         }
       }
     } else if (fallback) {
@@ -76,13 +128,13 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
       for (const fp of fallbackPins) {
         const unit = plot.units.find((u) => u.unitNumber === fp.unitNumber);
         if (unit) {
-          map.set(unit._id, posOverrides[unit._id] ?? { x: fp.x, y: fp.y });
+          map.set(unit._id, dragOverrides[unit._id] ?? { x: fp.x, y: fp.y });
         }
       }
     }
 
     return map;
-  }, [hasSanityLayout, plot.unitPositions, plot.units, fallback, activeFloor, posOverrides]);
+  }, [hasSanityLayout, plot.unitPositions, plot.units, fallback, activeFloor, dragOverrides]);
 
   // Filter units that have positions on current floor
   const visibleUnits = useMemo(
@@ -154,7 +206,9 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
       <div className="relative flex-1">
         <div
           ref={planRef}
-          className="relative aspect-[16/9] w-full overflow-hidden"
+          className={cn("relative aspect-[16/9] w-full overflow-hidden", editMode && "ring-2 ring-inset ring-amber-500/30")}
+          onPointerMove={editMode ? handlePointerMove : undefined}
+          onPointerUp={editMode ? handlePointerUp : undefined}
         >
           {/* Background grid lines (decorative) */}
           <svg className="pointer-events-none absolute inset-0 z-[1] h-full w-full" aria-hidden>
@@ -227,15 +281,7 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
                       index={i}
                       locale={locale}
                       editMode={editMode}
-                      onDragEnd={(unitId, x, y) => {
-                        setPosOverrides((prev) => ({ ...prev, [unitId]: { x, y } }));
-                        // Save to Sanity
-                        fetch("/api/plots/unit-positions", {
-                          method: "PATCH",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ plotId: plot._id, unitId, x, y, width: 10, height: 10, floorIndex: activeFloor }),
-                        });
-                      }}
+                      onPointerDown={handlePointerDown}
                       labels={{
                         available: labels.available,
                         reserved: labels.reserved,
