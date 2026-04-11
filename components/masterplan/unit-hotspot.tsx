@@ -94,7 +94,8 @@ export function UnitHotspot({
         damping: 20,
       }}
       className={cn(
-        "absolute z-10 -translate-x-1/2 -translate-y-1/2",
+        "absolute -translate-x-1/2 -translate-y-1/2",
+        showTooltip ? "z-50" : "z-10",
         editMode && "cursor-grab active:cursor-grabbing",
       )}
       style={{ left: `${position.x}%`, top: `${position.y}%` }}
