@@ -42,20 +42,20 @@ type UnitHotspotProps = {
 
 const statusColors: Record<UnitStatus, { bg: string; border: string; glow: string; pulse: string }> = {
   available: {
-    bg: "bg-emerald-500",
-    border: "border-white",
+    bg: "bg-emerald-600",
+    border: "border-emerald-700",
     glow: "shadow-[0_0_16px_rgba(16,185,129,0.5)]",
     pulse: "bg-emerald-400",
   },
   reserved: {
     bg: "bg-amber-500",
-    border: "border-white",
+    border: "border-amber-600",
     glow: "shadow-[0_0_16px_rgba(245,158,11,0.5)]",
     pulse: "bg-amber-400",
   },
   sold: {
-    bg: "bg-red-500",
-    border: "border-white",
+    bg: "bg-red-600",
+    border: "border-red-700",
     glow: "shadow-[0_0_16px_rgba(239,68,68,0.4)]",
     pulse: "bg-red-400",
   },
@@ -127,13 +127,12 @@ export function UnitHotspot({
       <button
         type="button"
         className={cn(
-          "relative flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-bold text-white",
+          "relative flex h-10 w-10 items-center justify-center rounded-full border-[3px] text-sm font-bold text-white",
           "transition-all duration-300 cursor-pointer",
           "hover:scale-125 hover:z-20",
           colors.bg,
           colors.border,
           colors.glow,
-          isSold && "opacity-60",
           showTooltip && "scale-125 z-20 ring-2 ring-white/40",
         )}
         aria-label={`Unit ${unit.unitNumber} — ${unit.villaTypeName} — ${statusLabel}`}
