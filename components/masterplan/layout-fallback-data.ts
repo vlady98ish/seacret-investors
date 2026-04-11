@@ -31,12 +31,12 @@ function getPlotLetter(name: string): string {
 // x/y are percentages of the slide image (1920x1080)
 const layouts: Record<string, FallbackPlotLayout> = {
   A: {
-    floors: [{ imagePath: "/images/layouts/plot-a-slide.png" }],
+    floors: [{ imagePath: "/images/layouts/plot-a-plan.png" }],
     unitPins: [
-      { unitNumber: "A1", floorIndex: 0, x: 68, y: 18 },
-      { unitNumber: "A2", floorIndex: 0, x: 68, y: 45 },
-      { unitNumber: "A3", floorIndex: 0, x: 68, y: 68 },
-      { unitNumber: "A4", floorIndex: 0, x: 68, y: 85 },
+      { unitNumber: "A1", floorIndex: 0, x: 52, y: 20 },
+      { unitNumber: "A2", floorIndex: 0, x: 48, y: 46 },
+      { unitNumber: "A3", floorIndex: 0, x: 50, y: 68 },
+      { unitNumber: "A4", floorIndex: 0, x: 50, y: 83 },
     ],
   },
 };

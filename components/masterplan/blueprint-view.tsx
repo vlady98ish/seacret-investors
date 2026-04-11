@@ -34,7 +34,9 @@ type BlueprintViewProps = {
 
 export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewProps) {
   const [activeFloor, setActiveFloor] = useState(0);
-  const [posOverrides] = useState<Record<string, { x: number; y: number }>>({});
+  const [editMode, setEditMode] = useState(false);
+  const [posOverrides, setPosOverrides] = useState<Record<string, { x: number; y: number }>>({});
+  const isDev = process.env.NODE_ENV !== "production";
   const planRef = useRef<HTMLDivElement>(null);
 
   // Sanity data or hardcoded fallback
@@ -124,6 +126,18 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
           )}
         </div>
         <div className="flex items-center gap-2">
+          {isDev && (
+            <button
+              type="button"
+              onClick={() => setEditMode((v) => !v)}
+              className={editMode
+                ? "rounded bg-amber-500 px-3 py-1 text-xs font-medium text-black"
+                : "rounded bg-white/[0.06] px-3 py-1 text-xs font-medium text-white/40 hover:text-white/70"
+              }
+            >
+              {editMode ? "Done editing" : "Edit pins"}
+            </button>
+          )}
           <kbd className="hidden rounded border border-white/10 px-2 py-0.5 text-[10px] text-white/25 sm:inline">Esc</kbd>
           <button
             type="button"
@@ -212,6 +226,13 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
                       position={pos}
                       index={i}
                       locale={locale}
+                      editMode={editMode}
+                      onDragEnd={(unitId, x, y) => {
+                        setPosOverrides((prev) => ({ ...prev, [unitId]: { x, y } }));
+                        // Log to console for easy copy-paste into fallback data
+                        // eslint-disable-next-line no-console
+                        console.log(`Pin ${unit.unitNumber}: x: ${x}, y: ${y}`);
+                      }}
                       labels={{
                         available: labels.available,
                         reserved: labels.reserved,

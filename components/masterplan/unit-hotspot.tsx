@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { cn } from "@/lib/cn";
 import type { UnitStatus } from "@/lib/sanity/types";
@@ -27,6 +27,8 @@ type UnitHotspotProps = {
   position: { x: number; y: number };
   index: number;
   locale: string;
+  editMode?: boolean;
+  onDragEnd?: (unitId: string, x: number, y: number) => void;
   labels: {
     available: string;
     reserved: string;
@@ -64,25 +66,29 @@ export function UnitHotspot({
   position,
   index,
   locale,
+  editMode,
+  onDragEnd,
   labels,
 }: UnitHotspotProps) {
   const [hovered, setHovered] = useState(false);
   const [tapped, setTapped] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   const colors = statusColors[unit.status];
   const isSold = unit.status === "sold";
   const statusLabel = labels[unit.status];
-  const showTooltip = hovered || tapped;
+  const showTooltip = (hovered || tapped) && !editMode;
 
   const handleTap = useCallback(() => {
-    setTapped((v) => !v);
-  }, []);
+    if (!editMode) setTapped((v) => !v);
+  }, [editMode]);
 
   // Extract just the number from unitNumber (e.g. "A1" -> "1")
   const displayNum = unit.unitNumber.replace(/^[A-F]/i, "");
 
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{
@@ -91,11 +97,22 @@ export function UnitHotspot({
         stiffness: 350,
         damping: 20,
       }}
-      className="absolute z-10 -translate-x-1/2 -translate-y-1/2"
+      className={cn("absolute z-10 -translate-x-1/2 -translate-y-1/2", editMode && "cursor-grab active:cursor-grabbing")}
       style={{ left: `${position.x}%`, top: `${position.y}%` }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => { setHovered(false); setTapped(false); }}
       onClick={handleTap}
+      drag={editMode}
+      dragMomentum={false}
+      onDragEnd={(_e, info) => {
+        if (!editMode || !ref.current || !onDragEnd) return;
+        const parent = ref.current.parentElement;
+        if (!parent) return;
+        const rect = parent.getBoundingClientRect();
+        const newX = position.x + (info.offset.x / rect.width) * 100;
+        const newY = position.y + (info.offset.y / rect.height) * 100;
+        onDragEnd(unit._id, Math.round(newX * 10) / 10, Math.round(newY * 10) / 10);
+      }}
     >
       {/* Pulse ring for available units */}
       {!isSold && (
