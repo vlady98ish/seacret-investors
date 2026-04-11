@@ -393,6 +393,7 @@ export interface MasterplanPage {
 }
 
 export interface ContactPage {
+  heroImage?: SanityImage;
   heroTitle: LocalizedString;
   heroSubtitle?: LocalizedString;
   officeInfo?: LocalizedText;
@@ -484,6 +485,20 @@ export interface UnitWithRefs {
   plotName: string;
 }
 
+export interface LayoutFloor {
+  label?: string;
+  image: SanityImage;
+}
+
+export interface UnitPosition {
+  unit: { _ref: string };
+  floorIndex: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export interface PlotWithUnits {
   _id: string;
   name: string;
@@ -491,6 +506,8 @@ export interface PlotWithUnits {
   aerialImage: SanityImage;
   positionData: { x: number; y: number };
   sortOrder: number;
+  layoutImages?: LayoutFloor[];
+  unitPositions?: UnitPosition[];
   units: Array<{
     _id: string;
     unitNumber: string;
