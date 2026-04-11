@@ -117,11 +117,10 @@ export default async function VillaDetailPage({ params }: Props) {
     .map((img) => getSanityImageUrl(img, 1200))
     .filter((u): u is string => Boolean(u));
 
-  // Compute price from min available unit area
-  const availableUnits = units.filter((u) => u.status === "available");
+  // Compute price from min unit area (all units, not just available)
   const minArea =
-    availableUnits.length > 0
-      ? Math.min(...availableUnits.map((u) => u.totalArea))
+    units.length > 0
+      ? Math.min(...units.map((u) => u.totalArea))
       : null;
 
   const villaName = villa?.name ?? slug.charAt(0).toUpperCase() + slug.slice(1);

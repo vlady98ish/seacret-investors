@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Car, Clock } from "lucide-react";
 
 import { ScrollReveal } from "@/components/scroll-reveal";
@@ -15,8 +14,6 @@ interface DistanceMapSectionProps {
   title?: string;
   description?: string;
   markers?: MarkerProp[];
-  locationLabel?: string;
-  mapImageUrl?: string | null;
 }
 
 export function DistanceMapSection({
@@ -24,8 +21,6 @@ export function DistanceMapSection({
   title,
   description,
   markers,
-  locationLabel,
-  mapImageUrl,
 }: DistanceMapSectionProps = {}) {
   if (!markers?.length) return null;
 
@@ -49,7 +44,7 @@ export function DistanceMapSection({
           }}
           className="lg:grid-cols-2"
         >
-          {/* Location map image */}
+          {/* Google Maps embed */}
           <ScrollReveal direction="left">
             <div
               className="relative overflow-hidden"
@@ -59,14 +54,14 @@ export function DistanceMapSection({
                 border: "1px solid rgba(13,103,119,0.08)",
               }}
             >
-              <Image
-                src={mapImageUrl || "/images/location/chiliadou-map.png"}
-                alt="Sea'cret Residences location — Chiliadou, Dorida, Fokida, Corinthian Gulf"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                quality={95}
-                unoptimized={!!mapImageUrl}
+              <iframe
+                src="https://maps.google.com/maps?q=38.3893698,21.9141577&z=15&output=embed"
+                className="absolute inset-0 h-full w-full"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Sea'cret Residences location — Chiliadou, Greece"
               />
             </div>
           </ScrollReveal>

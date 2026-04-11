@@ -150,6 +150,21 @@ export default async function MasterplanPage({ params, searchParams }: Props) {
     units: t(uiStrings?.miscUnits) ?? "",
   };
 
+  const blueprintLabels = {
+    backToMasterplan: "Back to masterplan",
+    available: legendLabels.available,
+    reserved: legendLabels.reserved,
+    sold: legendLabels.sold,
+    bedrooms: t(uiStrings?.specBedrooms) ?? "BR",
+    bathrooms: t(uiStrings?.specBathrooms) ?? "BA",
+    pool: t(uiStrings?.specPool) ?? "Pool",
+    viewVilla: t(uiStrings?.ctaExploreResidences) ?? "View Villa",
+    of: t(uiStrings?.miscOf) ?? "of",
+    unitsAvailable: t(uiStrings?.miscAvailable) ?? "available",
+    mountainView: "Mountain view",
+    seaView: "Sea view",
+  };
+
   const inventoryLabels = {
     filterPlot: t(uiStrings?.filterPlot) ?? "",
     filterType: t(uiStrings?.filterType) ?? "",
@@ -197,6 +212,7 @@ export default async function MasterplanPage({ params, searchParams }: Props) {
               locale={typedLocale}
               legendLabels={legendLabels}
               panelLabels={panelLabels}
+              blueprintLabels={blueprintLabels}
               aerialImageUrl={heroImageUrl}
             />
           </div>

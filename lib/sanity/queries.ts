@@ -21,6 +21,8 @@ export const villaBySlugQuery = groq`*[_type == "villa" && slug.current == $slug
 
 export const allPlotsQuery = groq`*[_type == "plot"] | order(sortOrder asc){
   _id, name, summary, aerialImage, positionData, sortOrder,
+  layoutImages[]{ label, image },
+  unitPositions[]{ unit, floorIndex, x, y, width, height },
   "units": *[_type == "unit" && plot._ref == ^._id]{
     _id, unitNumber, status, totalArea, outdoorArea, groundFloor, upperFloor, attic, balcony, roofTerrace, bedrooms, bathrooms, hasPool, hasParking,
     "villaTypeName": villaType->name,

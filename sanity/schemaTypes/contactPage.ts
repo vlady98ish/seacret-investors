@@ -16,6 +16,7 @@ export const contactPageType = defineType({
   ],
   fields: [
     // Hero
+    defineField({ name: "heroImage", title: "Hero Image", type: "image", options: { hotspot: true }, group: "hero" }),
     defineField({ name: "heroTitle", title: "Hero Title", type: "localeString", group: "hero", validation: requireAllTranslations }),
     defineField({ name: "heroSubtitle", title: "Hero Subtitle", type: "localeString", group: "hero" }),
     // Office

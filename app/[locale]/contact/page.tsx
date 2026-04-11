@@ -7,6 +7,7 @@ import { PageHero } from "@/components/sections/page-hero";
 import { getLocalizedValue, isValidLocale, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { sanityClient } from "@/lib/sanity/client";
+import { getSanityImageUrl } from "@/lib/sanity/image";
 import { allVillasQuery, contactPageQuery, siteSettingsQuery, uiStringsQuery } from "@/lib/sanity/queries";
 import type { ContactPage as CmsContactPage, SiteSettings, UiStrings, Villa } from "@/lib/sanity/types";
 
@@ -65,8 +66,8 @@ export default async function CmsContactPageRoute({ params }: Props) {
   const villaNames = villas.length > 0 ? villas.map((v) => v.name) : undefined;
 
   /* ── Hero copy ───────────────────────────────────────────── */
+  const heroImageUrl = contactPage?.heroImage ? getSanityImageUrl(contactPage.heroImage) : null;
   const heroTitle = t(contactPage?.heroTitle) ?? "";
-
   const heroSubtitle = t(contactPage?.heroSubtitle);
 
   /* ── Direct contact section strings ─────────────────────── */
@@ -102,6 +103,7 @@ export default async function CmsContactPageRoute({ params }: Props) {
     <>
       {/* ── Hero ─────────────────────────────────────── */}
       <PageHero
+        backgroundImage={heroImageUrl}
         title={heroTitle}
         subtitle={heroSubtitle}
         compact
