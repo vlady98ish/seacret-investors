@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { cn } from "@/lib/cn";
 import type { UnitStatus } from "@/lib/sanity/types";
@@ -23,11 +23,10 @@ type UnitData = {
 
 type UnitHotspotProps = {
   unit: UnitData;
-  position: { x: number; y: number; width: number; height: number };
+  /** x/y are percentage positions for the pin center */
+  position: { x: number; y: number };
   index: number;
   locale: string;
-  editMode?: boolean;
-  onPositionChange?: (unitId: string, pos: { x: number; y: number; width: number; height: number }) => void;
   labels: {
     available: string;
     reserved: string;
@@ -39,27 +38,24 @@ type UnitHotspotProps = {
   };
 };
 
-const statusStyles: Record<UnitStatus, { border: string; bg: string; text: string; badge: string; glow: string }> = {
+const statusColors: Record<UnitStatus, { bg: string; border: string; glow: string; pulse: string }> = {
   available: {
-    border: "border-emerald-500/40",
-    bg: "bg-emerald-500/[0.06]",
-    text: "text-emerald-400",
-    badge: "bg-emerald-500/15 text-emerald-400",
-    glow: "hover:shadow-[0_0_24px_rgba(16,185,129,0.2)] hover:border-emerald-500/70",
+    bg: "bg-emerald-500",
+    border: "border-white",
+    glow: "shadow-[0_0_16px_rgba(16,185,129,0.5)]",
+    pulse: "bg-emerald-400",
   },
   reserved: {
-    border: "border-amber-500/30",
-    bg: "bg-amber-500/[0.04]",
-    text: "text-amber-400",
-    badge: "bg-amber-500/15 text-amber-400",
-    glow: "hover:shadow-[0_0_24px_rgba(245,158,11,0.2)] hover:border-amber-500/60",
+    bg: "bg-amber-500",
+    border: "border-white",
+    glow: "shadow-[0_0_16px_rgba(245,158,11,0.5)]",
+    pulse: "bg-amber-400",
   },
   sold: {
-    border: "border-red-500/20",
-    bg: "bg-red-500/[0.03]",
-    text: "text-red-400/50",
-    badge: "bg-red-500/10 text-red-400",
-    glow: "",
+    bg: "bg-red-500",
+    border: "border-white",
+    glow: "shadow-[0_0_16px_rgba(239,68,68,0.4)]",
+    pulse: "bg-red-400",
   },
 };
 
@@ -68,115 +64,123 @@ export function UnitHotspot({
   position,
   index,
   locale,
-  editMode,
-  onPositionChange,
   labels,
 }: UnitHotspotProps) {
   const [hovered, setHovered] = useState(false);
   const [tapped, setTapped] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
-  const s = statusStyles[unit.status];
+  const colors = statusColors[unit.status];
   const isSold = unit.status === "sold";
   const statusLabel = labels[unit.status];
+  const showTooltip = hovered || tapped;
 
   const handleTap = useCallback(() => {
-    if (isSold) return;
     setTapped((v) => !v);
-  }, [isSold]);
+  }, []);
 
-  const showTooltip = hovered || tapped;
+  // Extract just the number from unitNumber (e.g. "A1" -> "1")
+  const displayNum = unit.unitNumber.replace(/^[A-F]/i, "");
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, scale: 0.3, y: 20 }}
-      animate={{ opacity: isSold ? 0.5 : 1, scale: 1, y: 0 }}
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
       transition={{
-        delay: 0.8 + index * 0.1,
+        delay: 0.5 + index * 0.12,
         type: "spring",
-        stiffness: 300,
+        stiffness: 350,
         damping: 20,
       }}
-      className={cn(
-        "absolute flex flex-col items-center justify-center rounded-md border-[1.5px] cursor-pointer transition-all duration-300",
-        s.border,
-        s.bg,
-        !isSold && s.glow,
-        isSold && "cursor-default",
-        editMode && "cursor-grab active:cursor-grabbing",
-      )}
-      style={{
-        left: `${position.x}%`,
-        top: `${position.y}%`,
-        width: `${position.width}%`,
-        height: `${position.height}%`,
-      }}
-      onMouseEnter={() => !isSold && setHovered(true)}
+      className="absolute z-10 -translate-x-1/2 -translate-y-1/2"
+      style={{ left: `${position.x}%`, top: `${position.y}%` }}
+      onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => { setHovered(false); setTapped(false); }}
       onClick={handleTap}
-      drag={editMode}
-      dragMomentum={false}
-      onDragEnd={(_e, info) => {
-        if (!editMode || !ref.current || !onPositionChange) return;
-        const parent = ref.current.parentElement;
-        if (!parent) return;
-        const parentRect = parent.getBoundingClientRect();
-        const newX = position.x + (info.offset.x / parentRect.width) * 100;
-        const newY = position.y + (info.offset.y / parentRect.height) * 100;
-        onPositionChange(unit._id, {
-          ...position,
-          x: Math.max(0, Math.min(100 - position.width, newX)),
-          y: Math.max(0, Math.min(100 - position.height, newY)),
-        });
-      }}
     >
-      <span className={cn("text-base font-extrabold sm:text-lg", s.text)}>
-        {unit.unitNumber}
-      </span>
-      <span className={cn("text-[9px] font-semibold uppercase tracking-wide sm:text-[10px]", s.text, "opacity-70")}>
-        {unit.villaTypeName}
-      </span>
-      <span className={cn("mt-1 rounded px-1.5 py-0.5 text-[8px] font-semibold", s.badge)}>
-        {statusLabel}
-      </span>
+      {/* Pulse ring for available units */}
+      {!isSold && (
+        <span className={cn(
+          "absolute inset-0 -m-1 rounded-full opacity-40",
+          colors.pulse,
+          "animate-ping",
+        )} style={{ animationDuration: "2.5s" }} />
+      )}
 
-      {/* Tooltip — desktop hover / mobile tap */}
+      {/* Pin circle */}
+      <button
+        type="button"
+        className={cn(
+          "relative flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-bold text-white",
+          "transition-all duration-300 cursor-pointer",
+          "hover:scale-125 hover:z-20",
+          colors.bg,
+          colors.border,
+          colors.glow,
+          isSold && "opacity-60",
+          showTooltip && "scale-125 z-20 ring-2 ring-white/40",
+        )}
+        aria-label={`Unit ${unit.unitNumber} — ${unit.villaTypeName} — ${statusLabel}`}
+      >
+        {displayNum}
+      </button>
+
+      {/* Tooltip */}
       <AnimatePresence>
-        {showTooltip && !isSold && !editMode && (
+        {showTooltip && (
           <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            initial={{ opacity: 0, y: 8, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+            exit={{ opacity: 0, y: 8, scale: 0.9 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             className={cn(
-              "absolute z-50 min-w-[180px] rounded-lg border border-[var(--color-gold-sun)]/25",
-              "bg-[var(--color-night)]/95 p-3 shadow-[0_12px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl",
-              "bottom-full left-1/2 -translate-x-1/2 mb-2",
+              "absolute z-50 min-w-[200px] rounded-xl",
+              "bg-white p-4 shadow-[0_12px_40px_rgba(0,0,0,0.15)]",
+              "bottom-full left-1/2 -translate-x-1/2 mb-3",
             )}
             onClick={(e) => e.stopPropagation()}
           >
-            <h4 className="text-xs font-bold text-[var(--color-gold-sun)]">
-              #{unit.unitNumber} &middot; {unit.villaTypeName}
-            </h4>
-            <div className="mt-2 space-y-0.5 text-[10px]">
-              <Row label="Total" value={`${unit.totalArea} m²`} />
-              <Row label={labels.bedrooms} value={String(unit.bedrooms)} />
-              <Row label={labels.bathrooms} value={String(unit.bathrooms)} />
-              {unit.hasPool && <Row label={labels.pool} value="Yes" valueColor="text-emerald-400" />}
+            {/* Unit header */}
+            <div className="flex items-center justify-between">
+              <h4 className="text-sm font-bold text-[var(--color-ink)]">
+                {unit.villaTypeName}
+              </h4>
+              <span className={cn(
+                "rounded-full px-2 py-0.5 text-[10px] font-semibold",
+                unit.status === "available" && "bg-emerald-50 text-emerald-600",
+                unit.status === "reserved" && "bg-amber-50 text-amber-600",
+                unit.status === "sold" && "bg-red-50 text-red-600",
+              )}>
+                {statusLabel}
+              </span>
             </div>
-            <Link
-              href={`/${locale}/villas/${unit.villaTypeSlug}`}
-              className={cn(
-                "mt-2.5 block rounded-md py-1.5 text-center text-[10px] font-bold uppercase tracking-wider",
-                "bg-gradient-to-r from-[var(--color-gold-sun)] to-[#d4912e] text-[var(--color-night)]",
-                "transition-opacity hover:opacity-90",
-              )}
-            >
-              {labels.viewVilla} &rarr;
-            </Link>
-            {/* Tooltip arrow */}
-            <div className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-b border-r border-[var(--color-gold-sun)]/25 bg-[var(--color-night)]/95" />
+            <p className="mt-0.5 text-xs text-[var(--color-muted)]">
+              Unit #{unit.unitNumber}
+            </p>
+
+            {/* Specs grid */}
+            <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
+              <SpecRow label="Total" value={`${unit.totalArea} m²`} />
+              <SpecRow label={labels.bedrooms} value={String(unit.bedrooms)} />
+              <SpecRow label={labels.bathrooms} value={String(unit.bathrooms)} />
+              {unit.hasPool && <SpecRow label={labels.pool} value="Yes" highlight />}
+            </div>
+
+            {/* CTA */}
+            {!isSold && (
+              <Link
+                href={`/${locale}/villas/${unit.villaTypeSlug}`}
+                className={cn(
+                  "mt-3 block rounded-lg py-2 text-center text-xs font-semibold",
+                  "bg-[var(--color-deep-teal)] text-white",
+                  "transition-colors hover:bg-[var(--color-deep-teal)]/90",
+                )}
+              >
+                {labels.viewVilla} &rarr;
+              </Link>
+            )}
+
+            {/* Arrow */}
+            <div className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.05)]" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -184,11 +188,11 @@ export function UnitHotspot({
   );
 }
 
-function Row({ label, value, valueColor }: { label: string; value: string; valueColor?: string }) {
+function SpecRow({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <div className="flex justify-between">
-      <span className="text-white/35">{label}</span>
-      <span className={cn("font-semibold text-white/80", valueColor)}>{value}</span>
+      <span className="text-[var(--color-muted)]">{label}</span>
+      <span className={cn("font-semibold text-[var(--color-ink)]", highlight && "text-emerald-600")}>{value}</span>
     </div>
   );
 }

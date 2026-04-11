@@ -3,12 +3,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { FloorTabs } from "@/components/masterplan/floor-tabs";
 import { getFallbackLayout } from "@/components/masterplan/layout-fallback-data";
 import { UnitHotspot } from "@/components/masterplan/unit-hotspot";
-import { cn } from "@/lib/cn";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import type { Locale } from "@/lib/i18n";
 import type { PlotWithUnits } from "@/lib/sanity/types";
@@ -33,19 +32,9 @@ type BlueprintViewProps = {
   };
 };
 
-async function saveUnitPosition(plotId: string, unitId: string, pos: { x: number; y: number; width: number; height: number }, floorIndex: number) {
-  await fetch("/api/plots/unit-positions", {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ plotId, unitId, ...pos, floorIndex }),
-  });
-}
-
 export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewProps) {
   const [activeFloor, setActiveFloor] = useState(0);
-  const [editMode, setEditMode] = useState(false);
-  const [posOverrides, setPosOverrides] = useState<Record<string, { x: number; y: number; width: number; height: number }>>({});
-  const isDev = process.env.NODE_ENV !== "production";
+  const [posOverrides] = useState<Record<string, { x: number; y: number }>>({});
   const planRef = useRef<HTMLDivElement>(null);
 
   // Sanity data or hardcoded fallback
@@ -70,24 +59,22 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
 
   const currentFloorImageUrl = floors[activeFloor]?.imageUrl ?? null;
 
-  // Build unit-to-position map for current floor
+  // Build unit-to-position map for current floor (pin x/y center)
   const unitPositionMap = useMemo(() => {
-    const map = new Map<string, { x: number; y: number; width: number; height: number }>();
+    const map = new Map<string, { x: number; y: number }>();
 
     if (hasSanityLayout) {
-      // Use Sanity positions (keyed by unit _id)
       for (const pos of plot.unitPositions ?? []) {
         if ((pos.floorIndex ?? 0) === activeFloor) {
-          map.set(pos.unit._ref, posOverrides[pos.unit._ref] ?? { x: pos.x, y: pos.y, width: pos.width, height: pos.height });
+          map.set(pos.unit._ref, posOverrides[pos.unit._ref] ?? { x: pos.x, y: pos.y });
         }
       }
     } else if (fallback) {
-      // Use hardcoded positions (keyed by unitNumber → match to unit _id)
-      const fallbackPositions = fallback.unitPositions.filter((p) => p.floorIndex === activeFloor);
-      for (const fp of fallbackPositions) {
+      const fallbackPins = fallback.unitPins.filter((p) => p.floorIndex === activeFloor);
+      for (const fp of fallbackPins) {
         const unit = plot.units.find((u) => u.unitNumber === fp.unitNumber);
         if (unit) {
-          map.set(unit._id, posOverrides[unit._id] ?? { x: fp.x, y: fp.y, width: fp.width, height: fp.height });
+          map.set(unit._id, posOverrides[unit._id] ?? { x: fp.x, y: fp.y });
         }
       }
     }
@@ -113,14 +100,6 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
     return () => window.removeEventListener("keydown", onKey);
   }, [onBack]);
 
-  const handlePositionChange = useCallback(
-    (unitId: string, pos: { x: number; y: number; width: number; height: number }) => {
-      setPosOverrides((prev) => ({ ...prev, [unitId]: pos }));
-      saveUnitPosition(plot._id, unitId, pos, activeFloor);
-    },
-    [plot._id, activeFloor],
-  );
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -145,18 +124,6 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
           )}
         </div>
         <div className="flex items-center gap-2">
-          {isDev && (
-            <button
-              type="button"
-              onClick={() => setEditMode((v) => !v)}
-              className={cn(
-                "rounded px-3 py-1 text-xs font-medium transition-colors",
-                editMode ? "bg-amber-500 text-black" : "bg-white/[0.06] text-white/40 hover:text-white/70",
-              )}
-            >
-              {editMode ? "Editing units" : "Edit units"}
-            </button>
-          )}
           <kbd className="hidden rounded border border-white/10 px-2 py-0.5 text-[10px] text-white/25 sm:inline">Esc</kbd>
           <button
             type="button"
@@ -173,10 +140,7 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
       <div className="relative flex-1">
         <div
           ref={planRef}
-          className={cn(
-            "relative aspect-[16/11] w-full overflow-hidden",
-            editMode && "ring-2 ring-inset ring-amber-500/30",
-          )}
+          className="relative aspect-[16/9] w-full overflow-hidden"
         >
           {/* Background grid lines (decorative) */}
           <svg className="pointer-events-none absolute inset-0 z-[1] h-full w-full" aria-hidden>
@@ -248,8 +212,6 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
                       position={pos}
                       index={i}
                       locale={locale}
-                      editMode={editMode}
-                      onPositionChange={handlePositionChange}
                       labels={{
                         available: labels.available,
                         reserved: labels.reserved,
