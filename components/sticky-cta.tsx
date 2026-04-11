@@ -5,6 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { MessageCircle, X } from "lucide-react";
 
+import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
 
@@ -40,6 +41,13 @@ export function StickyCTA({ locale, context, labelTitle, labelFullName, labelEma
         }),
       });
       const json = (await res.json()) as { ok: boolean };
+      if (json.ok) {
+        trackEvent("form_submit", {
+          form_name: "sticky_cta",
+          page_path: window.location.pathname,
+          locale,
+        });
+      }
       setStatus(json.ok ? "success" : "error");
     } catch {
       setStatus("error");
@@ -47,7 +55,11 @@ export function StickyCTA({ locale, context, labelTitle, labelFullName, labelEma
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root onOpenChange={(open) => {
+      if (open) {
+        trackEvent("sticky_cta_open", { page_path: window.location.pathname });
+      }
+    }}>
       {/* Floating button */}
       <Dialog.Trigger asChild>
         <button
