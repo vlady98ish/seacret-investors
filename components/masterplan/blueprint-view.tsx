@@ -229,9 +229,12 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
                       editMode={editMode}
                       onDragEnd={(unitId, x, y) => {
                         setPosOverrides((prev) => ({ ...prev, [unitId]: { x, y } }));
-                        // Log to console for easy copy-paste into fallback data
-                        // eslint-disable-next-line no-console
-                        console.log(`Pin ${unit.unitNumber}: x: ${x}, y: ${y}`);
+                        // Save to Sanity
+                        fetch("/api/plots/unit-positions", {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ plotId: plot._id, unitId, x, y, width: 10, height: 10, floorIndex: activeFloor }),
+                        });
                       }}
                       labels={{
                         available: labels.available,
