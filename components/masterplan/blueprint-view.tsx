@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { FloorTabs } from "@/components/masterplan/floor-tabs";
+import { getFallbackLayout } from "@/components/masterplan/layout-fallback-data";
 import { UnitHotspot } from "@/components/masterplan/unit-hotspot";
 import { cn } from "@/lib/cn";
 import { getSanityImageUrl } from "@/lib/sanity/image";
@@ -47,20 +48,52 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
   const isDev = process.env.NODE_ENV !== "production";
   const planRef = useRef<HTMLDivElement>(null);
 
-  const floors = plot.layoutImages ?? [];
-  const currentFloorImage = floors[activeFloor]?.image;
-  const currentFloorImageUrl = currentFloorImage ? getSanityImageUrl(currentFloorImage) : null;
+  // Sanity data or hardcoded fallback
+  const fallback = useMemo(() => getFallbackLayout(plot.name), [plot.name]);
+  const hasSanityLayout = (plot.layoutImages?.length ?? 0) > 0;
+
+  const floors = useMemo(() => {
+    if (hasSanityLayout) {
+      return (plot.layoutImages ?? []).map((f) => ({
+        label: f.label,
+        imageUrl: getSanityImageUrl(f.image),
+      }));
+    }
+    if (fallback) {
+      return fallback.floors.map((f) => ({
+        label: f.label,
+        imageUrl: f.imagePath,
+      }));
+    }
+    return [];
+  }, [hasSanityLayout, plot.layoutImages, fallback]);
+
+  const currentFloorImageUrl = floors[activeFloor]?.imageUrl ?? null;
 
   // Build unit-to-position map for current floor
   const unitPositionMap = useMemo(() => {
     const map = new Map<string, { x: number; y: number; width: number; height: number }>();
-    for (const pos of plot.unitPositions ?? []) {
-      if ((pos.floorIndex ?? 0) === activeFloor) {
-        map.set(pos.unit._ref, posOverrides[pos.unit._ref] ?? { x: pos.x, y: pos.y, width: pos.width, height: pos.height });
+
+    if (hasSanityLayout) {
+      // Use Sanity positions (keyed by unit _id)
+      for (const pos of plot.unitPositions ?? []) {
+        if ((pos.floorIndex ?? 0) === activeFloor) {
+          map.set(pos.unit._ref, posOverrides[pos.unit._ref] ?? { x: pos.x, y: pos.y, width: pos.width, height: pos.height });
+        }
+      }
+    } else if (fallback) {
+      // Use hardcoded positions (keyed by unitNumber → match to unit _id)
+      const fallbackPositions = fallback.unitPositions.filter((p) => p.floorIndex === activeFloor);
+      for (const fp of fallbackPositions) {
+        const unit = plot.units.find((u) => u.unitNumber === fp.unitNumber);
+        if (unit) {
+          map.set(unit._id, posOverrides[unit._id] ?? { x: fp.x, y: fp.y, width: fp.width, height: fp.height });
+        }
       }
     }
+
     return map;
-  }, [plot.unitPositions, activeFloor, posOverrides]);
+  }, [hasSanityLayout, plot.unitPositions, plot.units, fallback, activeFloor, posOverrides]);
 
   // Filter units that have positions on current floor
   const visibleUnits = useMemo(

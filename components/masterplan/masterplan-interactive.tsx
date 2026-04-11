@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useLayoutEffect, useRef, useState } from "react";
 
 import { BlueprintView } from "@/components/masterplan/blueprint-view";
+import { getFallbackLayout } from "@/components/masterplan/layout-fallback-data";
 import { PlotDetailPanel } from "@/components/masterplan/plot-detail-panel";
 import { VisualExplorer } from "@/components/masterplan/visual-explorer";
 import type { Locale } from "@/lib/i18n";
@@ -65,8 +66,10 @@ export function MasterplanInteractive({
 
   const selectedPlot = plots.find((p) => p._id === selectedPlotId) ?? null;
 
-  // Has blueprint data?
-  const canShowBlueprint = selectedPlot != null && (selectedPlot.layoutImages?.length ?? 0) > 0;
+  // Has blueprint data? (Sanity layout images OR hardcoded fallback)
+  const canShowBlueprint = selectedPlot != null && (
+    (selectedPlot.layoutImages?.length ?? 0) > 0 || getFallbackLayout(selectedPlot.name) != null
+  );
 
   useLayoutEffect(() => {
     const el = explorerWrapRef.current;
@@ -84,10 +87,10 @@ export function MasterplanInteractive({
     const isNewSelection = selectedPlotId !== id;
     setSelectedPlotId((prev) => (prev === id ? null : id));
 
-    // If re-clicking the same plot that has layout images, enter blueprint
+    // If re-clicking the same plot that has layout data, enter blueprint
     if (!isNewSelection) {
       const plot = plots.find((p) => p._id === id);
-      if (plot && (plot.layoutImages?.length ?? 0) > 0) {
+      if (plot && ((plot.layoutImages?.length ?? 0) > 0 || getFallbackLayout(plot.name) != null)) {
         setViewMode("blueprint");
       }
     }
