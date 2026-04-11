@@ -206,7 +206,7 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
       <div className="relative flex-1">
         <div
           ref={planRef}
-          className={cn("relative aspect-[16/9] w-full", editMode && "ring-2 ring-inset ring-amber-500/30")}
+          className={cn("relative aspect-[3/4] w-full max-h-[75vh]", editMode && "ring-2 ring-inset ring-amber-500/30")}
           onPointerMove={editMode ? handlePointerMove : undefined}
           onPointerUp={editMode ? handlePointerUp : undefined}
         >
