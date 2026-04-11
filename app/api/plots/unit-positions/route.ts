@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { sanityWriteClient } from "@/lib/sanity/client";
@@ -58,6 +59,9 @@ export async function PATCH(request: Request) {
       .append("unitPositions", [entry])
       .commit();
   }
+
+  // Bust Next.js server component cache so the masterplan page re-fetches
+  revalidatePath("/[locale]/masterplan", "page");
 
   return NextResponse.json({ ok: true });
 }
