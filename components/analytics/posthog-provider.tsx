@@ -18,9 +18,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       session_recording: {
         maskAllInputs: true,
       },
-      loaded: (ph) => {
-        window.posthog = ph;
-      },
+      persistence: "localStorage",
     });
   }, []);
 
