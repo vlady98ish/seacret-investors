@@ -206,12 +206,12 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
       <div className="relative flex-1">
         <div
           ref={planRef}
-          className={cn("relative aspect-[16/9] w-full overflow-hidden", editMode && "ring-2 ring-inset ring-amber-500/30")}
+          className={cn("relative aspect-[16/9] w-full", editMode && "ring-2 ring-inset ring-amber-500/30")}
           onPointerMove={editMode ? handlePointerMove : undefined}
           onPointerUp={editMode ? handlePointerUp : undefined}
         >
-          {/* Background grid lines (decorative) */}
-          <svg className="pointer-events-none absolute inset-0 z-[1] h-full w-full" aria-hidden>
+          {/* Background grid lines (decorative) — clipped layer */}
+          <svg className="pointer-events-none absolute inset-0 z-[1] h-full w-full overflow-hidden" aria-hidden>
             {[20, 40, 60, 80].map((pct) => (
               <motion.line
                 key={`h-${pct}`}
@@ -245,7 +245,7 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
                 transition={{ duration: 0.5 }}
-                className="absolute inset-0 z-[2]"
+                className="absolute inset-0 z-[2] overflow-hidden"
               >
                 <Image
                   src={currentFloorImageUrl}
@@ -259,8 +259,8 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
             )}
           </AnimatePresence>
 
-          {/* Unit hotspots */}
-          <div className="absolute inset-0 z-[3]">
+          {/* Unit hotspots — overflow visible so tooltips aren't clipped */}
+          <div className="absolute inset-0 z-[3] overflow-visible">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`hotspots-${activeFloor}`}
