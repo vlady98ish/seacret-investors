@@ -8,6 +8,7 @@ import { buildPageMetadata } from "@/lib/metadata";
 import { getBuiltAreaM2 } from "@/lib/built-area";
 import { formatPriceFrom } from "@/lib/pricing";
 import { sanityClient } from "@/lib/sanity/client";
+import { getDevFloorPlanUrls } from "@/lib/local-floor-plans";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import { allVillasQuery, uiStringsQuery, villaBySlugQuery } from "@/lib/sanity/queries";
 import { getSiteSettings } from "@/lib/sanity/ui-strings";
@@ -115,9 +116,13 @@ export default async function VillaDetailPage({ params }: Props) {
   const galleryImages = (villa.galleryImages ?? [])
     .map((img) => getSanityImageUrl(img))
     .filter((u): u is string => Boolean(u));
-  const floorPlanImages = (villa.floorPlanImages ?? [])
-    .map((img) => getSanityImageUrl(img, 1200))
-    .filter((u): u is string => Boolean(u));
+  const devFloorPlans = getDevFloorPlanUrls(slug);
+  const floorPlanImages =
+    devFloorPlans && devFloorPlans.length > 0
+      ? devFloorPlans
+      : (villa.floorPlanImages ?? [])
+          .map((img) => getSanityImageUrl(img, 1200))
+          .filter((u): u is string => Boolean(u));
 
   // Pricing: €3500 × built area (m²); min across all units
   const minArea =
@@ -271,6 +276,7 @@ export default async function VillaDetailPage({ params }: Props) {
                 images={floorPlanImages}
                 labels={[labelGroundFloor, labelUpperFloor, labelAttic]}
                 comingSoonText={labelComingSoon}
+                minTabCount={slug === "yair" ? 2 : undefined}
               />
             </ScrollReveal>
           </div>

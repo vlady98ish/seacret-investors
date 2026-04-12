@@ -10,8 +10,13 @@ import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
 
-// Load env
-const envPath = path.resolve(process.cwd(), ".env.local");
+// Load env (.env.local preferred, else .env)
+const envPath = [path.resolve(process.cwd(), ".env.local"), path.resolve(process.cwd(), ".env")].find((p) =>
+  fs.existsSync(p)
+);
+if (!envPath) {
+  throw new Error("Create .env.local or .env with NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET, SANITY_WRITE_TOKEN");
+}
 const envLines = fs.readFileSync(envPath, "utf8").split("\n");
 const env: Record<string, string> = {};
 for (const l of envLines) {
@@ -51,7 +56,11 @@ const VILLA_IMAGES: Record<string, { hero: string; gallery: string[]; plans: str
   Yair: {
     hero: "/assets/pdf/villas/yair-hero.png",
     gallery: ["/assets/pdf/villas/yair-gallery.png"],
-    plans: ["/assets/pdf/villas/yair-plans.png"],
+    // Floor plan tabs: ground → upper → attic (same order as FloorPlans labels on the site)
+    plans: [
+      "/villas/yair-ground-floor.png",
+      // Add when ready: "/villas/yair-upper-floor.png", "/villas/yair-attic.png"
+    ],
   },
   Lola: {
     hero: "/assets/pdf/villas/green-hero.png",
@@ -110,6 +119,16 @@ async function downloadFile(urlPath: string): Promise<string> {
   return dest;
 }
 
+/** Prefer committed files under public/ so uploads work before the next Vercel deploy. */
+async function resolveLocalOrRemote(urlPath: string): Promise<string> {
+  const localPublic = path.join(process.cwd(), "public", urlPath.replace(/^\//, ""));
+  if (fs.existsSync(localPublic)) {
+    console.log(`  📁 Using local public${urlPath}`);
+    return localPublic;
+  }
+  return downloadFile(urlPath);
+}
+
 const uploadCache = new Map<string, string>(); // urlPath → asset._id
 
 async function uploadImage(urlPath: string): Promise<{ _type: "image"; asset: { _type: "reference"; _ref: string } }> {
@@ -118,7 +137,7 @@ async function uploadImage(urlPath: string): Promise<{ _type: "image"; asset: { 
     return { _type: "image", asset: { _type: "reference", _ref: cachedId } };
   }
 
-  const filePath = await downloadFile(urlPath);
+  const filePath = await resolveLocalOrRemote(urlPath);
   const ext = path.extname(filePath).slice(1) || "png";
   const contentType = ext === "jpg" ? "image/jpeg" : ext === "webp" ? "image/webp" : `image/${ext}`;
   const filename = path.basename(urlPath);
