@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { DirectContactSection } from "@/components/contact/direct-contact-section";
 import { MultiStepForm } from "@/components/contact/multi-step-form";
 import { PageHero } from "@/components/sections/page-hero";
+import { buildUnitInquiryMessage } from "@/lib/contact-unit-prefill";
 import { getLocalizedValue, isValidLocale, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { sanityClient } from "@/lib/sanity/client";
@@ -11,7 +12,10 @@ import { getSanityImageUrl } from "@/lib/sanity/image";
 import { allVillasQuery, contactPageQuery, siteSettingsQuery, uiStringsQuery } from "@/lib/sanity/queries";
 import type { ContactPage as CmsContactPage, SiteSettings, UiStrings, Villa } from "@/lib/sanity/types";
 
-type Props = { params: Promise<{ locale: string }> };
+type Props = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ villa?: string; unit?: string; plot?: string }>;
+};
 
 export function generateStaticParams() {
   return ["en", "he", "ru", "el"].map((locale) => ({ locale }));
@@ -35,11 +39,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function CmsContactPageRoute({ params }: Props) {
+export default async function CmsContactPageRoute({ params, searchParams }: Props) {
   const { locale } = await params;
   if (!isValidLocale(locale)) notFound();
 
   const typedLocale = locale as Locale;
+  const sp = await searchParams;
+  const villaParam = typeof sp.villa === "string" ? decodeURIComponent(sp.villa).trim() : undefined;
+  const unitParam = typeof sp.unit === "string" ? decodeURIComponent(sp.unit).trim() : undefined;
+  const plotParam = typeof sp.plot === "string" ? decodeURIComponent(sp.plot).trim() : undefined;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const t = (field: any): string | undefined =>
@@ -64,6 +72,12 @@ export default async function CmsContactPageRoute({ params }: Props) {
 
   /* ── Extract villa names for step 1 ─────────────────────── */
   const villaNames = villas.length > 0 ? villas.map((v) => v.name) : undefined;
+  const initialInterest =
+    villaParam && villaNames?.includes(villaParam) ? villaParam : undefined;
+  const initialMessage =
+    villaParam && unitParam
+      ? buildUnitInquiryMessage(typedLocale, villaParam, unitParam, plotParam)
+      : undefined;
 
   /* ── Hero copy ───────────────────────────────────────────── */
   const heroImageUrl = contactPage?.heroImage ? getSanityImageUrl(contactPage.heroImage) : null;
@@ -117,6 +131,8 @@ export default async function CmsContactPageRoute({ params }: Props) {
             <MultiStepForm
               locale={typedLocale}
               villaNames={villaNames}
+              initialInterest={initialInterest}
+              initialMessage={initialMessage}
               labelFullName={labelFullName}
               labelEmail={labelEmailForm}
               labelPhone={labelPhoneForm}

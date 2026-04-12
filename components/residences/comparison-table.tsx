@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
+import { getBuiltAreaM2 } from "@/lib/built-area";
 import { formatPriceFrom } from "@/lib/pricing";
 import type { UnitFlat, Villa } from "@/lib/sanity/types";
 
@@ -69,7 +70,7 @@ export function ComparisonTable({ villas, units, locale, headers }: ComparisonTa
 
             const minAvailableArea =
               availableUnits.length > 0
-                ? Math.min(...availableUnits.map((u) => u.totalArea))
+                ? Math.min(...availableUnits.map((u) => getBuiltAreaM2(u)))
                 : null;
 
             const isLast = index === villas.length - 1;

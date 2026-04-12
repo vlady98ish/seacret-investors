@@ -49,6 +49,10 @@ interface FieldErrors {
 interface MultiStepFormProps {
   locale: Locale;
   villaNames?: string[];
+  /** From /contact?villa=…&unit=… — must match a villa name in step 1. */
+  initialInterest?: string;
+  /** Prefilled message (e.g. unit inquiry text). */
+  initialMessage?: string;
   // CMS / uiStrings overrides
   labelFullName?: string;
   labelEmail?: string;
@@ -118,6 +122,8 @@ const selectClass =
 export function MultiStepForm({
   locale,
   villaNames,
+  initialInterest,
+  initialMessage,
   labelFullName,
   labelEmail,
   labelPhone,
@@ -181,6 +187,17 @@ export function MultiStepForm({
     message: "",
     gdprConsent: false,
   });
+
+  useEffect(() => {
+    const names = villaNames ?? [];
+    const interest =
+      initialInterest && names.includes(initialInterest) ? initialInterest : "";
+    setFormData((prev) => ({
+      ...prev,
+      ...(interest ? { interest } : {}),
+      ...(initialMessage ? { message: initialMessage } : {}),
+    }));
+  }, [initialInterest, initialMessage, villaNames]);
 
   const abandonRef = useRef(false);
   const stepRef = useRef(1);

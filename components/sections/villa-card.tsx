@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { getBuiltAreaM2 } from "@/lib/built-area";
 import { getLocalizedValue, type Locale } from "@/lib/i18n";
 import { formatPriceFrom } from "@/lib/pricing";
 import { getSanityImageUrl } from "@/lib/sanity/image";
@@ -16,7 +17,13 @@ type VillaCardProps = {
     areaRange?: string;
   };
   locale: Locale;
-  units?: Array<{ totalArea: number; status: UnitStatus }>;
+  units?: Array<{
+    totalArea: number;
+    status: UnitStatus;
+    groundFloor?: number;
+    upperFloor?: number;
+    attic?: number;
+  }>;
   staticImageSrc?: string;
   labelSoldOut?: string;
   labelBed?: string;
@@ -34,7 +41,7 @@ export function VillaCard({ villa, locale, units, staticImageSrc, labelSoldOut, 
   const availableUnits = units?.filter((u) => u.status === "available") ?? [];
   const allSold = units && units.length > 0 && availableUnits.length === 0;
   const minArea = availableUnits.length > 0
-    ? Math.min(...availableUnits.map((u) => u.totalArea))
+    ? Math.min(...availableUnits.map((u) => getBuiltAreaM2(u)))
     : null;
 
   const label = villa.label ? getLocalizedValue(villa.label as Record<string, string>, locale) : undefined;

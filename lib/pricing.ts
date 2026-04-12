@@ -1,7 +1,8 @@
-const PRESALE_RATE_PER_M2 = 2950;
+/** EUR per m² built (indoor) area — price = rate × built area. */
+const PRICE_PER_M2_BUILT = 3500;
 
-export function computePriceFrom(totalAreaM2: number): number {
-  return Math.ceil((totalAreaM2 * PRESALE_RATE_PER_M2) / 1000) * 1000;
+export function computePriceFrom(builtAreaM2: number): number {
+  return Math.round(builtAreaM2 * PRICE_PER_M2_BUILT);
 }
 
 export function formatPrice(euros: number): string {
@@ -11,6 +12,6 @@ export function formatPrice(euros: number): string {
   return `€${Math.round(euros / 1000)}K`;
 }
 
-export function formatPriceFrom(totalAreaM2: number, fromLabel: string = "From"): string {
-  return `${fromLabel} ${formatPrice(computePriceFrom(totalAreaM2))}`;
+export function formatPriceFrom(builtAreaM2: number, fromLabel: string = "From"): string {
+  return `${fromLabel} ${formatPrice(computePriceFrom(builtAreaM2))}`;
 }

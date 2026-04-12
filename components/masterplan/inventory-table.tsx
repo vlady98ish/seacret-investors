@@ -8,6 +8,8 @@ import { ChevronDown } from "lucide-react";
 import { StatusBadge } from "@/components/sections/status-badge";
 import { UnitDetailPanel } from "@/components/shared/unit-detail-panel";
 import { cn } from "@/lib/cn";
+import { getBuiltAreaM2 } from "@/lib/built-area";
+import { getVillaMasterRecord } from "@/lib/villa-master";
 import { pluralize, type Locale } from "@/lib/i18n";
 import { computePriceFrom, formatPriceFrom } from "@/lib/pricing";
 import type { UnitFlat } from "@/lib/sanity/types";
@@ -50,14 +52,6 @@ function getPlotLetter(plotName: string): string {
   return match ? match[0].toUpperCase() : plotName;
 }
 
-function getBuiltArea(unit: UnitFlat): number {
-  const g = unit.groundFloor ?? 0;
-  const u = unit.upperFloor ?? 0;
-  const a = unit.attic ?? 0;
-  const sum = g + u + a;
-  return sum > 0 ? Math.round(sum * 100) / 100 : unit.totalArea;
-}
-
 export function InventoryTable({ units, locale, labels, initialTypeFilter }: InventoryTableProps) {
   const statusAvailable = useT("statusAvailable", "Available");
   const statusReserved = useT("statusReserved", "Reserved");
@@ -67,6 +61,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
   const bedMany = useT("miscBeds", "Beds");
   const bedText = (n: number) => pluralize(n, locale, bedOne, bedFew, bedMany);
   const fromLabel = useT("pricingFrom", "From");
+  const contactLabel = useT("ctaContactUs", "Contact us");
 
   const lbl = {
     filterPlot: labels?.filterPlot || "Plot",
@@ -151,9 +146,10 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
         cmp = getPlotLetter(a.plotName).localeCompare(getPlotLetter(b.plotName));
         if (cmp === 0) cmp = a.unitNumber.localeCompare(b.unitNumber);
       } else if (sortKey === "price") {
-        cmp = computePriceFrom(a.totalArea) - computePriceFrom(b.totalArea);
+        cmp =
+          computePriceFrom(getBuiltAreaM2(a)) - computePriceFrom(getBuiltAreaM2(b));
       } else if (sortKey === "area") {
-        cmp = getBuiltArea(a) - getBuiltArea(b);
+        cmp = getBuiltAreaM2(a) - getBuiltAreaM2(b);
       }
       return sortDir === "asc" ? cmp : -cmp;
     });
@@ -311,7 +307,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
               <tbody>
                 {sorted.map((unit, index) => {
                   const isExpanded = expandedId === unit._id;
-                  const builtArea = getBuiltArea(unit);
+                  const builtArea = getBuiltAreaM2(unit);
                   return (
                     <React.Fragment key={unit._id}>
                       <tr
@@ -338,7 +334,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
                         <td className="px-4 py-4">{unit.bedrooms}</td>
                         <td className="px-4 py-4">{builtArea} m&sup2;</td>
                         <td className="px-4 py-4 font-semibold text-[var(--color-deep-teal)]">
-                          {formatPriceFrom(unit.totalArea, fromLabel)}
+                          {formatPriceFrom(getBuiltAreaM2(unit), fromLabel)}
                         </td>
                         <td className="pl-4 py-4 text-right">
                           <div className="flex items-center justify-end gap-2">
@@ -356,6 +352,14 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
                         <tr>
                           <td colSpan={7} className="bg-[var(--color-sand)]/30" style={{ borderBottom: index === sorted.length - 1 ? "none" : "1px solid rgba(13,103,119,0.08)" }}>
                             <UnitDetailPanel
+                              master={getVillaMasterRecord(unit.unitNumber)}
+                              contact={{
+                                locale,
+                                villaTypeName: unit.villaTypeName,
+                                unitNumber: unit.unitNumber,
+                                plotName: unit.plotName,
+                                label: contactLabel,
+                              }}
                               groundFloor={unit.groundFloor}
                               upperFloor={unit.upperFloor}
                               attic={unit.attic}
@@ -382,7 +386,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
           <div className="grid gap-3 md:hidden">
             {sorted.map((unit) => {
               const isExpanded = expandedId === unit._id;
-              const builtArea = getBuiltArea(unit);
+              const builtArea = getBuiltAreaM2(unit);
               return (
                 <div
                   key={unit._id}
@@ -407,7 +411,7 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
                         <span>{bedText(unit.bedrooms)}</span>
                         <span>{builtArea} m&sup2;</span>
                         <span className="font-medium text-[var(--color-deep-teal)]">
-                          {formatPriceFrom(unit.totalArea, fromLabel)}
+                          {formatPriceFrom(getBuiltAreaM2(unit), fromLabel)}
                         </span>
                       </div>
                     </div>
@@ -424,6 +428,14 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
                   {isExpanded && (
                     <div className="border-t border-[rgba(13,103,119,0.08)] bg-[var(--color-sand)]/30">
                       <UnitDetailPanel
+                        master={getVillaMasterRecord(unit.unitNumber)}
+                        contact={{
+                          locale,
+                          villaTypeName: unit.villaTypeName,
+                          unitNumber: unit.unitNumber,
+                          plotName: unit.plotName,
+                          label: contactLabel,
+                        }}
                         groundFloor={unit.groundFloor}
                         upperFloor={unit.upperFloor}
                         attic={unit.attic}

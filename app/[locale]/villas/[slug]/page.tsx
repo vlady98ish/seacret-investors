@@ -5,6 +5,7 @@ import { groq } from "next-sanity";
 
 import { getLocalizedValue, isValidLocale, locales, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
+import { getBuiltAreaM2 } from "@/lib/built-area";
 import { formatPriceFrom } from "@/lib/pricing";
 import { sanityClient } from "@/lib/sanity/client";
 import { getSanityImageUrl } from "@/lib/sanity/image";
@@ -118,10 +119,10 @@ export default async function VillaDetailPage({ params }: Props) {
     .map((img) => getSanityImageUrl(img, 1200))
     .filter((u): u is string => Boolean(u));
 
-  // Compute price from min unit area (all units, not just available)
+  // Pricing: €3500 × built area (m²); min across all units
   const minArea =
     units.length > 0
-      ? Math.min(...units.map((u) => u.totalArea))
+      ? Math.min(...units.map((u) => getBuiltAreaM2(u)))
       : null;
 
   const villaName = villa?.name ?? slug.charAt(0).toUpperCase() + slug.slice(1);
@@ -161,6 +162,7 @@ export default async function VillaDetailPage({ params }: Props) {
   const labelStatusReserved = t(uiStrings?.statusReserved) ?? "";
   const labelStatusSold = t(uiStrings?.statusSold) ?? "";
   const labelViewInventory = t(uiStrings?.ctaViewAll) ?? "View full inventory";
+  const labelContactUs = t(uiStrings?.ctaContactUs) ?? "Contact us";
 
   const unitDetailLabels = {
     groundFloor: t(uiStrings?.specGroundFloor) ?? "Ground Floor",
@@ -316,6 +318,8 @@ export default async function VillaDetailPage({ params }: Props) {
             labelStatusSold={labelStatusSold}
             villaSlug={slug}
             labelViewInventory={labelViewInventory}
+            villaName={villaName}
+            labelContactUs={labelContactUs}
             detailLabels={unitDetailLabels}
           />
         </ScrollReveal>

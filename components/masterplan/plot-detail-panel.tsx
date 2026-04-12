@@ -7,6 +7,7 @@ import Link from "next/link";
 import { StatusBadge } from "@/components/sections/status-badge";
 import { cn } from "@/lib/cn";
 import { getLocalizedValue, type Locale } from "@/lib/i18n";
+import { getBuiltAreaM2 } from "@/lib/built-area";
 import { formatPriceFrom } from "@/lib/pricing";
 import type { PlotWithUnits } from "@/lib/sanity/types";
 import { useT } from "@/lib/ui-strings-context";
@@ -275,7 +276,7 @@ function PanelContent({
                     Math.min(
                       ...group.units
                         .filter((u) => u.status === "available")
-                        .map((u) => u.totalArea)
+                        .map((u) => getBuiltAreaM2(u))
                     ),
                     fromLabel
                   )}

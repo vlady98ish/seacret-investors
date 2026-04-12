@@ -6,9 +6,11 @@ import { Check, ChevronDown, Minus } from "lucide-react";
 
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
+import { useT } from "@/lib/ui-strings-context";
 import type { UnitWithRefs } from "@/lib/sanity/types";
 import { StatusBadge } from "@/components/sections/status-badge";
 import { UnitDetailPanel } from "@/components/shared/unit-detail-panel";
+import { getVillaMasterRecord } from "@/lib/villa-master";
 
 type UnitsTableProps = {
   units: UnitWithRefs[];
@@ -24,6 +26,9 @@ type UnitsTableProps = {
   labelStatusSold?: string;
   villaSlug?: string;
   labelViewInventory?: string;
+  /** Villa type name (must match CMS / form step 1). Enables contact deep-link. */
+  villaName?: string;
+  labelContactUs?: string;
   detailLabels?: {
     groundFloor: string;
     upperFloor: string;
@@ -55,9 +60,11 @@ const DEFAULT_DETAIL_LABELS = {
   no: "No",
 };
 
-export function UnitsTable({ units, locale, headerUnit, headerPlot, headerArea, headerBeds, headerPool, headerStatus, labelStatusAvailable, labelStatusReserved, labelStatusSold, villaSlug, labelViewInventory, detailLabels }: UnitsTableProps) {
+export function UnitsTable({ units, locale, headerUnit, headerPlot, headerArea, headerBeds, headerPool, headerStatus, labelStatusAvailable, labelStatusReserved, labelStatusSold, villaSlug, labelViewInventory, villaName, labelContactUs, detailLabels }: UnitsTableProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const labels = detailLabels ?? DEFAULT_DETAIL_LABELS;
+  const contactLabelFallback = useT("ctaContactUs", "Contact us");
+  const contactLabel = labelContactUs ?? contactLabelFallback;
 
   if (units.length === 0) {
     return (
@@ -143,6 +150,18 @@ export function UnitsTable({ units, locale, headerUnit, headerPlot, headerArea, 
                     <tr>
                       <td colSpan={6} className="bg-[var(--color-sand)]/30 border-b border-[var(--color-deep-teal)]/5">
                         <UnitDetailPanel
+                          master={getVillaMasterRecord(unit.unitNumber)}
+                          contact={
+                            villaName
+                              ? {
+                                  locale,
+                                  villaTypeName: villaName,
+                                  unitNumber: unit.unitNumber,
+                                  plotName: unit.plotName,
+                                  label: contactLabel,
+                                }
+                              : undefined
+                          }
                           groundFloor={unit.groundFloor}
                           upperFloor={unit.upperFloor}
                           attic={unit.attic}
@@ -198,6 +217,18 @@ export function UnitsTable({ units, locale, headerUnit, headerPlot, headerArea, 
               {isExpanded && (
                 <div className="border-t border-[var(--color-deep-teal)]/5 bg-[var(--color-sand)]/30">
                   <UnitDetailPanel
+                    master={getVillaMasterRecord(unit.unitNumber)}
+                    contact={
+                      villaName
+                        ? {
+                            locale,
+                            villaTypeName: villaName,
+                            unitNumber: unit.unitNumber,
+                            plotName: unit.plotName,
+                            label: contactLabel,
+                          }
+                        : undefined
+                    }
                     groundFloor={unit.groundFloor}
                     upperFloor={unit.upperFloor}
                     attic={unit.attic}

@@ -6,6 +6,7 @@ import { VillaCard } from "@/components/sections/villa-card";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/lib/i18n";
+import { getBuiltAreaM2 } from "@/lib/built-area";
 import { computePriceFrom } from "@/lib/pricing";
 import type { UnitFlat, Villa } from "@/lib/sanity/types";
 import { useT } from "@/lib/ui-strings-context";
@@ -78,7 +79,7 @@ export function VillaFilters({ villas, units, locale, labels }: VillaFiltersProp
             u.status === "available"
         );
         if (villaUnits.length === 0) return Infinity;
-        const minArea = Math.min(...villaUnits.map((u) => u.totalArea));
+        const minArea = Math.min(...villaUnits.map((u) => getBuiltAreaM2(u)));
         return computePriceFrom(minArea);
       };
       return getMinPrice(a) - getMinPrice(b);
