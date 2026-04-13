@@ -77,14 +77,9 @@ export function PlotDetailPanel({
 
   return (
     <>
-      {/* Desktop panel — inline; height ≤ image via parent max-height */}
+      {/* Desktop panel — inline; stretches to match explorer height */}
       <div
-        className="hidden min-h-0 flex-col lg:flex"
-        style={
-          desktopMaxHeightPx != null && desktopMaxHeightPx > 0
-            ? { maxHeight: desktopMaxHeightPx, height: desktopMaxHeightPx }
-            : undefined
-        }
+        className="hidden min-h-0 h-full flex-col lg:flex"
       >
         <AnimatePresence mode="wait">
           {!plot ? (

@@ -134,7 +134,7 @@ export function MasterplanInteractive({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 0.97, filter: "blur(6px)" }}
           transition={{ duration: 0.4, ease: [0.2, 1, 0.22, 1] }}
-          className="flex flex-col gap-6 lg:flex-row lg:items-start"
+          className="flex flex-col gap-6 lg:flex-row lg:items-stretch"
         >
           {/* Visual explorer — 60% on desktop */}
           <div ref={explorerWrapRef} className="w-full shrink-0 lg:w-[60%]">
