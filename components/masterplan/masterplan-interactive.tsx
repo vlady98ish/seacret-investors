@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import { BlueprintView } from "@/components/masterplan/blueprint-view";
 import { getFallbackLayout } from "@/components/masterplan/layout-fallback-data";
@@ -62,6 +62,20 @@ export function MasterplanInteractive({
 }: MasterplanInteractiveProps) {
   const [selectedPlotId, setSelectedPlotId] = useState<string | null>(plots[0]?._id ?? null);
   const [viewMode, setViewMode] = useState<ViewMode>("aerial");
+  const explorerWrapRef = useRef<HTMLDivElement>(null);
+  const [explorerHeightPx, setExplorerHeightPx] = useState<number | null>(null);
+
+  useLayoutEffect(() => {
+    const el = explorerWrapRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+
+    const update = () => setExplorerHeightPx(el.offsetHeight);
+    update();
+
+    const ro = new ResizeObserver(() => update());
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [aerialImageUrl, plots.length]);
 
   const selectedPlot = plots.find((p) => p._id === selectedPlotId) ?? null;
 
@@ -121,10 +135,10 @@ export function MasterplanInteractive({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 0.97, filter: "blur(6px)" }}
           transition={{ duration: 0.4, ease: [0.2, 1, 0.22, 1] }}
-          className="flex flex-col gap-6 lg:flex-row lg:items-stretch"
+          className="flex flex-col gap-6 lg:flex-row lg:items-start"
         >
           {/* Visual explorer — 60% on desktop */}
-          <div className="w-full shrink-0 lg:w-[60%]">
+          <div ref={explorerWrapRef} className="w-full shrink-0 lg:w-[60%]">
             <VisualExplorer
               plots={plots}
               selectedPlotId={selectedPlotId}
@@ -141,6 +155,7 @@ export function MasterplanInteractive({
               locale={locale}
               onClose={() => setSelectedPlotId(null)}
               labels={panelLabels}
+              desktopMaxHeightPx={explorerHeightPx}
               canShowBlueprint={canShowBlueprint}
               onEnterBlueprint={handleEnterBlueprint}
             />

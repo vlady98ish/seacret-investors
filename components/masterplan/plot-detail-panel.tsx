@@ -26,6 +26,7 @@ type PlotDetailPanelProps = {
   locale: Locale;
   onClose: () => void;
   labels?: PanelLabels;
+  desktopMaxHeightPx?: number | null;
   canShowBlueprint?: boolean;
   onEnterBlueprint?: () => void;
 };
@@ -60,6 +61,7 @@ export function PlotDetailPanel({
   locale,
   onClose,
   labels,
+  desktopMaxHeightPx,
   canShowBlueprint,
   onEnterBlueprint,
 }: PlotDetailPanelProps) {
@@ -74,9 +76,14 @@ export function PlotDetailPanel({
 
   return (
     <>
-      {/* Desktop panel — inline; stretches to match explorer height */}
+      {/* Desktop panel — exact height matching the explorer */}
       <div
-        className="hidden min-h-0 h-full flex-col lg:flex"
+        className="hidden min-h-0 flex-col lg:flex"
+        style={
+          desktopMaxHeightPx != null && desktopMaxHeightPx > 0
+            ? { height: desktopMaxHeightPx }
+            : undefined
+        }
       >
         <AnimatePresence mode="wait">
           {!plot ? (
@@ -100,14 +107,29 @@ export function PlotDetailPanel({
               transition={{ duration: 0.3, ease: [0.2, 1, 0.22, 1] }}
               className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-md border border-[rgba(13,103,119,0.08)] bg-[rgba(255,250,241,0.92)] shadow-[var(--shadow-soft)]"
             >
+              {/* Scrollable content */}
               <div
                 className={cn(
                   "masterplan-panel-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain",
                   "py-7 pl-7 pr-2 sm:pl-8 sm:pr-3",
                 )}
               >
-                <PanelContent plot={plot} locale={locale} onClose={onClose} labels={resolved} canShowBlueprint={canShowBlueprint} onEnterBlueprint={onEnterBlueprint} />
+                <PanelContent plot={plot} locale={locale} onClose={onClose} labels={resolved} canShowBlueprint={false} />
               </div>
+
+              {/* Sticky bottom button */}
+              {canShowBlueprint && onEnterBlueprint && (
+                <div className="shrink-0 border-t border-[rgba(13,103,119,0.08)] px-7 py-4 sm:px-8">
+                  <button
+                    type="button"
+                    onClick={onEnterBlueprint}
+                    className="flex w-full items-center justify-center gap-2 rounded-md bg-[var(--color-deep-teal)] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-deep-teal)]/90"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="opacity-80"><path d="M2 2h12v12H2z" stroke="currentColor" strokeWidth="1.2" strokeDasharray="2 2"/><path d="M5.5 2v12M10.5 2v12M2 5.5h12M2 10.5h12" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/></svg>
+                    View Plot Layout
+                  </button>
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -185,6 +207,9 @@ function PanelContent({
   canShowBlueprint?: boolean;
   onEnterBlueprint?: () => void;
 }) {
+  // Note: on desktop, the View Layout button is rendered in the sticky footer
+  // of PlotDetailPanel. The canShowBlueprint/onEnterBlueprint props are used
+  // only in the mobile bottom sheet version.
   const summary = getLocalizedValue(plot.summary, locale);
   const villaGroups = groupUnitsByType(plot.units);
 
@@ -289,12 +314,12 @@ function PanelContent({
         </div>
       )}
 
-      {/* View Layout button */}
+      {/* View Layout button — mobile only (desktop uses sticky footer in PlotDetailPanel) */}
       {canShowBlueprint && onEnterBlueprint && (
         <button
           type="button"
           onClick={onEnterBlueprint}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-md bg-[var(--color-deep-teal)] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-deep-teal)]/90"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-md bg-[var(--color-deep-teal)] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-deep-teal)]/90 lg:hidden"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="opacity-80"><path d="M2 2h12v12H2z" stroke="currentColor" strokeWidth="1.2" strokeDasharray="2 2"/><path d="M5.5 2v12M10.5 2v12M2 5.5h12M2 10.5h12" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/></svg>
           View Plot Layout
