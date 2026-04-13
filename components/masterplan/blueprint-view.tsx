@@ -165,17 +165,18 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.06] px-5 py-3 sm:px-7 sm:py-4">
         <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={onBack}
+            className="flex items-center gap-1.5 rounded-md border border-white/10 px-3 py-1.5 text-xs text-white/50 transition-colors hover:border-white/25 hover:text-white"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            {labels.backToMasterplan}
+          </button>
           <h3 className="text-lg font-bold text-white">{plot.name}</h3>
           <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-0.5 text-[11px] font-medium text-emerald-400">
             {availableCount} {labels.of} {totalCount} {labels.unitsAvailable}
           </span>
-          {floors.length > 1 && (
-            <FloorTabs
-              floors={floors}
-              activeIndex={activeFloor}
-              onSelect={setActiveFloor}
-            />
-          )}
         </div>
         <div className="flex items-center gap-2">
           {isDev && (
@@ -190,15 +191,13 @@ export function BlueprintView({ plot, locale, onBack, labels }: BlueprintViewPro
               {editMode ? "Done editing" : "Edit pins"}
             </button>
           )}
-          <kbd className="hidden rounded border border-white/10 px-2 py-0.5 text-[10px] text-white/25 sm:inline">Esc</kbd>
-          <button
-            type="button"
-            onClick={onBack}
-            className="flex items-center gap-1.5 rounded-md border border-white/10 px-3 py-1.5 text-xs text-white/50 transition-colors hover:border-white/25 hover:text-white"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            {labels.backToMasterplan}
-          </button>
+          {floors.length > 1 && (
+            <FloorTabs
+              floors={floors}
+              activeIndex={activeFloor}
+              onSelect={setActiveFloor}
+            />
+          )}
         </div>
       </div>
 
