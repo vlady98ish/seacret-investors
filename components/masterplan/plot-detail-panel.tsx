@@ -26,8 +26,6 @@ type PlotDetailPanelProps = {
   locale: Locale;
   onClose: () => void;
   labels?: PanelLabels;
-  /** Match masterplan image height on large screens; panel scrolls inside. */
-  desktopMaxHeightPx?: number | null;
   canShowBlueprint?: boolean;
   onEnterBlueprint?: () => void;
 };
@@ -62,7 +60,6 @@ export function PlotDetailPanel({
   locale,
   onClose,
   labels,
-  desktopMaxHeightPx,
   canShowBlueprint,
   onEnterBlueprint,
 }: PlotDetailPanelProps) {
