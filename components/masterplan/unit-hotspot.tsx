@@ -141,55 +141,64 @@ export function UnitHotspot({
       <AnimatePresence>
         {showTooltip && (
           <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.9 }}
+            initial={{ opacity: 0, y: 8, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.9 }}
+            exit={{ opacity: 0, y: 8, scale: 0.92 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             className={cn(
-              "absolute z-50 min-w-[200px] rounded-xl",
-              "bg-white p-4 shadow-[0_12px_40px_rgba(0,0,0,0.15)]",
-              "bottom-full left-1/2 -translate-x-1/2 mb-3",
+              "absolute z-50 w-[260px] rounded-2xl",
+              "bg-white p-5 shadow-[0_16px_48px_rgba(0,0,0,0.18),0_0_0_1px_rgba(0,0,0,0.04)]",
+              "bottom-full left-1/2 -translate-x-1/2 mb-4",
             )}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between">
-              <h4 className="text-sm font-bold text-[var(--color-ink)]">
-                {unit.villaTypeName}
-              </h4>
+            {/* Header */}
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h4 className="text-base font-bold text-[var(--color-ink)]">
+                  {unit.villaTypeName}
+                </h4>
+                <p className="mt-0.5 text-sm text-[var(--color-muted)]">
+                  Unit #{unit.unitNumber}
+                </p>
+              </div>
               <span className={cn(
-                "rounded-full px-2 py-0.5 text-[10px] font-semibold",
-                unit.status === "available" && "bg-emerald-50 text-emerald-600",
-                unit.status === "reserved" && "bg-amber-50 text-amber-600",
-                unit.status === "sold" && "bg-red-50 text-red-600",
+                "shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold",
+                unit.status === "available" && "bg-emerald-50 text-emerald-700",
+                unit.status === "reserved" && "bg-amber-50 text-amber-700",
+                unit.status === "sold" && "bg-red-50 text-red-700",
               )}>
                 {statusLabel}
               </span>
             </div>
-            <p className="mt-0.5 text-xs text-[var(--color-muted)]">
-              Unit #{unit.unitNumber}
-            </p>
 
-            <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
-              <SpecRow label="Total" value={`${unit.totalArea} m²`} />
+            {/* Divider */}
+            <div className="my-3 h-px bg-[var(--color-ink)]/[0.06]" />
+
+            {/* Specs */}
+            <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+              <SpecRow label="Total" value={`${unit.totalArea} m²`} bold />
               <SpecRow label={labels.bedrooms} value={String(unit.bedrooms)} />
               <SpecRow label={labels.bathrooms} value={String(unit.bathrooms)} />
               {unit.hasPool && <SpecRow label={labels.pool} value="Yes" highlight />}
             </div>
 
+            {/* CTA */}
             {!isSold && (
               <Link
                 href={`/${locale}/villas/${unit.villaTypeSlug}`}
                 className={cn(
-                  "mt-3 block rounded-lg py-2 text-center text-xs font-semibold",
-                  "bg-[var(--color-deep-teal)] text-white",
-                  "transition-colors hover:bg-[var(--color-deep-teal)]/90",
+                  "mt-4 flex h-11 items-center justify-center rounded-xl text-sm font-semibold",
+                  "bg-[var(--color-gold-sun)] text-[var(--color-night)]",
+                  "transition-all hover:brightness-105 active:scale-[0.98]",
                 )}
               >
                 {labels.viewVilla} &rarr;
               </Link>
             )}
 
-            <div className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.05)]" />
+            {/* Arrow */}
+            <div className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.06)]" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -197,11 +206,15 @@ export function UnitHotspot({
   );
 }
 
-function SpecRow({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
+function SpecRow({ label, value, highlight, bold }: { label: string; value: string; highlight?: boolean; bold?: boolean }) {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between text-sm">
       <span className="text-[var(--color-muted)]">{label}</span>
-      <span className={cn("font-semibold text-[var(--color-ink)]", highlight && "text-emerald-600")}>{value}</span>
+      <span className={cn(
+        "text-[var(--color-ink)]",
+        (bold || highlight) ? "font-bold" : "font-semibold",
+        highlight && "text-emerald-600",
+      )}>{value}</span>
     </div>
   );
 }
