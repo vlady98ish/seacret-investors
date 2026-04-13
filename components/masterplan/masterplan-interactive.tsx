@@ -145,20 +145,6 @@ export function MasterplanInteractive({
               legendLabels={legendLabels}
               aerialImageUrl={aerialImageUrl}
             />
-            {/* "View Layout" button when a plot with layout images is selected */}
-            {canShowBlueprint && (
-              <motion.button
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                type="button"
-                onClick={handleEnterBlueprint}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-md border border-[var(--color-deep-teal)]/20 bg-[var(--color-deep-teal)]/[0.06] px-4 py-2.5 text-sm font-semibold text-[var(--color-deep-teal)] transition-colors hover:bg-[var(--color-deep-teal)]/[0.12]"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="opacity-60"><path d="M2 2h12v12H2z" stroke="currentColor" strokeWidth="1.2" strokeDasharray="2 2"/><path d="M5.5 2v12M10.5 2v12M2 5.5h12M2 10.5h12" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/></svg>
-                View Plot Layout
-              </motion.button>
-            )}
           </div>
 
           {/* Detail panel — 40% on desktop */}
@@ -169,6 +155,8 @@ export function MasterplanInteractive({
               onClose={() => setSelectedPlotId(null)}
               labels={panelLabels}
               desktopMaxHeightPx={explorerHeightPx}
+              canShowBlueprint={canShowBlueprint}
+              onEnterBlueprint={handleEnterBlueprint}
             />
           </div>
         </motion.div>

@@ -28,6 +28,8 @@ type PlotDetailPanelProps = {
   labels?: PanelLabels;
   /** Match masterplan image height on large screens; panel scrolls inside. */
   desktopMaxHeightPx?: number | null;
+  canShowBlueprint?: boolean;
+  onEnterBlueprint?: () => void;
 };
 
 function groupUnitsByType(units: PlotWithUnits["units"]) {
@@ -61,6 +63,8 @@ export function PlotDetailPanel({
   onClose,
   labels,
   desktopMaxHeightPx,
+  canShowBlueprint,
+  onEnterBlueprint,
 }: PlotDetailPanelProps) {
   const resolved = {
     selectPlot: labels?.selectPlot || "Select a plot on the map to see details",
@@ -110,7 +114,7 @@ export function PlotDetailPanel({
                   "py-7 pl-7 pr-2 sm:pl-8 sm:pr-3",
                 )}
               >
-                <PanelContent plot={plot} locale={locale} onClose={onClose} labels={resolved} />
+                <PanelContent plot={plot} locale={locale} onClose={onClose} labels={resolved} canShowBlueprint={canShowBlueprint} onEnterBlueprint={onEnterBlueprint} />
               </div>
             </motion.div>
           )}
@@ -155,6 +159,8 @@ export function PlotDetailPanel({
                     locale={locale}
                     onClose={onClose}
                     labels={resolved}
+                    canShowBlueprint={canShowBlueprint}
+                    onEnterBlueprint={onEnterBlueprint}
                   />
                 </div>
               </motion.div>
@@ -171,6 +177,8 @@ function PanelContent({
   locale,
   onClose,
   labels,
+  canShowBlueprint,
+  onEnterBlueprint,
 }: {
   plot: PlotWithUnits;
   locale: Locale;
@@ -182,6 +190,8 @@ function PanelContent({
     unit: string;
     units: string;
   };
+  canShowBlueprint?: boolean;
+  onEnterBlueprint?: () => void;
 }) {
   const summary = getLocalizedValue(plot.summary, locale);
   const villaGroups = groupUnitsByType(plot.units);
@@ -199,10 +209,10 @@ function PanelContent({
   return (
     <>
       {/* Header */}
-      <div className="mb-4 flex items-start justify-between">
+      <div className="mb-5 flex items-start justify-between">
         <div>
-          <h3 className="text-h3 text-[var(--color-ink)]">{plot.name}</h3>
-          <p className="mt-1 text-xs font-medium text-[var(--color-deep-teal)]">
+          <h3 className="text-2xl font-bold text-[var(--color-ink)]">{plot.name}</h3>
+          <p className="mt-1 text-sm font-medium text-[var(--color-deep-teal)]">
             {available} {labels.of} {total} {labels.unitsAvailable}
           </p>
         </div>
@@ -217,7 +227,7 @@ function PanelContent({
 
       {/* Summary */}
       {summary && (
-        <p className="mb-5 text-sm leading-relaxed text-[var(--color-muted)]">
+        <p className="mb-5 text-base leading-relaxed text-[var(--color-muted)]">
           {summary}
         </p>
       )}
@@ -234,27 +244,27 @@ function PanelContent({
               key={group.villaTypeSlug}
               className="rounded-md border border-[rgba(13,103,119,0.08)] bg-white/50 p-4"
             >
-              <div className="mb-2 flex items-center justify-between">
+              <div className="mb-3 flex items-center justify-between">
                 <Link
                   href={`/${locale}/villas/${group.villaTypeSlug}`}
-                  className="text-sm font-semibold text-[var(--color-deep-teal)] underline decoration-[var(--color-deep-teal)]/30 underline-offset-2 transition-colors hover:text-[var(--color-ink)]"
+                  className="text-base font-semibold text-[var(--color-deep-teal)] underline decoration-[var(--color-deep-teal)]/30 underline-offset-2 transition-colors hover:text-[var(--color-ink)]"
                 >
                   {group.villaTypeName}
                 </Link>
-                <span className="text-xs text-[var(--color-muted)]">
+                <span className="text-sm text-[var(--color-muted)]">
                   {group.units.length} {group.units.length !== 1 ? labels.units : labels.unit}
                 </span>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 {group.units.map((unit) => (
                   <div
                     key={unit._id}
-                    className="flex items-center justify-between text-sm"
+                    className="flex items-center justify-between text-base"
                   >
                     <span className="text-[var(--color-ink)]">
                       #{unit.unitNumber}
-                      <span className="ml-2 text-xs text-[var(--color-muted)]">
+                      <span className="ml-2 text-sm text-[var(--color-muted)]">
                         {unit.totalArea}m&sup2; &middot; {unit.bedrooms} {specBedrooms}
                         {unit.hasPool && ` \u00B7 ${specPool}`}
                       </span>
@@ -271,7 +281,7 @@ function PanelContent({
 
               {/* Price range for available units */}
               {group.units.some((u) => u.status === "available") && (
-                <p className="mt-2 text-xs font-medium text-[var(--color-deep-teal)]">
+                <p className="mt-2 text-sm font-medium text-[var(--color-deep-teal)]">
                   {formatPriceFrom(
                     Math.min(
                       ...group.units
@@ -285,6 +295,18 @@ function PanelContent({
             </div>
           ))}
         </div>
+      )}
+
+      {/* View Layout button */}
+      {canShowBlueprint && onEnterBlueprint && (
+        <button
+          type="button"
+          onClick={onEnterBlueprint}
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-md bg-[var(--color-deep-teal)] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-deep-teal)]/90"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="opacity-80"><path d="M2 2h12v12H2z" stroke="currentColor" strokeWidth="1.2" strokeDasharray="2 2"/><path d="M5.5 2v12M10.5 2v12M2 5.5h12M2 10.5h12" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/></svg>
+          View Plot Layout
+        </button>
       )}
     </>
   );
