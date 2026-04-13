@@ -126,11 +126,19 @@ export function SiteHeader({ locale, uiStrings, siteSettings }: SiteHeaderProps)
             </Dialog.Trigger>
 
             <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 z-40 bg-[var(--color-night)]/80" />
-              <Dialog.Content className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-[var(--color-night)] text-white lg:hidden">
+              <Dialog.Overlay className="fixed inset-0 z-[60] bg-[var(--color-night)]/80" />
+              <Dialog.Content className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-8 bg-[var(--color-night)] text-white lg:hidden">
                 <VisuallyHidden.Root>
                   <Dialog.Title>Navigation menu</Dialog.Title>
                 </VisuallyHidden.Root>
+                <Dialog.Close asChild>
+                  <button
+                    className="absolute right-4 top-3 flex h-10 w-10 items-center justify-center sm:right-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-gold-sun)]"
+                    aria-label="Close menu"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </Dialog.Close>
                 {navItems.map((item) => (
                   <Link
                     key={item.key}
