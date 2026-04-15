@@ -183,6 +183,7 @@ export interface UiStrings {
   miscImageComing: LocalizedString;
   miscDataComing: LocalizedString;
   miscUnit: LocalizedString;
+  miscUnitsFew: LocalizedString;
   miscUnits: LocalizedString;
   miscAvailable: LocalizedString;
   miscBed: LocalizedString;

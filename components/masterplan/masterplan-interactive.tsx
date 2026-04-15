@@ -23,6 +23,7 @@ type PanelLabels = {
   of: string;
   noUnits: string;
   unit: string;
+  unitsFew: string;
   units: string;
 };
 

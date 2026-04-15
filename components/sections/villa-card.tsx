@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { getBuiltAreaM2 } from "@/lib/built-area";
-import { getLocalizedValue, type Locale } from "@/lib/i18n";
+import { getLocalizedValue, pluralize, type Locale } from "@/lib/i18n";
 import { formatPriceFrom } from "@/lib/pricing";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import type { SanityImage, UnitStatus } from "@/lib/sanity/types";
@@ -27,6 +27,8 @@ type VillaCardProps = {
   staticImageSrc?: string;
   labelSoldOut?: string;
   labelBed?: string;
+  labelBedFew?: string;
+  labelBedMany?: string;
   labelContactForPricing?: string;
   labelAvailable?: string;
   labelFrom?: string;
@@ -34,7 +36,7 @@ type VillaCardProps = {
   luxury?: boolean;
 };
 
-export function VillaCard({ villa, locale, units, staticImageSrc, labelSoldOut, labelBed, labelContactForPricing, labelAvailable, labelFrom, labelSimilarOptions, luxury }: VillaCardProps) {
+export function VillaCard({ villa, locale, units, staticImageSrc, labelSoldOut, labelBed, labelBedFew, labelBedMany, labelContactForPricing, labelAvailable, labelFrom, labelSimilarOptions, luxury }: VillaCardProps) {
   const imageUrl = villa.heroImage ? getSanityImageUrl(villa.heroImage, 800) : null;
   const imageSrc = imageUrl ?? staticImageSrc;
 
@@ -82,7 +84,7 @@ export function VillaCard({ villa, locale, units, staticImageSrc, labelSoldOut, 
             <h3 className="text-h3" style={{ color: "var(--color-cream)", letterSpacing: "0.05em" }}>{villa.name}</h3>
             {label && <p className="mt-1 text-base" style={{ color: "rgba(255,249,240,0.6)" }}>{label}</p>}
             <div className="mt-3 flex items-center gap-5 text-sm font-medium tracking-widest uppercase" style={{ color: "rgba(255,249,240,0.5)" }}>
-              {villa.typicalBedrooms && <span>{villa.typicalBedrooms} {labelBed}</span>}
+              {villa.typicalBedrooms && <span>{pluralize(villa.typicalBedrooms!, locale, labelBed || "Bed", labelBedFew || labelBed || "Bed", labelBedMany || labelBed || "Beds")}</span>}
               {villa.areaRange && <span>{villa.areaRange} m²</span>}
             </div>
             {!allSold && minArea && (
@@ -138,7 +140,7 @@ export function VillaCard({ villa, locale, units, staticImageSrc, labelSoldOut, 
         {label && <p className="text-body-muted mt-1">{label}</p>}
 
         <div className="mt-3 flex items-center gap-4 text-sm text-[var(--color-muted)]">
-          {villa.typicalBedrooms && <span>{villa.typicalBedrooms} {labelBed}</span>}
+          {villa.typicalBedrooms && <span>{pluralize(villa.typicalBedrooms!, locale, labelBed || "Bed", labelBedFew || labelBed || "Bed", labelBedMany || labelBed || "Beds")}</span>}
           {villa.areaRange && <span>{villa.areaRange} m²</span>}
         </div>
 

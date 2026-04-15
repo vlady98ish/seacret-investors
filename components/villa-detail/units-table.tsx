@@ -5,8 +5,8 @@ import Link from "next/link";
 import { Check, ChevronDown, Minus } from "lucide-react";
 
 import { cn } from "@/lib/cn";
-import type { Locale } from "@/lib/i18n";
-import { useT } from "@/lib/ui-strings-context";
+import { pluralize, type Locale } from "@/lib/i18n";
+import { useT, useUiStrings } from "@/lib/ui-strings-context";
 import type { UnitWithRefs } from "@/lib/sanity/types";
 import { StatusBadge } from "@/components/sections/status-badge";
 import { UnitDetailPanel } from "@/components/shared/unit-detail-panel";
@@ -65,6 +65,10 @@ export function UnitsTable({ units, locale, headerUnit, headerPlot, headerArea, 
   const labels = detailLabels ?? DEFAULT_DETAIL_LABELS;
   const contactLabelFallback = useT("ctaContactUs", "Contact us");
   const contactLabel = labelContactUs ?? contactLabelFallback;
+  const bedOne = useT("miscBed", "Bed");
+  const bedFew = useT("miscBedsFew", bedOne);
+  const bedMany = useT("miscBeds", "Beds");
+  const bedText = (n: number) => pluralize(n, locale, bedOne, bedFew, bedMany);
 
   if (units.length === 0) {
     return (
@@ -197,7 +201,7 @@ export function UnitsTable({ units, locale, headerUnit, headerPlot, headerArea, 
                 <div className="space-y-0.5">
                   <p className="font-medium text-[var(--color-ink)]">{headerUnit || "Unit"} {unit.unitNumber}</p>
                   <p className="text-xs text-[var(--color-muted)]">
-                    {unit.totalArea} m² · {unit.bedrooms} {headerBeds || "bed"}
+                    {unit.totalArea} m² · {bedText(unit.bedrooms)}
                     {unit.hasPool ? ` · ${headerPool || "Pool"}` : ""}
                   </p>
                   {unit.plotName && (

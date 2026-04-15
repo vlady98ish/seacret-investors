@@ -135,6 +135,8 @@ export default async function HomePageRoute({ params }: Props) {
         eyebrowLabel={getLocalizedValue(uiStrings?.sectionResidences, typedLocale)}
         ctaLabel={getLocalizedValue(uiStrings?.ctaViewAll, typedLocale)}
         labelBed={getLocalizedValue(uiStrings?.miscBed, typedLocale)}
+        labelBedFew={getLocalizedValue(uiStrings?.miscBedsFew, typedLocale)}
+        labelBedMany={getLocalizedValue(uiStrings?.miscBeds, typedLocale)}
         labelContactForPricing={getLocalizedValue(uiStrings?.pricingContactFor, typedLocale)}
       />
       <MasterplanTeaserSection

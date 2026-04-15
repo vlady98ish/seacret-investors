@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { getLocalizedValue, type Locale } from "@/lib/i18n";
+import { getLocalizedValue, pluralize, type Locale } from "@/lib/i18n";
 import { getSanityImageUrl } from "@/lib/sanity/image";
 import type { FeaturedVilla } from "@/lib/sanity/types";
 import { ScrollReveal } from "@/components/scroll-reveal";
@@ -14,10 +14,12 @@ type ResidencesPreviewSectionProps = {
   eyebrowLabel?: string;
   ctaLabel?: string;
   labelBed?: string;
+  labelBedFew?: string;
+  labelBedMany?: string;
   labelContactForPricing?: string;
 };
 
-export function ResidencesPreviewSection({ villas, locale, title, description, eyebrowLabel, ctaLabel, labelBed, labelContactForPricing }: ResidencesPreviewSectionProps) {
+export function ResidencesPreviewSection({ villas, locale, title, description, eyebrowLabel, ctaLabel, labelBed, labelBedFew, labelBedMany, labelContactForPricing }: ResidencesPreviewSectionProps) {
   if (!villas?.length) return null;
 
   return (
@@ -111,7 +113,7 @@ export function ResidencesPreviewSection({ villas, locale, title, description, e
                         style={{ color: "rgba(255,249,240,0.5)" }}
                       >
                         {villa.typicalBedrooms && (
-                          <span>{villa.typicalBedrooms} {labelBed}</span>
+                          <span>{pluralize(villa.typicalBedrooms, locale, labelBed || "Bed", labelBedFew || labelBed || "Bed", labelBedMany || labelBed || "Beds")}</span>
                         )}
                         {villa.areaRange && <span>{villa.areaRange} m²</span>}
                       </div>

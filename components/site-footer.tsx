@@ -65,7 +65,6 @@ export function SiteFooter({ locale, uiStrings, siteSettings: _siteSettings }: S
             <nav aria-label="Legal" className="flex flex-col gap-2">
               <Link href={`/${locale}/privacy-policy`} className="transition hover:text-white focus-visible:text-white focus-visible:outline-none">{t(uiStrings?.footerPrivacyPolicy) || "Privacy Policy"}</Link>
               <Link href={`/${locale}/terms`} className="transition hover:text-white focus-visible:text-white focus-visible:outline-none">{t(uiStrings?.footerTerms) || "Terms & Conditions"}</Link>
-              <span className="cursor-default">{t(uiStrings?.footerCookiePolicy) || "Cookie Policy"}</span>
             </nav>
           </div>
         </div>
