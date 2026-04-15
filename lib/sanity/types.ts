@@ -207,6 +207,7 @@ export interface UiStrings {
   miscFloor: LocalizedString;
   miscVillaSpecs: LocalizedString;
   miscDetailsComing: LocalizedString;
+  miscViewPlotLayout: LocalizedString;
   miscSimilarOptions: LocalizedString;
   miscSelectPlot: LocalizedString;
   miscChatWhatsapp: LocalizedString;

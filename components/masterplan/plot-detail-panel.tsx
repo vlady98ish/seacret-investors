@@ -66,6 +66,7 @@ export function PlotDetailPanel({
   canShowBlueprint,
   onEnterBlueprint,
 }: PlotDetailPanelProps) {
+  const viewLayoutLabel = useT("miscViewPlotLayout", "View Plot Layout");
   const resolved = {
     selectPlot: labels?.selectPlot || "Select a plot on the map to see details",
     unitsAvailable: labels?.unitsAvailable || "units available",
@@ -128,7 +129,7 @@ export function PlotDetailPanel({
                     className="flex w-full items-center justify-center gap-2 rounded-md bg-[var(--color-deep-teal)] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-deep-teal)]/90"
                   >
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="opacity-80"><path d="M2 2h12v12H2z" stroke="currentColor" strokeWidth="1.2" strokeDasharray="2 2"/><path d="M5.5 2v12M10.5 2v12M2 5.5h12M2 10.5h12" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/></svg>
-                    View Plot Layout
+                    {viewLayoutLabel}
                   </button>
                 </div>
               )}
@@ -228,6 +229,7 @@ function PanelContent({
   const bedText = (n: number) => pluralize(n, locale, bedOne, bedFew, bedMany);
   const specPool = useT("specPool", "Pool");
   const fromLabel = useT("pricingFrom", "From");
+  const viewLayoutLabel = useT("miscViewPlotLayout", "View Plot Layout");
 
   return (
     <>
@@ -328,7 +330,7 @@ function PanelContent({
           className="mt-6 flex w-full items-center justify-center gap-2 rounded-md bg-[var(--color-deep-teal)] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-deep-teal)]/90 lg:hidden"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="opacity-80"><path d="M2 2h12v12H2z" stroke="currentColor" strokeWidth="1.2" strokeDasharray="2 2"/><path d="M5.5 2v12M10.5 2v12M2 5.5h12M2 10.5h12" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/></svg>
-          View Plot Layout
+          {viewLayoutLabel}
         </button>
       )}
     </>
