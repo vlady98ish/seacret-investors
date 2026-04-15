@@ -194,6 +194,8 @@ export default async function VillaDetailPage({ params }: Props) {
   const labelYouMightLikeDesc = t(uiStrings?.miscYouMightLikeDesc) ?? "";
   const labelSoldOut = t(uiStrings?.statusSoldOut) ?? "";
   const labelBed = t(uiStrings?.miscBed) ?? "";
+  const labelBedFew = t(uiStrings?.miscBedsFew) ?? labelBed;
+  const labelBedMany = t(uiStrings?.miscBeds) ?? "";
 
   return (
     <>
@@ -342,6 +344,8 @@ export default async function VillaDetailPage({ params }: Props) {
           labelDescription={labelYouMightLikeDesc}
           labelSoldOut={labelSoldOut}
           labelBed={labelBed}
+          labelBedFew={labelBedFew}
+          labelBedMany={labelBedMany}
           labelContactForPricing={labelContactForPricing}
           labelAvailable={labelStatusAvailable}
         />

@@ -6,11 +6,11 @@ import Link from "next/link";
 
 import { StatusBadge } from "@/components/sections/status-badge";
 import { cn } from "@/lib/cn";
-import { getLocalizedValue, type Locale } from "@/lib/i18n";
+import { getLocalizedValue, pluralize, type Locale } from "@/lib/i18n";
 import { getBuiltAreaM2 } from "@/lib/built-area";
 import { formatPriceFrom } from "@/lib/pricing";
 import type { PlotWithUnits } from "@/lib/sanity/types";
-import { useT } from "@/lib/ui-strings-context";
+import { useT, useBedLabel } from "@/lib/ui-strings-context";
 
 type PanelLabels = {
   selectPlot: string;
@@ -18,6 +18,7 @@ type PanelLabels = {
   of: string;
   noUnits: string;
   unit: string;
+  unitsFew: string;
   units: string;
 };
 
@@ -71,6 +72,7 @@ export function PlotDetailPanel({
     of: labels?.of || "of",
     noUnits: labels?.noUnits || "No units assigned to this plot yet.",
     unit: labels?.unit || "unit",
+    unitsFew: labels?.unitsFew || labels?.units || "units",
     units: labels?.units || "units",
   };
 
@@ -202,6 +204,7 @@ function PanelContent({
     of: string;
     noUnits: string;
     unit: string;
+    unitsFew: string;
     units: string;
   };
   canShowBlueprint?: boolean;
@@ -219,7 +222,10 @@ function PanelContent({
   const statusAvailable = useT("statusAvailable", "Available");
   const statusReserved = useT("statusReserved", "Reserved");
   const statusSold = useT("statusSold", "Sold");
-  const specBedrooms = useT("specBedrooms", "BR");
+  const bedOne = useT("miscBed", "Bed");
+  const bedFew = useT("miscBedsFew", bedOne);
+  const bedMany = useT("miscBeds", "Beds");
+  const bedText = (n: number) => pluralize(n, locale, bedOne, bedFew, bedMany);
   const specPool = useT("specPool", "Pool");
   const fromLabel = useT("pricingFrom", "From");
 
@@ -269,7 +275,7 @@ function PanelContent({
                   {group.villaTypeName}
                 </Link>
                 <span className="text-sm text-[var(--color-muted)]">
-                  {group.units.length} {group.units.length !== 1 ? labels.units : labels.unit}
+                  {pluralize(group.units.length, locale, labels.unit, labels.unitsFew, labels.units)}
                 </span>
               </div>
 
@@ -282,7 +288,7 @@ function PanelContent({
                     <span className="text-[var(--color-ink)]">
                       #{unit.unitNumber}
                       <span className="ml-2 text-sm text-[var(--color-muted)]">
-                        {unit.totalArea}m&sup2; &middot; {unit.bedrooms} {specBedrooms}
+                        {unit.totalArea}m&sup2; &middot; {bedText(unit.bedrooms)}
                         {unit.hasPool && ` \u00B7 ${specPool}`}
                       </span>
                     </span>

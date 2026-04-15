@@ -191,6 +191,8 @@ export function VillaFilters({ villas, units, locale, labels }: VillaFiltersProp
                   locale={locale}
                   units={villaUnits.map((u) => ({ totalArea: u.totalArea, status: u.status }))}
                   labelBed={useT("miscBed")}
+                  labelBedFew={useT("miscBedsFew")}
+                  labelBedMany={useT("miscBeds")}
                   labelSoldOut={useT("statusSoldOut")}
                   labelContactForPricing={useT("pricingContactFor")}
                   labelAvailable={useT("miscAvailable")}

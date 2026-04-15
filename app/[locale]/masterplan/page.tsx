@@ -147,6 +147,7 @@ export default async function MasterplanPage({ params, searchParams }: Props) {
     of: t(uiStrings?.miscOf) ?? "",
     noUnits: t(uiStrings?.miscDataComing) ?? "",
     unit: t(uiStrings?.miscUnit) ?? "",
+    unitsFew: t(uiStrings?.miscUnitsFew) ?? t(uiStrings?.miscUnits) ?? "",
     units: t(uiStrings?.miscUnits) ?? "",
   };
 

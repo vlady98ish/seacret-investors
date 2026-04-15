@@ -12,11 +12,13 @@ type RelatedVillasProps = {
   labelDescription?: string;
   labelSoldOut?: string;
   labelBed?: string;
+  labelBedFew?: string;
+  labelBedMany?: string;
   labelContactForPricing?: string;
   labelAvailable?: string;
 };
 
-export function RelatedVillas({ allVillas, currentSlug, locale, labelEyebrow, labelTitle, labelDescription, labelSoldOut, labelBed, labelContactForPricing, labelAvailable }: RelatedVillasProps) {
+export function RelatedVillas({ allVillas, currentSlug, locale, labelEyebrow, labelTitle, labelDescription, labelSoldOut, labelBed, labelBedFew, labelBedMany, labelContactForPricing, labelAvailable }: RelatedVillasProps) {
   if (!allVillas?.length) return null;
 
   const related = allVillas.filter((v) => v.slug.current !== currentSlug).slice(0, 3);
@@ -38,6 +40,8 @@ export function RelatedVillas({ allVillas, currentSlug, locale, labelEyebrow, la
             locale={locale}
             labelSoldOut={labelSoldOut}
             labelBed={labelBed}
+            labelBedFew={labelBedFew}
+            labelBedMany={labelBedMany}
             labelContactForPricing={labelContactForPricing}
             labelAvailable={labelAvailable}
             luxury
