@@ -13,3 +13,4 @@ tmp
 # Large assets (served locally / by CDN, not git)
 public/assets/pdf/
 public/brochure/
+.env*.local
