@@ -107,7 +107,7 @@ export function UnitHotspot({
       {/* Pulse ring for available units */}
       {!isSold && !editMode && (
         <span
-          className={cn("absolute inset-0 -m-1 rounded-full opacity-40", colors.pulse, "animate-ping")}
+          className={cn("absolute inset-0 -m-0.5 sm:-m-1 rounded-full opacity-40", colors.pulse, "animate-ping")}
           style={{ animationDuration: "2.5s" }}
         />
       )}
@@ -116,7 +116,8 @@ export function UnitHotspot({
       <button
         type="button"
         className={cn(
-          "relative flex h-10 w-10 items-center justify-center rounded-full border-[3px] text-sm font-bold text-white",
+          "relative flex items-center justify-center rounded-full font-bold text-white",
+          "h-7 w-7 border-2 text-[11px] sm:h-10 sm:w-10 sm:border-[3px] sm:text-sm",
           "transition-all duration-300 cursor-pointer",
           "hover:scale-125 hover:z-20",
           colors.bg,
@@ -146,9 +147,10 @@ export function UnitHotspot({
             exit={{ opacity: 0, y: 8, scale: 0.92 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             className={cn(
-              "absolute z-50 w-[260px] rounded-2xl",
-              "bg-white p-5 shadow-[0_16px_48px_rgba(0,0,0,0.18),0_0_0_1px_rgba(0,0,0,0.04)]",
-              "bottom-full left-1/2 -translate-x-1/2 mb-4",
+              "absolute z-50 rounded-2xl",
+              "w-[220px] p-3.5 sm:w-[260px] sm:p-5",
+              "bg-white shadow-[0_16px_48px_rgba(0,0,0,0.18),0_0_0_1px_rgba(0,0,0,0.04)]",
+              "bottom-full left-1/2 -translate-x-1/2 mb-3 sm:mb-4",
             )}
             onClick={(e) => e.stopPropagation()}
           >

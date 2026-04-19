@@ -60,7 +60,11 @@ function MapPinStem({ x, y, plotId, isSelected }: { x: number; y: number; plotId
 
   return (
     <div
-      className={cn("pointer-events-none absolute z-[5] flex -translate-x-1/2 flex-col items-center", isSelected && "z-[6]")}
+      className={cn(
+        "pointer-events-none absolute z-[5] flex -translate-x-1/2 flex-col items-center",
+        "hidden sm:flex",
+        isSelected && "!flex z-[6]",
+      )}
       style={{ left: `${x}%`, top: `calc(${y}% + 1.25rem)` }}
       aria-hidden
     >
@@ -264,8 +268,9 @@ export function VisualExplorer({
                   onClick={() => !editMode && onPlotSelect(plot._id)}
                   onPointerDown={(e) => handlePointerDown(e, plot._id)}
                   className={cn(
-                    "absolute z-20 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center",
-                    "rounded-full border-2 text-sm font-bold text-white",
+                    "absolute z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center",
+                    "h-7 w-7 text-[11px] sm:h-10 sm:w-10 sm:text-sm",
+                    "rounded-full border-[1.5px] sm:border-2 font-bold text-white",
                     "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
                     colors.border,
                     colors.bg + "/85",
@@ -305,17 +310,17 @@ export function VisualExplorer({
           })
         )}
 
-        <div className="absolute bottom-3 left-3 z-20 flex items-center gap-3 rounded-lg bg-black/50 px-3 py-2 backdrop-blur-sm">
-          <span className="flex items-center gap-1.5 text-xs text-white/80">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500" />
+        <div className="absolute bottom-2 left-2 z-20 flex items-center gap-2 rounded-md bg-black/50 px-2 py-1.5 backdrop-blur-sm sm:bottom-3 sm:left-3 sm:gap-3 sm:rounded-lg sm:px-3 sm:py-2">
+          <span className="flex items-center gap-1 text-[10px] text-white/80 sm:gap-1.5 sm:text-xs">
+            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 sm:h-2.5 sm:w-2.5" />
             {legend.available}
           </span>
-          <span className="flex items-center gap-1.5 text-xs text-white/80">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-500" />
+          <span className="flex items-center gap-1 text-[10px] text-white/80 sm:gap-1.5 sm:text-xs">
+            <span className="inline-block h-2 w-2 rounded-full bg-amber-500 sm:h-2.5 sm:w-2.5" />
             {legend.reserved}
           </span>
-          <span className="flex items-center gap-1.5 text-xs text-white/80">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-red-500" />
+          <span className="flex items-center gap-1 text-[10px] text-white/80 sm:gap-1.5 sm:text-xs">
+            <span className="inline-block h-2 w-2 rounded-full bg-red-500 sm:h-2.5 sm:w-2.5" />
             {legend.sold}
           </span>
         </div>
