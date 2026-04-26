@@ -10,9 +10,11 @@ import { formatPriceFrom } from "@/lib/pricing";
 import { sanityClient } from "@/lib/sanity/client";
 import { getDevFloorPlanUrls } from "@/lib/local-floor-plans";
 import { getSanityImageUrl } from "@/lib/sanity/image";
-import { allVillasQuery, uiStringsQuery, villaBySlugQuery } from "@/lib/sanity/queries";
+import { allVillasQuery, uiStringsQuery, villaBySlugQuery, specCategoriesQuery } from "@/lib/sanity/queries";
 import { getSiteSettings } from "@/lib/sanity/ui-strings";
-import type { SiteSettings, UiStrings, UnitWithRefs, Villa } from "@/lib/sanity/types";
+import type { SiteSettings, UiStrings, UnitWithRefs, Villa, SpecCategory } from "@/lib/sanity/types";
+
+import { WhatsIncluded } from "@/components/villa-detail/whats-included";
 
 import { VillaViewTracker } from "@/components/analytics/villa-view-tracker";
 import { JsonLd } from "@/components/json-ld";
@@ -47,28 +49,32 @@ async function fetchData(slug: string): Promise<{
   allVillas: Villa[];
   uiStrings: UiStrings | null;
   siteSettings: SiteSettings | null;
+  specCategories: SpecCategory[];
 }> {
   let villa: VillaWithUnits | null = null;
   let allVillas: Villa[] = [];
   let uiStrings: UiStrings | null = null;
   let siteSettings: SiteSettings | null = null;
+  let specCategories: SpecCategory[] = [];
 
   try {
-    const [villaResult, villasResult, uiStringsResult, settingsResult] = await Promise.all([
+    const [villaResult, villasResult, uiStringsResult, settingsResult, specResult] = await Promise.all([
       sanityClient.fetch<VillaWithUnits | null>(villaBySlugQuery, { slug }),
       sanityClient.fetch<Villa[]>(allVillasQuery),
       sanityClient.fetch<UiStrings>(uiStringsQuery),
       getSiteSettings(),
+      sanityClient.fetch<SpecCategory[]>(specCategoriesQuery),
     ]);
     if (villaResult) villa = villaResult;
     if (villasResult?.length) allVillas = villasResult;
     if (uiStringsResult) uiStrings = uiStringsResult;
     if (settingsResult) siteSettings = settingsResult;
+    if (specResult?.length) specCategories = specResult;
   } catch {
     // CMS unavailable
   }
 
-  return { villa, allVillas, uiStrings, siteSettings };
+  return { villa, allVillas, uiStrings, siteSettings, specCategories };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -101,7 +107,7 @@ export default async function VillaDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!isValidLocale(locale)) notFound();
 
-  const { villa, allVillas, uiStrings, siteSettings } = await fetchData(slug);
+  const { villa, allVillas, uiStrings, siteSettings, specCategories } = await fetchData(slug);
 
   const typedLocale = locale as Locale;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -197,6 +203,10 @@ export default async function VillaDetailPage({ params }: Props) {
   const labelBedFew = t(uiStrings?.miscBedsFew) ?? labelBed;
   const labelBedMany = t(uiStrings?.miscBeds) ?? "";
 
+  const labelSpecBookEyebrow = t(uiStrings?.specBookEyebrow) ?? "";
+  const labelSpecBookTitle = t(uiStrings?.specBookTitle) ?? "";
+  const labelSpecBookSubtitle = t(uiStrings?.specBookSubtitle) ?? "";
+
   return (
     <>
       <VillaViewTracker villaName={villaName} villaSlug={slug} />
@@ -266,6 +276,17 @@ export default async function VillaDetailPage({ params }: Props) {
             <ImageGallery images={galleryImages} villaName={villaName} emptyText={labelComingSoon} />
           </ScrollReveal>
         </section>
+      )}
+
+      {/* What's Included */}
+      {specCategories.length > 0 && (
+        <WhatsIncluded
+          categories={specCategories}
+          locale={typedLocale}
+          labelEyebrow={labelSpecBookEyebrow}
+          labelTitle={labelSpecBookTitle}
+          labelSubtitle={labelSpecBookSubtitle}
+        />
       )}
 
       {/* Floor Plans */}

@@ -188,5 +188,10 @@ export const uiStringsType = defineType({
     { ...ls("miscCategoryCulture", "Misc: Category Culture"), group: "misc" },
     { ...ls("miscCategoryNature", "Misc: Category Nature"), group: "misc" },
     { ...ls("miscCategoryGastronomy", "Misc: Category Gastronomy"), group: "misc" },
+
+    // Spec Book
+    defineField({ name: "specBookEyebrow", title: "Spec Book Eyebrow", type: "localeString" }),
+    defineField({ name: "specBookTitle", title: "Spec Book Title", type: "localeString" }),
+    defineField({ name: "specBookSubtitle", title: "Spec Book Subtitle", type: "localeString" }),
   ],
 });

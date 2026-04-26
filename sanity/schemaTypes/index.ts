@@ -15,6 +15,7 @@ import { siteSettingsType } from "./siteSettings";
 import { uiStringsType } from "./uiStrings";
 import { unitType } from "./unit";
 import { upgradeType } from "./upgrade";
+import { specCategoryType } from "./specCategory";
 import { villaType } from "./villa";
 
 export const schemaTypes = [
@@ -32,6 +33,7 @@ export const schemaTypes = [
   plotType,
   unitType,
   upgradeType,
+  specCategoryType,
   experienceType,
   developerType,
   faqType,
