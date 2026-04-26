@@ -1,10 +1,27 @@
 import { createClient } from "@sanity/client";
-import "dotenv/config";
+import fs from "fs";
+import path from "path";
 
+function loadEnv(): Record<string, string> {
+  const envPath = path.resolve(process.cwd(), ".env.local");
+  if (!fs.existsSync(envPath)) throw new Error(`.env.local not found at ${envPath}`);
+  const raw = fs.readFileSync(envPath, "utf-8");
+  const vars: Record<string, string> = {};
+  for (const line of raw.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const idx = trimmed.indexOf("=");
+    if (idx === -1) continue;
+    vars[trimmed.slice(0, idx).trim()] = trimmed.slice(idx + 1).trim().replace(/^["']|["']$/g, "");
+  }
+  return vars;
+}
+
+const env = loadEnv();
 const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  token: process.env.SANITY_API_TOKEN!,
+  projectId: env["NEXT_PUBLIC_SANITY_PROJECT_ID"],
+  dataset: env["NEXT_PUBLIC_SANITY_DATASET"] ?? "production",
+  token: env["SANITY_WRITE_TOKEN"],
   apiVersion: "2024-01-01",
   useCdn: false,
 });
