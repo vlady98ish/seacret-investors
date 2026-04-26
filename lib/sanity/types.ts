@@ -256,6 +256,11 @@ export interface UiStrings {
   formThankYouStep2Desc: LocalizedString;
   formThankYouStep3Title: LocalizedString;
   formThankYouStep3Desc: LocalizedString;
+
+  // Spec Book
+  specBookEyebrow: LocalizedString;
+  specBookTitle: LocalizedString;
+  specBookSubtitle: LocalizedString;
 }
 
 // === Page Document Types ===
@@ -450,6 +455,21 @@ export interface Upgrade {
   image: SanityImage;
   category: string;
   sortOrder: number;
+  price?: number;
+  priceUnit?: "item" | "meter";
+  priceNote?: LocalizedString;
+}
+
+export interface SpecCategory {
+  _id: string;
+  name: LocalizedString;
+  icon: string;
+  sortOrder: number;
+  items: Array<{
+    area: LocalizedString;
+    spec: LocalizedString;
+    notes: LocalizedString;
+  }>;
 }
 
 export interface Experience {

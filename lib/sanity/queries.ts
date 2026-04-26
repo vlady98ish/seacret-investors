@@ -51,7 +51,29 @@ export const locationPageQuery = groq`*[_type == "locationPage"][0]`;
 export const masterplanPageQuery = groq`*[_type == "masterplanPage"][0]`;
 export const contactPageQuery = groq`*[_type == "contactPage"][0]`;
 
-export const allUpgradesQuery = groq`*[_type == "upgrade"] | order(sortOrder asc)`;
+export const allUpgradesQuery = groq`*[_type == "upgrade"] | order(sortOrder asc) {
+  _id,
+  name,
+  description,
+  image,
+  category,
+  sortOrder,
+  price,
+  priceUnit,
+  priceNote
+}`;
 export const allExperiencesQuery = groq`*[_type == "experience"] | order(sortOrder asc)`;
 export const allFaqsQuery = groq`*[_type == "faq"] | order(sortOrder asc)`;
 export const developerQuery = groq`*[_type == "developer"][0]`;
+
+export const specCategoriesQuery = groq`*[_type == "specCategory"] | order(sortOrder asc) {
+  _id,
+  name,
+  icon,
+  sortOrder,
+  items[] {
+    area,
+    spec,
+    notes
+  }
+}`;
