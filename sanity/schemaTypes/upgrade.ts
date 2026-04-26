@@ -17,6 +17,33 @@ export const upgradeType = defineType({
       options: { list: ["pool", "jacuzzi", "sauna", "bbq", "smart-house", "security", "fireplace"] },
       description: "Used for filtering and grouping upgrades.",
     }),
+    defineField({
+      name: "price",
+      title: "Price (EUR)",
+      type: "number",
+      description: "Price in EUR, excluding VAT. Leave empty if pricing is not public.",
+    }),
+    defineField({
+      name: "priceUnit",
+      title: "Price Unit",
+      type: "string",
+      options: {
+        list: [
+          { title: "Per item", value: "item" },
+          { title: "Per meter", value: "meter" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "item",
+      hidden: ({ document }) => !document?.price,
+    }),
+    defineField({
+      name: "priceNote",
+      title: "Price Note",
+      type: "localeString",
+      description: 'Short note under the price, e.g. "excl. VAT".',
+      hidden: ({ document }) => !document?.price,
+    }),
     defineField({ name: "sortOrder", title: "Sort Order", type: "number", initialValue: 0, description: "Lower numbers appear first." }),
   ],
 });
