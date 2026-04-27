@@ -2,7 +2,9 @@ import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
 import {
   Bath,
+  Fence,
   Flame,
+  Network,
   Shield,
   Sparkles,
   TabletSmartphone,
@@ -26,8 +28,10 @@ const UPGRADE_ICON_BY_CATEGORY: Record<string, LucideIcon> = {
   sauna: ThermometerSun,
   bbq: UtensilsCrossed,
   "smart-house": TabletSmartphone,
+  knx: Network,
   security: Shield,
   fireplace: Flame,
+  fence: Fence,
 };
 
 const CATEGORY_BADGE_LABEL: Record<string, string> = {
@@ -36,8 +40,10 @@ const CATEGORY_BADGE_LABEL: Record<string, string> = {
   sauna: "Wellness",
   bbq: "Outdoor Living",
   "smart-house": "Technology",
+  knx: "Technology",
   security: "Security",
   fireplace: "Interior",
+  fence: "Exterior",
 };
 
 function upgradeIconForCategory(category: string | undefined): LucideIcon {
@@ -94,7 +100,7 @@ export function UpgradesShowcase({ upgrades, locale }: UpgradesShowcaseProps) {
                 )}
                 <h3 className="text-h3 text-base">{name}</h3>
                 {description && (
-                  <p className="mt-1 line-clamp-2 text-sm text-[var(--color-muted)]">
+                  <p className="mt-1 text-sm text-[var(--color-muted)]">
                     {description}
                   </p>
                 )}

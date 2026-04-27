@@ -14,7 +14,7 @@ export const upgradeType = defineType({
       name: "category",
       title: "Category",
       type: "string",
-      options: { list: ["pool", "jacuzzi", "sauna", "bbq", "smart-house", "security", "fireplace"] },
+      options: { list: ["pool", "jacuzzi", "sauna", "bbq", "smart-house", "knx", "security", "fireplace", "fence"] },
       description: "Used for filtering and grouping upgrades.",
     }),
     defineField({

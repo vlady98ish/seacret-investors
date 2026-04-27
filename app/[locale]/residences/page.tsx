@@ -210,13 +210,15 @@ export default async function ResidencesPage({ params }: Props) {
       </section>
 
       {/* FAQ */}
-      <section className="section-shell py-20">
-        <SectionHeading
-          eyebrow={t(page?.faqEyebrow) ?? ""}
-          title={t(page?.faqTitle) ?? ""}
-        />
-        <div className="mt-12">
-          <FAQAccordion items={faqItems} />
+      <section className="bg-[var(--color-cream)] py-20 lg:py-28">
+        <div className="section-shell">
+          <SectionHeading
+            eyebrow={t(page?.faqEyebrow) ?? ""}
+            title={t(page?.faqTitle) ?? ""}
+          />
+          <div className="mt-12">
+            <FAQAccordion items={faqItems} />
+          </div>
         </div>
       </section>
 
