@@ -100,7 +100,7 @@ export function UpgradesShowcase({ upgrades, locale }: UpgradesShowcaseProps) {
                 )}
                 <h3 className="text-h3 text-base">{name}</h3>
                 {description && (
-                  <p className="mt-1 line-clamp-2 text-sm text-[var(--color-muted)]">
+                  <p className="mt-1 text-sm text-[var(--color-muted)]">
                     {description}
                   </p>
                 )}
