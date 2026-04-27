@@ -106,6 +106,7 @@ export default async function HomePageRoute({ params }: Props) {
         locale={typedLocale}
         ctaExplore={getLocalizedValue(uiStrings?.ctaExploreResidences, typedLocale)}
         ctaBrochure={getLocalizedValue(uiStrings?.ctaDownloadBrochure, typedLocale)}
+        brochureHref="/brochures/Sea%27cret%20Residences.pdf"
       />
       <ConceptSection data={data} locale={typedLocale} />
       <LocationHighlightSection

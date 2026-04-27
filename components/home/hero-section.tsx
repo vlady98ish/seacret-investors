@@ -8,9 +8,10 @@ type HeroSectionProps = {
   locale: Locale;
   ctaExplore?: string;
   ctaBrochure?: string;
+  brochureHref?: string;
 };
 
-export function HeroSection({ data, locale, ctaExplore, ctaBrochure }: HeroSectionProps) {
+export function HeroSection({ data, locale, ctaExplore, ctaBrochure, brochureHref }: HeroSectionProps) {
   const title = getLocalizedValue(data?.heroTagline, locale);
   const subtitle = getLocalizedValue(data?.heroSubtitle, locale);
   const imageUrl = getSanityImageUrl(data?.heroImage);
@@ -23,7 +24,12 @@ export function HeroSection({ data, locale, ctaExplore, ctaBrochure }: HeroSecti
         </a>
       )}
       {ctaBrochure && (
-        <a href={`/${locale}/contact`} className="btn btn-secondary">
+        <a
+          href={brochureHref ?? `/${locale}/contact`}
+          target={brochureHref ? "_blank" : undefined}
+          rel={brochureHref ? "noopener noreferrer" : undefined}
+          className="btn btn-secondary"
+        >
           {ctaBrochure}
         </a>
       )}

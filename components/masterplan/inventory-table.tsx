@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 import { StatusBadge } from "@/components/sections/status-badge";
@@ -52,6 +52,25 @@ function getPlotLetter(plotName: string): string {
   return match ? match[0].toUpperCase() : plotName;
 }
 
+function resolveInitialVillaTypeFilter(units: UnitFlat[], initialTypeFilter?: string): string {
+  if (!initialTypeFilter || initialTypeFilter === "All") return "All";
+
+  const bySlug = units.find((u) => u.villaTypeSlug === initialTypeFilter);
+  if (bySlug?.villaTypeName) return bySlug.villaTypeName;
+
+  const byName = units.find((u) => u.villaTypeName === initialTypeFilter);
+  if (byName?.villaTypeName) return byName.villaTypeName;
+
+  const normalized = initialTypeFilter.toLowerCase();
+  const bySlugNormalized = units.find((u) => u.villaTypeSlug?.toLowerCase() === normalized);
+  if (bySlugNormalized?.villaTypeName) return bySlugNormalized.villaTypeName;
+
+  const byNameNormalized = units.find((u) => u.villaTypeName?.toLowerCase() === normalized);
+  if (byNameNormalized?.villaTypeName) return byNameNormalized.villaTypeName;
+
+  return "All";
+}
+
 export function InventoryTable({ units, locale, labels, initialTypeFilter }: InventoryTableProps) {
   const statusAvailable = useT("statusAvailable", "Available");
   const statusReserved = useT("statusReserved", "Reserved");
@@ -82,12 +101,21 @@ export function InventoryTable({ units, locale, labels, initialTypeFilter }: Inv
     tableStatus: labels?.tableStatus || "Status",
     tableBuiltArea: labels?.tableBuiltArea || "Built Area",
   };
+  const normalizedInitialTypeFilter = useMemo(
+    () => resolveInitialVillaTypeFilter(units, initialTypeFilter),
+    [units, initialTypeFilter]
+  );
+
   const [plotFilter, setPlotFilter] = useState<string>("All");
-  const [villaTypeFilter, setVillaTypeFilter] = useState<string>(initialTypeFilter || "All");
+  const [villaTypeFilter, setVillaTypeFilter] = useState<string>(normalizedInitialTypeFilter);
   const [availableOnly, setAvailableOnly] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>("plot");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setVillaTypeFilter(normalizedInitialTypeFilter);
+  }, [normalizedInitialTypeFilter]);
 
   const detailLabels = {
     groundFloor: useT("specGroundFloor", "Ground Floor"),
