@@ -37,6 +37,10 @@ function groupExperiences(
       grouped[exp.category as CategoryKey].push(exp);
     }
   }
+  // Ensure featured card (items[0]) is the lowest sortOrder
+  for (const key of Object.keys(grouped) as CategoryKey[]) {
+    grouped[key].sort((a, b) => a.sortOrder - b.sortOrder);
+  }
   return grouped;
 }
 
@@ -155,15 +159,13 @@ export function ExperiencesSection({
           {/* Bottom row */}
           {rest.length > 0 && (
             <div
-              className="grid gap-4"
-              style={{
-                gridTemplateColumns:
-                  rest.length === 1
-                    ? "1fr"
-                    : rest.length === 2
-                      ? "repeat(2, 1fr)"
-                      : "repeat(3, 1fr)",
-              }}
+              className={`grid gap-4 grid-cols-1 ${
+                rest.length === 1
+                  ? "sm:grid-cols-1"
+                  : rest.length === 2
+                    ? "sm:grid-cols-2"
+                    : "sm:grid-cols-3"
+              }`}
             >
               {rest.map((exp) => (
                 <ExperienceCard
