@@ -123,7 +123,14 @@ export default async function VillaDetailPage({ params }: Props) {
     .map((img) => getSanityImageUrl(img))
     .filter((u): u is string => Boolean(u));
   const devFloorPlans = getDevFloorPlanUrls(slug);
+  const michalFloorPlans = [
+    "/images/villas/michal-ground-floor-v2.png",
+    "/images/villas/michal-upper-floor-v2.png",
+  ];
   const floorPlanImages =
+    slug === "michal"
+      ? michalFloorPlans
+      :
     devFloorPlans && devFloorPlans.length > 0
       ? devFloorPlans
       : (villa.floorPlanImages ?? [])
