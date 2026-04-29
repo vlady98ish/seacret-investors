@@ -16,6 +16,15 @@ export const siteSettingsType = defineType({
     // General
     defineField({ name: "projectName", title: "Project Name", type: "string", group: "general" }),
     defineField({ name: "salesEmail", title: "Sales Email", type: "string", group: "general", description: "Shown on the contact page and footer." }),
+    defineField({
+      name: "notificationEmails",
+      title: "Notification Emails",
+      type: "array",
+      group: "general",
+      description: "Form submissions will be sent to all emails listed here.",
+      of: [{ type: "string" }],
+      validation: (rule) => rule.unique(),
+    }),
     defineField({ name: "salesPhone", title: "Sales Phone", type: "string", group: "general", description: "Include country code (e.g. +357 XXX XXXX)." }),
     defineField({ name: "whatsappNumber", title: "WhatsApp Number", type: "string", group: "general", description: "Full number with country code, no spaces (e.g. 35799123456)." }),
     defineField({ name: "viberNumber", title: "Viber Number", type: "string", group: "general", description: "Full number with country code, no spaces (e.g. 306931843439)." }),

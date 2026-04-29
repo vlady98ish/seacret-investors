@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 
-import { sanityWriteClient } from "@/lib/sanity/client";
+import { sanityClient, sanityWriteClient } from "@/lib/sanity/client";
 
 const payloadSchema = z.object({
   fullName: z.string().min(2),
@@ -82,10 +82,17 @@ export async function POST(request: Request) {
   // Send email notification
   if (process.env.RESEND_API_KEY) {
     try {
+      const settings = await sanityClient.fetch<{ notificationEmails?: string[] } | null>(
+        `*[_type == "siteSettings"][0]{ notificationEmails }`
+      );
+      const recipients = settings?.notificationEmails?.length
+        ? settings.notificationEmails
+        : ["project@partisan.co.il", "office@livebettergr.com"];
+
       const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL || "Sea'cret Residences <onboarding@resend.dev>",
-        to: "office@livebettergr.com",
+        to: recipients,
         subject: `New inquiry from ${data.fullName}`,
         html: `
           <h2>New Lead Submission</h2>

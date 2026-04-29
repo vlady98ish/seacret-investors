@@ -60,6 +60,7 @@ export interface Plot {
 export interface SiteSettings {
   projectName: string;
   salesEmail: string;
+  notificationEmails?: string[];
   salesPhone: string;
   whatsappNumber: string;
   viberNumber: string;
