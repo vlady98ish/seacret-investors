@@ -1,5 +1,7 @@
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
+
 import type { Locale } from "@/lib/i18n";
-import { GraduationCap, Percent, TrendingUp } from "lucide-react";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 type PortfolioBridgeSectionProps = {
@@ -10,64 +12,68 @@ const CONTENT: Record<
   Locale,
   {
     sectionEyebrow: string;
-    eyebrow: string;
     title: string;
     description: string;
-    proofLabel: string;
-    stats: [string, string, string];
-    bullets: [string, string, string];
+    stats: [
+      { value: string; label: string },
+      { value: string; label: string },
+      { value: string; label: string },
+    ];
     cta: string;
   }
 > = {
   en: {
     sectionEyebrow: "Discover our other projects",
-    eyebrow: "Live Better Ecosystem",
     title: "Sea'cret is part of the broader Live Better portfolio",
     description:
       "For investors, one project is only part of the picture. The main Live Better site shows completed work, investment formats, and the execution model behind each project.",
-    proofLabel: "Investment proof points",
-    stats: ["7-10% annual rental income", "Up to 50% ROI in 2 years", "50,000 students in Patras"],
-    bullets: ["Review all projects", "Compare investment formats", "Understand why Patras"],
+    stats: [
+      { value: "7–10%", label: "annual rental income" },
+      { value: "50%", label: "ROI in 2 years" },
+      { value: "50,000", label: "students in Patras" },
+    ],
     cta: "View full portfolio",
   },
   ru: {
     sectionEyebrow: "Узнайте о других наших проектах",
-    eyebrow: "Экосистема Live Better",
     title: "Sea'cret — часть более широкого портфеля Live Better",
     description:
       "Для инвестора важно видеть не один объект, а весь подход команды. На основном сайте Live Better показаны проекты, инвестиционные форматы и принципы работы с инвесторами.",
-    proofLabel: "Ключевые инвестиционные ориентиры",
-    stats: ["7-10% годового арендного дохода", "ROI до 50% за 2 года", "50 000 студентов в Патрах"],
-    bullets: ["Посмотреть все проекты", "Сравнить форматы инвестиций", "Понять, почему именно Патры"],
+    stats: [
+      { value: "7–10%", label: "годового арендного дохода" },
+      { value: "50%", label: "ROI за 2 года" },
+      { value: "50 000", label: "студентов в Патрах" },
+    ],
     cta: "Посмотреть весь портфель",
   },
   he: {
     sectionEyebrow: "גלו את שאר הפרויקטים שלנו",
-    eyebrow: "האקוסיסטם של Live Better",
     title: "Sea'cret הוא חלק מפורטפוליו רחב יותר של Live Better",
     description:
       "עבור משקיעים חשוב לראות לא רק פרויקט אחד אלא את הגישה הכוללת של הצוות. באתר הראשי של Live Better תמצאו פרויקטים, מסלולי השקעה ומתודולוגיית עבודה.",
-    proofLabel: "נתוני השקעה מרכזיים",
-    stats: ["תשואת שכירות שנתית של 7-10%", "ROI של עד 50% בתוך שנתיים", "50,000 סטודנטים בפטרס"],
-    bullets: ["לסקור את כל הפרויקטים", "להשוות מסלולי השקעה", "להבין למה פטרס"],
+    stats: [
+      { value: "7–10%", label: "תשואת שכירות שנתית" },
+      { value: "50%", label: "ROI בתוך שנתיים" },
+      { value: "50,000", label: "סטודנטים בפטרס" },
+    ],
     cta: "לצפייה בפורטפוליו המלא",
   },
   el: {
     sectionEyebrow: "Ανακαλύψτε τα άλλα έργα μας",
-    eyebrow: "Οικοσύστημα Live Better",
     title: "Το Sea'cret είναι μέρος του ευρύτερου χαρτοφυλακίου Live Better",
     description:
       "Για έναν επενδυτή, ένα μόνο έργο δεν είναι αρκετό. Στον βασικό ιστότοπο της Live Better θα δείτε το πλήρες χαρτοφυλάκιο, μορφές επένδυσης και το μοντέλο εκτέλεσης της ομάδας.",
-    proofLabel: "Βασικοί επενδυτικοί δείκτες",
-    stats: ["7-10% ετήσιο εισόδημα από ενοίκια", "ROI έως 50% σε 2 χρόνια", "50.000 φοιτητές στην Πάτρα"],
-    bullets: ["Δείτε όλα τα έργα", "Συγκρίνετε μορφές επένδυσης", "Κατανοήστε γιατί η Πάτρα"],
+    stats: [
+      { value: "7–10%", label: "ετήσιο εισόδημα ενοικίων" },
+      { value: "50%", label: "ROI σε 2 χρόνια" },
+      { value: "50.000", label: "φοιτητές στην Πάτρα" },
+    ],
     cta: "Δείτε όλο το χαρτοφυλάκιο",
   },
 };
 
 export function PortfolioBridgeSection({ locale }: PortfolioBridgeSectionProps) {
   const content = CONTENT[locale];
-  const statIcons = [Percent, TrendingUp, GraduationCap] as const;
 
   return (
     <section className="bg-[var(--color-sand)] py-16 sm:py-20 lg:py-24">
@@ -77,65 +83,97 @@ export function PortfolioBridgeSection({ locale }: PortfolioBridgeSectionProps) 
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="tile mt-6 p-6 sm:p-8 lg:p-10">
-            <div className="inline-flex items-center gap-3 rounded-full border border-[var(--color-deep-teal)]/20 bg-white/70 px-3 py-1.5">
-              <img
-                src="https://livebettergr.com/wp-content/webp-express/webp-images/uploads/2025/08/Live-Better-logo-white.png.webp"
+          <div
+            className="relative mt-6 overflow-hidden rounded-[var(--radius-xl)]"
+            style={{
+              background:
+                "linear-gradient(135deg, var(--color-night) 0%, #0d3a42 50%, #143d3e 100%)",
+              padding: "clamp(2rem, 4vw, 3rem)",
+            }}
+          >
+            {/* Subtle radial glow */}
+            <div
+              className="pointer-events-none absolute -top-1/3 -right-1/5"
+              style={{
+                width: 500,
+                height: 500,
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle, rgba(232,163,64,0.05) 0%, transparent 70%)",
+              }}
+            />
+
+            {/* Logo + Ecosystem badge */}
+            <div className="relative mb-8 flex items-center gap-4">
+              <Image
+                src="/images/about/live-better-logo-white.webp"
                 alt="Live Better Group"
-                className="h-5 w-auto object-contain"
-                loading="lazy"
-                decoding="async"
+                width={120}
+                height={28}
+                className="h-7 w-auto object-contain opacity-90"
               />
-              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--color-deep-teal)]">
-                {content.eyebrow}
+              <div
+                className="h-5 w-px"
+                style={{ background: "rgba(255,255,255,0.15)" }}
+              />
+              <span
+                className="rounded-full px-3.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.25em]"
+                style={{
+                  color: "var(--color-gold-sun)",
+                  background: "rgba(232,163,64,0.10)",
+                }}
+              >
+                Ecosystem
               </span>
             </div>
 
-            <h2 className="text-h2 mt-5">{content.title}</h2>
-            <p className="text-body-muted mt-4 max-w-2xl">{content.description}</p>
-
-            <p className="mt-7 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--color-deep-teal)]">
-              {content.proofLabel}
+            {/* Title + description */}
+            <h2
+              className="relative font-serif font-semibold leading-tight tracking-wide text-white"
+              style={{ fontSize: "clamp(1.4rem, 3vw, 1.9rem)", maxWidth: 620 }}
+            >
+              {content.title}
+            </h2>
+            <p
+              className="relative mt-4 max-w-[560px] leading-relaxed"
+              style={{ color: "rgba(255,255,255,0.6)", fontSize: "1rem" }}
+            >
+              {content.description}
             </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
-              {content.stats.map((item, index) => {
-                const Icon = statIcons[index] ?? Percent;
-                return (
-                  <div
-                    key={item}
-                    className="rounded-md border border-[var(--color-deep-teal)]/12 bg-[linear-gradient(180deg,rgba(245,239,218,0.86)_0%,rgba(239,228,203,0.72)_100%)] px-4 py-3 text-[var(--color-ink)]"
+
+            {/* Stats */}
+            <div className="relative mt-10 grid gap-4 grid-cols-1 sm:grid-cols-3">
+              {content.stats.map((stat) => (
+                <div
+                  key={stat.value}
+                  className="rounded-[10px] border border-white/[0.07] bg-white/[0.03] px-5 py-6 text-center backdrop-blur-sm transition-colors hover:border-[var(--color-gold-sun)]/20"
+                >
+                  <p
+                    className="font-serif font-bold tracking-wide"
+                    style={{ fontSize: "1.6rem", color: "var(--color-gold-sun)" }}
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/75 ring-1 ring-[var(--color-deep-teal)]/12">
-                        <Icon className="h-4.5 w-4.5 text-[var(--color-deep-teal)]" />
-                      </div>
-                      <p className="pt-1 text-sm font-semibold leading-snug">{item}</p>
-                    </div>
-                  </div>
-                );
-              })}
+                    {stat.value}
+                  </p>
+                  <p
+                    className="mt-1.5"
+                    style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.45)" }}
+                  >
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
             </div>
 
-            <ul className="mt-6 space-y-2" aria-label="Portfolio highlights">
-              {content.bullets.map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-sm text-[var(--color-ink)]">
-                  <span
-                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-deep-teal)]/80"
-                    aria-hidden
-                  />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-8">
+            {/* CTA */}
+            <div className="relative mt-10">
               <a
                 href="https://livebettergr.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-primary"
+                className="btn btn-primary inline-flex items-center gap-2"
               >
                 {content.cta}
+                <ArrowUpRight size={16} strokeWidth={2.5} />
               </a>
             </div>
           </div>
