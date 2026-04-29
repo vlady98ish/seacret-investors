@@ -733,7 +733,7 @@ const aboutPage = {
   _type: "aboutPage",
 
   // Hero
-  heroTitle: { en: "About Live Better Group" },
+  heroTitle: { en: "Live Better Group" },
   heroSubtitle: { en: "From a pandemic-era idea to Greece's most dynamic developer" },
 
   // Our Story

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Cormorant_SC, Frank_Ruhl_Libre, Assistant } from "next/font/google";
+import { Cinzel, Cormorant_SC, Noto_Serif_Hebrew, Assistant } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { GoogleTagManagerNoscript } from "@/components/analytics/google-tag-manager";
@@ -19,15 +19,15 @@ const serifCyrillic = Cormorant_SC({
   display: "swap",
 });
 
-const serifHebrew = Frank_Ruhl_Libre({
+const serifHebrew = Noto_Serif_Hebrew({
   subsets: ["hebrew"],
   variable: "--font-serif-hebrew",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
 const sans = Assistant({
-  subsets: ["latin"],
+  subsets: ["latin", "hebrew"],
   variable: "--font-sans",
   weight: ["200", "300", "400", "500", "600", "700"],
   display: "swap",

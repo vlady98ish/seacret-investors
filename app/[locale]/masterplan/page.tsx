@@ -130,8 +130,8 @@ export default async function MasterplanPage({ params, searchParams }: Props) {
     ? [
         { label: statTotalLabel, value: String(stats.total) },
         { label: statAvailableLabel, value: String(stats.available) },
-        { label: statReservedLabel, value: String(stats.reserved) },
         { label: statSoldLabel, value: String(stats.sold) },
+        { label: statReservedLabel, value: String(stats.reserved) },
       ]
     : [];
 

@@ -316,12 +316,12 @@ export function VisualExplorer({
             {legend.available}
           </span>
           <span className="flex items-center gap-1 text-[10px] text-white/80 sm:gap-1.5 sm:text-xs">
-            <span className="inline-block h-2 w-2 rounded-full bg-amber-500 sm:h-2.5 sm:w-2.5" />
-            {legend.reserved}
-          </span>
-          <span className="flex items-center gap-1 text-[10px] text-white/80 sm:gap-1.5 sm:text-xs">
             <span className="inline-block h-2 w-2 rounded-full bg-red-500 sm:h-2.5 sm:w-2.5" />
             {legend.sold}
+          </span>
+          <span className="flex items-center gap-1 text-[10px] text-white/80 sm:gap-1.5 sm:text-xs">
+            <span className="inline-block h-2 w-2 rounded-full bg-amber-500 sm:h-2.5 sm:w-2.5" />
+            {legend.reserved}
           </span>
         </div>
       </div>

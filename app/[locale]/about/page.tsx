@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { AboutCtaSection } from "@/components/about/about-cta-section";
 import { FoundersSection } from "@/components/about/founders-section";
 import { OurStorySection } from "@/components/about/our-story-section";
+import { PortfolioBridgeSection } from "@/components/about/portfolio-bridge-section";
 import { StatsBar } from "@/components/about/stats-bar";
 import { ValuesSection } from "@/components/about/values-section";
 import { InlineContactSection } from "@/components/inline-contact-section";
@@ -63,7 +64,6 @@ export default async function AboutPage({ params }: Props) {
 
   // Resolve story strings
   const storyEyebrow = getLocalizedValue(data?.storyEyebrow, typedLocale);
-  const storyTitle = getLocalizedValue(data?.storyTitle, typedLocale);
   const storyContent = getLocalizedValue(data?.storyContent, typedLocale);
 
   // Resolve stats: value is a plain string, label is localized
@@ -108,10 +108,10 @@ export default async function AboutPage({ params }: Props) {
       <StatsBar stats={stats} />
       <OurStorySection
         eyebrow={storyEyebrow}
-        title={storyTitle}
         content={storyContent}
       />
       <FoundersSection
+        locale={typedLocale}
         eyebrow={foundersEyebrow}
         founders={founders}
       />
@@ -126,12 +126,6 @@ export default async function AboutPage({ params }: Props) {
                 he: "מאחורי הקלעים",
                 ru: "За кулисами",
                 el: "Πίσω από τις Σκηνές",
-              }[typedLocale]}
-              title={{
-                en: "How We Work",
-                he: "איך אנחנו עובדים",
-                ru: "Как мы работаем",
-                el: "Πώς Εργαζόμαστε",
               }[typedLocale]}
             />
           </ScrollReveal>
@@ -158,6 +152,7 @@ export default async function AboutPage({ params }: Props) {
         title={valuesTitle}
         values={values}
       />
+      <PortfolioBridgeSection locale={typedLocale} />
       <AboutCtaSection
         locale={typedLocale}
         title={ctaTitle}

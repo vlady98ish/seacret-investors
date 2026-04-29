@@ -108,8 +108,8 @@ export default async function LocationPage({ params }: Props) {
       <WhyChiliadouSection
         locale={typedLocale}
         eyebrow={t(page?.whyEyebrow) || undefined}
-        title={t(page?.whyTitle) || undefined}
-        description={t(page?.whySection) || undefined}
+        title={undefined}
+        description={undefined}
         features={
           page?.whyFeatures?.map((f) => ({
             heading: t(f.heading) || "",
@@ -134,7 +134,6 @@ export default async function LocationPage({ params }: Props) {
 
       <AirportConnectivitySection
         eyebrow={t(page?.airportEyebrow) || undefined}
-        title={t(page?.airportTitle) || undefined}
         description={t(page?.airportDescription) || undefined}
         labelFromChiliadou={t(uiStrings?.miscFromChiliadou)}
         labelDestinations={t(uiStrings?.miscDestinations)}

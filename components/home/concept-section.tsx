@@ -14,6 +14,7 @@ type ConceptSectionProps = {
 };
 
 export function ConceptSection({ data, locale }: ConceptSectionProps) {
+  const isRtl = locale === "he";
   const eyebrow = getLocalizedValue(data?.conceptEyebrow, locale);
   const heading = getLocalizedValue(data?.conceptTitle, locale);
   const copy = getLocalizedValue(data?.conceptCopy, locale);
@@ -24,7 +25,11 @@ export function ConceptSection({ data, locale }: ConceptSectionProps) {
   return (
     <section className="relative overflow-hidden bg-[var(--color-sand)] py-16 sm:py-20 lg:py-24">
       <div
-        className="pointer-events-none absolute inset-y-0 z-0 w-[min(86%,33rem)] sm:w-[min(84%,40rem)] lg:w-[min(80%,44rem)] xl:w-[min(76%,48rem)] left-[max(1.25rem,calc((100vw-1440px)/2+1.25rem))] sm:left-[max(2rem,calc((100vw-1440px)/2+2rem))] lg:left-[max(3rem,calc((100vw-1440px)/2+3rem))]"
+        className={`pointer-events-none absolute inset-y-0 z-0 w-[min(86%,33rem)] sm:w-[min(84%,40rem)] lg:w-[min(80%,44rem)] xl:w-[min(76%,48rem)] ${
+          isRtl
+            ? "right-[max(1.25rem,calc((100vw-1440px)/2+1.25rem))] sm:right-[max(2rem,calc((100vw-1440px)/2+2rem))] lg:right-[max(3rem,calc((100vw-1440px)/2+3rem))]"
+            : "left-[max(1.25rem,calc((100vw-1440px)/2+1.25rem))] sm:left-[max(2rem,calc((100vw-1440px)/2+2rem))] lg:left-[max(3rem,calc((100vw-1440px)/2+3rem))]"
+        }`}
         aria-hidden
       >
         <div className="relative h-full w-full">
@@ -35,7 +40,7 @@ export function ConceptSection({ data, locale }: ConceptSectionProps) {
               alt=""
               fill
               unoptimized
-              className="object-contain object-left origin-top-left scale-[0.94] opacity-[0.14]"
+              className={`object-contain ${isRtl ? "object-right origin-top-right" : "object-left origin-top-left"} scale-[0.94] opacity-[0.14]`}
               sizes="(max-width: 1024px) 100vw, 58rem"
             />
           </div>

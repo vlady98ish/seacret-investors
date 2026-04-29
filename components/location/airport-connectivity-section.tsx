@@ -47,6 +47,7 @@ export function AirportConnectivitySection({
             eyebrow={eyebrow}
             title={title}
             description={description}
+            descriptionClassName="max-w-none lg:whitespace-nowrap"
           />
         </ScrollReveal>
 
