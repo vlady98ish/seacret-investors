@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { Landmark, Leaf, UtensilsCrossed } from "lucide-react";
 
@@ -71,6 +71,7 @@ export function ExperiencesSection({
     availableCategories[0]?.key ?? "culture"
   );
   const [fading, setFading] = useState(false);
+  const switchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   if (!grouped || availableCategories.length === 0) return null;
 
@@ -80,10 +81,12 @@ export function ExperiencesSection({
 
   function switchCategory(cat: CategoryKey) {
     if (cat === activeCategory) return;
+    if (switchTimerRef.current) clearTimeout(switchTimerRef.current);
     setFading(true);
-    setTimeout(() => {
+    switchTimerRef.current = setTimeout(() => {
       setActiveCategory(cat);
       setFading(false);
+      switchTimerRef.current = null;
     }, 300);
   }
 
@@ -160,11 +163,10 @@ export function ExperiencesSection({
           {rest.length > 0 && (
             <div
               className={`grid gap-4 grid-cols-1 ${
-                rest.length === 1
-                  ? "sm:grid-cols-1"
-                  : rest.length === 2
-                    ? "sm:grid-cols-2"
-                    : "sm:grid-cols-3"
+                /* sm:grid-cols-1 sm:grid-cols-2 sm:grid-cols-3 — keep full strings for Tailwind scanner */
+                { 1: "sm:grid-cols-1", 2: "sm:grid-cols-2", 3: "sm:grid-cols-3" }[
+                  Math.min(rest.length, 3) as 1 | 2 | 3
+                ] ?? "sm:grid-cols-3"
               }`}
             >
               {rest.map((exp) => (
